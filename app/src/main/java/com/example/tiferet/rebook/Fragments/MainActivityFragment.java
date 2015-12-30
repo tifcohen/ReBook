@@ -1,10 +1,12 @@
-package com.example.tiferet.rebook;
+package com.example.tiferet.rebook.Fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.tiferet.rebook.R;
 
 /**
  * A placeholder fragment containing a simple view.
