@@ -12,6 +12,14 @@ import com.example.tiferet.rebook.R;
  * Created by TIFERET on 30-Dec-15.
  */
 public class NewsFeedFragment extends Fragment {
+
+    public interface NewsFeedFragmentDelegate{}
+
+    NewsFeedFragmentDelegate delegate;
+    public void setDelegate(NewsFeedFragmentDelegate delegate){
+        this.delegate = delegate;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

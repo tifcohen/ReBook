@@ -1,5 +1,8 @@
 package com.example.tiferet.rebook;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,7 +12,15 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.tiferet.rebook.Fragments.MainActivityFragment;
+import com.example.tiferet.rebook.Fragments.NewsFeedFragment;
+
+public class MainActivity extends AppCompatActivity implements MainActivityFragment.MainActivityFragmentDelegate,
+        NewsFeedFragment.NewsFeedFragmentDelegate {
+
+    String thisFrag = "login";
+    MainActivityFragment loginFragment;
+    NewsFeedFragment newsFeedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +28,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        loginFragment = (MainActivityFragment) getFragmentManager().findFragmentById(R.id.loginFragment);
+        newsFeedFragment = (NewsFeedFragment) getFragmentManager().findFragmentById(R.id.newsFeedFragment);
+        //editStudent = (EditStudentFragment) getFragmentManager().findFragmentById(R.id.editStudent);
+        //addStudent = (AddStudentFragment) getFragmentManager().findFragmentById(R.id.addStudent);
+
+        loginFragment.setDelegate(this);
+
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+
+        ft.hide(newsFeedFragment);
+        //ft.hide(editStudent);
+        //ft.hide(addStudent);
+        ft.commit();
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -48,5 +74,43 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void OnNewsFeed() {
+        if (thisFrag.equals("login")) {
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            newsFeedFragment = new NewsFeedFragment();
+            newsFeedFragment.setDelegate(this);
+            ft.add(R.id.container, newsFeedFragment);
+            ft.hide(loginFragment);
+            ft.addToBackStack("login");
+            ft.show(newsFeedFragment);
+            ft.commit();
+            thisFrag = "newsfeed";
+            invalidateOptionsMenu();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        int count = getFragmentManager().getBackStackEntryCount();
+        if (count > 0) {
+            String name = getFragmentManager().getBackStackEntryAt(count - 1).getName();
+            switch (name) {
+                case "details":
+                    thisFrag = "details";
+                    break;
+                default:
+                    thisFrag = "list";
+                    break;
+            }
+            invalidateOptionsMenu();
+            this.getFragmentManager().popBackStack();
+        } else {
+            finish();
+        }
+
     }
 }
