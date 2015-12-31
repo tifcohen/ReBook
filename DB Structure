@@ -1,0 +1,49 @@
+
+
+User
+	userID, fName, lName, imageName, passwordHash.
+	
+	public User getUser(usedID); 
+	public void register(User user){}
+	
+Book
+	bookID, bookName, author, pages, imageName. 
+	
+	public void createNewBook(Book book)
+	public Book getBook(int bookID)
+	
+Posts
+	postID, userID, bookID, text, date, currentPage, boolean finished=f, int grade=-1
+	
+	public addPost(userID, bookID, text, date, currentPage, finished=f, grade=-1)
+	
+	
+BookReadingStatus
+	userID, bookID, int currentPage, boolean finished
+	public List<User> getBookReaders(int bookID){}
+	public List<Book> getBooksByUserID(int userID){
+	public void startReading(int userID, int bookID, int page, boolean finished)
+	public void updateProgress(int userID, int bookID, int page, boolean finished)
+	
+
+	
+Followers
+	followID, userID, friendID
+	
+	public List<User> getFollowingList(int userID){}
+	public void follow(int userID, int friendID);
+	public void unfollow(int followID);
+	
+	
+<<DB>> 
+    private final static Model instance = new Model();
+	
+    public static Model getInstance(){
+	
+	
+	
+	
+ModelSQLite extends <<DB>> 
+ModelParse extends <<DB>> 
+
+
