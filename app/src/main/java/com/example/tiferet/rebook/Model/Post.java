@@ -15,7 +15,8 @@ public class Post {
     boolean finished;
     int grade;
 
-    public Post(String userID, String bookID, String text, Date date, int currentPage, boolean finished, int grade) {
+    public Post(String postID, String userID, String bookID, String text, Date date, int currentPage, boolean finished, int grade) {
+        this.postID = postID;
         this.userID = userID;
         this.bookID = bookID;
         this.text = text;

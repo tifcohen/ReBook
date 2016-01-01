@@ -21,7 +21,7 @@ public class PostDB {
 
     private void init(){
         for (int i = 0; i < 20; i++) {
-            Post p = new Post("" + i, "" + i, "Text", new Date(), i, false, 10);
+            Post p = new Post("" + i, "" + i, "" + i, "Text", new Date(), i, false, 10);
             addPost(p);
         }
     }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
@@ -25,7 +26,9 @@ import java.util.List;
  */
 public class NewsFeedFragment extends Fragment {
 
-    public interface NewsFeedFragmentDelegate{}
+    public interface NewsFeedFragmentDelegate{
+        void OnSinglePost(Post post);
+    }
 
     NewsFeedFragmentDelegate delegate;
     public void setDelegate(NewsFeedFragmentDelegate delegate){
@@ -45,7 +48,16 @@ public class NewsFeedFragment extends Fragment {
         CustomAdapter adapter = new CustomAdapter();
         list.setAdapter(adapter);
 
-
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("TAG", "row selected" + position);
+                Post post = data.get(position);
+                if (delegate != null) {
+                    delegate.OnSinglePost(post);
+                }
+            }
+        });
         return view;
     }
 

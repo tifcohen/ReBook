@@ -8,19 +8,23 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.tiferet.rebook.Fragments.MainActivityFragment;
 import com.example.tiferet.rebook.Fragments.NewsFeedFragment;
+import com.example.tiferet.rebook.Fragments.SinglePostFragment;
+import com.example.tiferet.rebook.Model.Post;
 
 public class MainActivity extends AppCompatActivity implements MainActivityFragment.MainActivityFragmentDelegate,
-        NewsFeedFragment.NewsFeedFragmentDelegate {
+        NewsFeedFragment.NewsFeedFragmentDelegate, SinglePostFragment.SinglePostFragmentDelegate {
 
     String thisFrag = "login";
     MainActivityFragment loginFragment;
     NewsFeedFragment newsFeedFragment;
+    SinglePostFragment singlePostFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
         loginFragment = (MainActivityFragment) getFragmentManager().findFragmentById(R.id.loginFragment);
         newsFeedFragment = (NewsFeedFragment) getFragmentManager().findFragmentById(R.id.newsFeedFragment);
-        //editStudent = (EditStudentFragment) getFragmentManager().findFragmentById(R.id.editStudent);
+        singlePostFragment = (SinglePostFragment) getFragmentManager().findFragmentById(R.id.singlePostFragment);
         //addStudent = (AddStudentFragment) getFragmentManager().findFragmentById(R.id.addStudent);
 
         loginFragment.setDelegate(this);
@@ -40,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         FragmentTransaction ft = fm.beginTransaction();
 
         ft.hide(newsFeedFragment);
-        //ft.hide(editStudent);
+        ft.hide(singlePostFragment);
         //ft.hide(addStudent);
         ft.commit();
 
@@ -93,6 +97,27 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         }
     }
 
+
+
+    @Override
+    public void OnSinglePost(Post post) {
+        if (thisFrag.equals("newsfeed")){
+            Log.d("TAG", "post selected " + post.getPostID());
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            singlePostFragment = new SinglePostFragment();
+            singlePostFragment.setPost(post);
+            singlePostFragment.setDelegate(this);
+            ft.add(R.id.container, singlePostFragment);
+            ft.hide(newsFeedFragment);
+            ft.addToBackStack("newsfeed");
+            ft.show(singlePostFragment);
+            ft.commit();
+            thisFrag = "singlePost";
+            invalidateOptionsMenu();
+        }
+    }
+
     @Override
     public void onBackPressed() {
         int count = getFragmentManager().getBackStackEntryCount();
@@ -101,6 +126,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             switch (name) {
                 case "newsfeed":
                     thisFrag = "login";
+                    break;
+                case "singlePost":
+                    thisFrag = "newsfeed";
                     break;
                 default:
                     thisFrag = "login";
@@ -111,6 +139,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         } else {
             finish();
         }
+
+    }
+
+    @Override
+    public void OnSinglePost() {
 
     }
 }
