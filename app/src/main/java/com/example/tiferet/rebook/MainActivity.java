@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.addToBackStack("login");
 
         ft.hide(newsFeedFragment);
         ft.hide(singlePostFragment);
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             newsFeedFragment.setDelegate(this);
             ft.add(R.id.container, newsFeedFragment);
             ft.hide(loginFragment);
-            ft.addToBackStack("newsFeed");
+            ft.addToBackStack("login");
             ft.show(newsFeedFragment);
             ft.commit();
             thisFrag = "newsfeed";
@@ -111,24 +110,26 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             singlePostFragment.setDelegate(this);
             ft.add(R.id.container, singlePostFragment);
             ft.hide(newsFeedFragment);
-            ft.addToBackStack("singlePost");
+            ft.addToBackStack("newsfeed");
             ft.show(singlePostFragment);
-            ft.commit();
             thisFrag = "singlePost";
+            ft.commit();
             invalidateOptionsMenu();
         }
-        else
-        {
-            Log.d("TAG","This frag is currently: " + thisFrag);
-        }
+
+            Log.d("TAG","thisFrag is currently: " + thisFrag);
+
     }
 
     @Override
     public void onBackPressed() {
+        Log.d("DEBUG", "Back was pressed. thisFrag = " + thisFrag);
         int count = getFragmentManager().getBackStackEntryCount();
-        if (count > 1) {
+        if (count > 0) {
             String name = getFragmentManager().getBackStackEntryAt(count - 1).getName();
-            switch (name) {
+
+
+            switch (thisFrag) {
                 case "newsfeed":
                     thisFrag = "login";
                     break;
@@ -147,8 +148,4 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
     }
 
-    @Override
-    public void OnSinglePost() {
-
-    }
 }

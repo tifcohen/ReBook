@@ -18,7 +18,7 @@ import com.example.tiferet.rebook.R;
  */
 public class SinglePostFragment extends Fragment {
     public interface SinglePostFragmentDelegate{
-        void OnSinglePost();
+
     }
 
     Post post;
