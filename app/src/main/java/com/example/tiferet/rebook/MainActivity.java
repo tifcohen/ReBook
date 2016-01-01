@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
+        ft.addToBackStack("login");
 
         ft.hide(newsFeedFragment);
         ft.hide(singlePostFragment);
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             newsFeedFragment.setDelegate(this);
             ft.add(R.id.container, newsFeedFragment);
             ft.hide(loginFragment);
-            ft.addToBackStack("login");
+            ft.addToBackStack("newsFeed");
             ft.show(newsFeedFragment);
             ft.commit();
             thisFrag = "newsfeed";
@@ -110,18 +111,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             singlePostFragment.setDelegate(this);
             ft.add(R.id.container, singlePostFragment);
             ft.hide(newsFeedFragment);
-            ft.addToBackStack("newsfeed");
+            ft.addToBackStack("singlePost");
             ft.show(singlePostFragment);
             ft.commit();
             thisFrag = "singlePost";
             invalidateOptionsMenu();
+        }
+        else
+        {
+            Log.d("TAG","This frag is currently: " + thisFrag);
         }
     }
 
     @Override
     public void onBackPressed() {
         int count = getFragmentManager().getBackStackEntryCount();
-        if (count > 0) {
+        if (count > 1) {
             String name = getFragmentManager().getBackStackEntryAt(count - 1).getName();
             switch (name) {
                 case "newsfeed":
