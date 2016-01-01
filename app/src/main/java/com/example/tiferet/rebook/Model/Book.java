@@ -4,10 +4,19 @@ package com.example.tiferet.rebook.Model;
  * Created by TIFERET on 31-Dec-15.
  */
 public class Book {
+    String BookID;
     String bookName;
     String author;
     int pages;
     String picture;
+
+    public String getBookID() {
+        return BookID;
+    }
+
+    public void setBookID(String bookID) {
+        BookID = bookID;
+    }
 
     public String getBookName() {
         return bookName;
