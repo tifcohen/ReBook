@@ -29,4 +29,8 @@ public class PostDB {
     public void addPost(Post post){
         db.add(post);
     }
+
+    public List<Post> getAllPosts(){
+        return db;
+    }
 }

@@ -14,7 +14,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.tiferet.rebook.Model.Post;
+import com.example.tiferet.rebook.Model.PostDB;
 import com.example.tiferet.rebook.R;
+
+import java.util.List;
 
 /**
  * Created by TIFERET on 30-Dec-15.
@@ -29,20 +33,24 @@ public class NewsFeedFragment extends Fragment {
     }
 
     ListView list;
+    List<Post> data;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.news_feed_fragment, container, false);
 
-        list = (ListView) view.findViewById(R.id.newsFeedFragment);
-        //data = StudentDB.getInstance().getAllStudents();
+        list = (ListView) view.findViewById(R.id.newsFeedList);
+        data = PostDB.getInstance().getAllPosts();
+        CustomAdapter adapter = new CustomAdapter();
+        list.setAdapter(adapter);
 
 
         return view;
     }
 
 
-    /*class CustomAdapter extends BaseAdapter {
+    class CustomAdapter extends BaseAdapter {
 
         public CustomAdapter() {
         }
@@ -53,12 +61,12 @@ public class NewsFeedFragment extends Fragment {
         }
 
         @Override
-        public Object getItem(int position) { //returns the student
+        public Object getItem(int position) { //returns the post
             return data.get(position);
         }
 
         @Override
-        public long getItemId(int position) { //returns student id
+        public long getItemId(int position) { //returns post id
             return position;
         }
 
@@ -66,30 +74,19 @@ public class NewsFeedFragment extends Fragment {
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
-                convertView = inflater.inflate(R.layout.single_student_row, null);
-                CheckBox cb = (CheckBox) convertView.findViewById(R.id.checkBox);
-                cb.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Student st = data.get((Integer) v.getTag());
-                        Log.d("TAG", "cb position " + (Integer) v.getTag());
-                        st.setSelected(!st.isSelected());
-
-                    }
-                });
+                convertView = inflater.inflate(R.layout.news_feed_single_row, null);
             }
-            TextView name = (TextView) convertView.findViewById(R.id.stdName);
-            TextView id = (TextView) convertView.findViewById(R.id.stdId);
-            CheckBox cb = (CheckBox) convertView.findViewById(R.id.checkBox);
-            ImageView image = (ImageView) convertView.findViewById(R.id.imageView);
+            TextView userName = (TextView) convertView.findViewById(R.id.userProfileName);
+            TextView bookName = (TextView) convertView.findViewById(R.id.bookName);
+            TextView bookReview = (TextView) convertView.findViewById(R.id.bookReview);
+            //ImageView image = (ImageView) convertView.findViewById(R.id.imageView);
 
-            Student st = data.get(position);
-            name.setText(st.getName());
-            id.setText(st.getStId());
-            cb.setChecked(st.isSelected());
-            cb.setTag(new Integer(position));
+            Post post = data.get(position);
+            userName.setText(post.getUserID());
+            bookName.setText(post.getBookID());
+            bookReview.setText(post.getText());
 
             return convertView;
         }
-    }*/
+    }
 }

@@ -99,11 +99,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         if (count > 0) {
             String name = getFragmentManager().getBackStackEntryAt(count - 1).getName();
             switch (name) {
-                case "details":
-                    thisFrag = "details";
+                case "newsfeed":
+                    thisFrag = "login";
                     break;
                 default:
-                    thisFrag = "list";
+                    thisFrag = "login";
                     break;
             }
             invalidateOptionsMenu();
