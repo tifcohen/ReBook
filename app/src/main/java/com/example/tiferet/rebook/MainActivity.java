@@ -15,17 +15,20 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.tiferet.rebook.Fragments.MainActivityFragment;
+import com.example.tiferet.rebook.Fragments.MyProfileFragment;
 import com.example.tiferet.rebook.Fragments.NewsFeedFragment;
 import com.example.tiferet.rebook.Fragments.SinglePostFragment;
 import com.example.tiferet.rebook.Model.Post;
 
 public class MainActivity extends AppCompatActivity implements MainActivityFragment.MainActivityFragmentDelegate,
-        NewsFeedFragment.NewsFeedFragmentDelegate, SinglePostFragment.SinglePostFragmentDelegate {
+        NewsFeedFragment.NewsFeedFragmentDelegate, SinglePostFragment.SinglePostFragmentDelegate,
+        MyProfileFragment.MyProfileFragmentDelegate{
 
     String thisFrag = "login";
     MainActivityFragment loginFragment;
     NewsFeedFragment newsFeedFragment;
     SinglePostFragment singlePostFragment;
+    MyProfileFragment myProfileFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         loginFragment = (MainActivityFragment) getFragmentManager().findFragmentById(R.id.loginFragment);
         newsFeedFragment = (NewsFeedFragment) getFragmentManager().findFragmentById(R.id.newsFeedFragment);
         singlePostFragment = (SinglePostFragment) getFragmentManager().findFragmentById(R.id.singlePostFragment);
-        //addStudent = (AddStudentFragment) getFragmentManager().findFragmentById(R.id.addStudent);
+        myProfileFragment = (MyProfileFragment) getFragmentManager().findFragmentById(R.id.myProfileFragment);
 
         loginFragment.setDelegate(this);
 
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
         ft.hide(newsFeedFragment);
         ft.hide(singlePostFragment);
-        //ft.hide(addStudent);
+        ft.hide(myProfileFragment);
         ft.commit();
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -63,6 +66,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem item = menu.findItem(R.id.generalBtn);
+        switch (thisFrag){
+            case "login":
+                item.setTitle("");
+                break;
+            default:
+                item.setTitle("My Profile");
+                break;
+        }
         return true;
     }
 
@@ -80,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
         if (id == R.id.generalBtn) {
             Toast.makeText(getApplicationContext(), "My Profile", Toast.LENGTH_LONG).show();
+            OnMyProfile();
             return true;
 
         }
@@ -126,6 +139,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
             Log.d("TAG","thisFrag is currently: " + thisFrag);
 
+    }
+
+    @Override
+    public void OnMyProfile() {
+        if (thisFrag.equals("newsfeed")){
+            Log.d("TAG", "on my profile");
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            myProfileFragment = new MyProfileFragment();
+            myProfileFragment.setDelegate(this);
+            ft.add(R.id.container, myProfileFragment);
+            ft.hide(newsFeedFragment);
+            ft.addToBackStack("newsfeed");
+            ft.show(myProfileFragment);
+            thisFrag = "myProfile";
+            ft.commit();
+            invalidateOptionsMenu();
+        }
+        Log.d("TAG","thisFrag is currently: " + thisFrag);
     }
 
     @Override

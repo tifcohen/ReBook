@@ -34,4 +34,11 @@
         android:name="com.example.tiferet.rebook.Fragments.SinglePostFragment"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:layout="@layout/fragment_main" />
+    <fragment
+        android:id="@+id/myProfileFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.example.tiferet.rebook.Fragments.MyProfileFragment"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:layout="@layout/fragment_main" />
 </FrameLayout>

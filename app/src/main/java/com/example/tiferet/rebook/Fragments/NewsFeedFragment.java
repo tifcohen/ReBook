@@ -28,6 +28,7 @@ public class NewsFeedFragment extends Fragment {
 
     public interface NewsFeedFragmentDelegate{
         void OnSinglePost(Post post);
+        void OnMyProfile();
     }
 
     NewsFeedFragmentDelegate delegate;
