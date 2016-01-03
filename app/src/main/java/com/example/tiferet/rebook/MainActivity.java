@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.tiferet.rebook.Fragments.MainActivityFragment;
 import com.example.tiferet.rebook.Fragments.NewsFeedFragment;
@@ -75,6 +76,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        if (id == R.id.generalBtn) {
+            Toast.makeText(getApplicationContext(), "My Profile", Toast.LENGTH_LONG).show();
+            return true;
+
         }
 
         return super.onOptionsItemSelected(item);

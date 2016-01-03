@@ -42,9 +42,6 @@ public class SinglePostFragment extends Fragment {
             bookName.setText(this.post.getBookID());
             bookReview.setText(this.post.getText());
         }
-        else{
-            Toast.makeText(getActivity().getApplicationContext(), "Post is null",Toast.LENGTH_LONG).show();
-        }
         return view;
     }
 
