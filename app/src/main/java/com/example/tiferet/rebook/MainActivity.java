@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             Toast.makeText(getApplicationContext(), "My Profile", Toast.LENGTH_LONG).show();
             OnMyProfile();
             return true;
-
         }
 
         return super.onOptionsItemSelected(item);
