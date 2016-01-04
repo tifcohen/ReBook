@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.tiferet.rebook.Fragments.AddNewBookFragment;
 import com.example.tiferet.rebook.Fragments.MainActivityFragment;
 import com.example.tiferet.rebook.Fragments.MyProfileFragment;
 import com.example.tiferet.rebook.Fragments.NewsFeedFragment;
@@ -22,13 +23,14 @@ import com.example.tiferet.rebook.Model.Post;
 
 public class MainActivity extends AppCompatActivity implements MainActivityFragment.MainActivityFragmentDelegate,
         NewsFeedFragment.NewsFeedFragmentDelegate, SinglePostFragment.SinglePostFragmentDelegate,
-        MyProfileFragment.MyProfileFragmentDelegate{
+        MyProfileFragment.MyProfileFragmentDelegate, AddNewBookFragment.AddNewBookFragmentDelegate{
 
     String thisFrag = "login";
     MainActivityFragment loginFragment;
     NewsFeedFragment newsFeedFragment;
     SinglePostFragment singlePostFragment;
     MyProfileFragment myProfileFragment;
+    AddNewBookFragment addNewBookFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         newsFeedFragment = (NewsFeedFragment) getFragmentManager().findFragmentById(R.id.newsFeedFragment);
         singlePostFragment = (SinglePostFragment) getFragmentManager().findFragmentById(R.id.singlePostFragment);
         myProfileFragment = (MyProfileFragment) getFragmentManager().findFragmentById(R.id.myProfileFragment);
+        addNewBookFragment = (AddNewBookFragment) getFragmentManager().findFragmentById(R.id.addNewBookFragment);
 
         loginFragment.setDelegate(this);
 
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         ft.hide(newsFeedFragment);
         ft.hide(singlePostFragment);
         ft.hide(myProfileFragment);
+        ft.hide(addNewBookFragment);
         ft.commit();
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -71,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             case "login":
                 item.setTitle("");
                 break;
+            case "myProfile":
+                item.setIcon(android.R.drawable.ic_input_get);
             default:
                 item.setTitle("My Profile");
                 break;
@@ -91,8 +97,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         }
 
         if (id == R.id.generalBtn) {
-            Toast.makeText(getApplicationContext(), "My Profile", Toast.LENGTH_LONG).show();
-            OnMyProfile();
+
             return true;
         }
 
@@ -115,8 +120,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             invalidateOptionsMenu();
         }
     }
-
-
 
     @Override
     public void OnSinglePost(Post post) {
@@ -159,6 +162,26 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     }
 
     @Override
+    public void OnAddNewBook() {
+        if (thisFrag.equals("myProfile")){
+            Log.d("TAG", "on add new book");
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            addNewBookFragment = new AddNewBookFragment();
+            addNewBookFragment.setDelegate(this);
+            ft.add(R.id.container, addNewBookFragment);
+            ft.hide(myProfileFragment);
+            ft.addToBackStack("myProfile");
+            ft.show(addNewBookFragment);
+            thisFrag = "addNewBook";
+            ft.commit();
+            invalidateOptionsMenu();
+        }
+        Log.d("TAG","thisFrag is currently: " + thisFrag);
+
+    }
+
+    @Override
     public void onBackPressed() {
         Log.d("DEBUG", "Back was pressed. thisFrag = " + thisFrag);
         int count = getFragmentManager().getBackStackEntryCount();
@@ -184,5 +207,4 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         }
 
     }
-
 }

@@ -41,4 +41,11 @@
         android:name="com.example.tiferet.rebook.Fragments.MyProfileFragment"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:layout="@layout/my_profile_fragment" />
+    <fragment
+        android:id="@+id/addNewBookFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.example.tiferet.rebook.Fragments.AddNewBookFragment"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:layout="@layout/add_new_book_fragment" />
 </FrameLayout>

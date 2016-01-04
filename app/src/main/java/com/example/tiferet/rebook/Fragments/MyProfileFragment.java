@@ -2,7 +2,9 @@ package com.example.tiferet.rebook.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -23,7 +25,7 @@ import java.util.List;
  */
 public class MyProfileFragment extends Fragment {
     public interface MyProfileFragmentDelegate{
-
+        void OnAddNewBook();
     }
 
     ListView myReadingList;
@@ -60,6 +62,17 @@ public class MyProfileFragment extends Fragment {
         myBookShelfList.setAdapter(bookShelfAdapter);
 
         return view;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.generalBtn : {
+                if (this.delegate != null)
+                    delegate.OnAddNewBook();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     class MyBooksAdapter extends BaseAdapter {
