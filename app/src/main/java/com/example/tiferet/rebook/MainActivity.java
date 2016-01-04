@@ -140,7 +140,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
     }
 
-    @Override
     public void OnMyProfile() {
         if (thisFrag.equals("newsfeed")){
             Log.d("TAG", "on my profile");

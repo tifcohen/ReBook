@@ -10,6 +10,14 @@ public class Book {
     int pages;
     String picture;
 
+    public Book(String bookID, String bookName, String author, int pages, String picture) {
+        BookID = bookID;
+        this.bookName = bookName;
+        this.author = author;
+        this.pages = pages;
+        this.picture = picture;
+    }
+
     public String getBookID() {
         return BookID;
     }
