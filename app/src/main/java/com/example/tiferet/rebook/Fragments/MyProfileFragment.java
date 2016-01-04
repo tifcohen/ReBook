@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.BookDB;
 import com.example.tiferet.rebook.Model.Post;
+import com.example.tiferet.rebook.Model.User;
+import com.example.tiferet.rebook.Model.UserDB;
 import com.example.tiferet.rebook.R;
 
 import java.util.List;
@@ -27,6 +29,8 @@ public class MyProfileFragment extends Fragment {
 
     ListView myReadingList;
     List<Book> myReadingData;
+    ListView myFollowingList;
+    List<User> myFollowingData;
 
     MyProfileFragmentDelegate delegate;
     public void setDelegate(MyProfileFragmentDelegate delegate){ this.delegate = delegate;}
@@ -38,11 +42,16 @@ public class MyProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.my_profile_fragment, container, false);
+
         myReadingList = (ListView) view.findViewById(R.id.myReadingList);
         myReadingData = BookDB.getInstance().getAllBooks();
-
         MyBooksAdapter booksAdapter = new MyBooksAdapter();
         myReadingList.setAdapter(booksAdapter);
+
+        myFollowingList = (ListView) view.findViewById(R.id.myFollowingList);
+        myFollowingData = UserDB.getInstance().getAllUsers();
+        MyFollowingAdapter followingAdapter = new MyFollowingAdapter();
+        myFollowingList.setAdapter(followingAdapter);
 
         return view;
     }
@@ -80,6 +89,39 @@ public class MyProfileFragment extends Fragment {
             Book book = myReadingData.get(position);
             bookName.setText(book.getBookName());
 
+            return convertView;
+        }
+    }
+
+    class MyFollowingAdapter extends BaseAdapter {
+
+        public MyFollowingAdapter() {
+        }
+
+        @Override
+        public int getCount() { //returns the size of the list
+            return myFollowingData.size();
+        }
+
+        @Override
+        public Object getItem(int position) { //returns the post
+            return myFollowingData.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) { //returns post id
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                convertView = inflater.inflate(R.layout.my_following_list_single_column, null);
+            }
+            ImageView followingImage = (ImageView) convertView.findViewById(R.id.followingImage);
+
+            User user = myFollowingData.get(position);
             return convertView;
         }
     }
