@@ -21,7 +21,7 @@ public class BookDB {
 
     private void init(){
         for (int i = 0; i < 10; i++) {
-            Book b = new Book("" + i, "" + i, "" + i, i, "" + i);
+            Book b = new Book("" + i, "Book " + i, "" + i, i, "" + i);
             addBook(b);
         }
     }
