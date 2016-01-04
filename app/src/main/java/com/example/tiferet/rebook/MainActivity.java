@@ -83,6 +83,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         }
         return true;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d("TAG", "onOptionsItemSelected was pressed");
+
+        switch (item.getItemId()) {
+            case R.id.generalBtn : {
+                if (thisFrag.equals("myProfile")) {
+                    OnAddNewBook();
+                }
+                if (thisFrag.equals("newsfeed")){
+                    OnMyProfile();
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 
     @Override
@@ -187,5 +204,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             finish();
         }
 
+    }
+
+    @Override
+    public void onCancel() {
+        int count = getFragmentManager().getBackStackEntryCount();
+        if(getFragmentManager().getBackStackEntryAt(count - 1).getName().equals("myProfile"))
+            thisFrag = "myProfile";
+        else
+            thisFrag = "newsfeed";
+        invalidateOptionsMenu();
+        getFragmentManager().popBackStack();
+    }
+
+    @Override
+    public void onSave() {
+        thisFrag = "myProfile";
+        invalidateOptionsMenu();
+        getFragmentManager().popBackStack();
     }
 }

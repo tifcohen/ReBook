@@ -64,7 +64,10 @@ public class MyProfileFragment extends Fragment {
         return view;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d("TAG", "onOptionsItemSelected was pressed");
+
         switch (item.getItemId()) {
             case R.id.generalBtn : {
                 if (this.delegate != null)

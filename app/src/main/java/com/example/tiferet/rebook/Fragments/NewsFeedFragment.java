@@ -63,6 +63,7 @@ public class NewsFeedFragment extends Fragment {
         return view;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.generalBtn : {
