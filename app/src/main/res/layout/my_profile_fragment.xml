@@ -62,23 +62,22 @@
             android:id="@+id/followingInfo"
             android:layout_below="@id/booksInfo"
             android:orientation="horizontal">
-
-            <ListView
+            <HListView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/myFollowingList"
                 android:drawSelectorOnTop="false">
-            </ListView>
+            </HListView>
         </LinearLayout>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="75dp"
+            android:text="My Book Shelf:"/>
         <LinearLayout
             android:layout_below="@id/followingInfo"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="My Book Shelf:"/>
             <ListView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
