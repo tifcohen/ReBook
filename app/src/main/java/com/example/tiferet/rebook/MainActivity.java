@@ -25,6 +25,7 @@ import com.example.tiferet.rebook.Fragments.UpdateBookProgressFragment;
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.Post;
 import com.parse.Parse;
+import com.parse.ParseObject;
 
 public class MainActivity extends AppCompatActivity implements MainActivityFragment.MainActivityFragmentDelegate,
         NewsFeedFragment.NewsFeedFragmentDelegate, SinglePostFragment.SinglePostFragmentDelegate,
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
         loginFragment = (MainActivityFragment) getFragmentManager().findFragmentById(R.id.loginFragment);
         newsFeedFragment = (NewsFeedFragment) getFragmentManager().findFragmentById(R.id.newsFeedFragment);
@@ -101,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         }
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d("TAG", "onOptionsItemSelected was pressed");
