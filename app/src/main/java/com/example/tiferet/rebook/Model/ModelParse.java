@@ -99,13 +99,7 @@ public class ModelParse {
         } catch (com.parse.ParseException e) {
             e.printStackTrace();
         }
-        for(ParseObject po : data){
-            String bookName = po.getString("bookName");
-            String author = po.getString("author");
-            int pages = po.getInt("Pages");
-            String imageName = po.getString("imageName");
 
-        }
         return null;
     }
 }
