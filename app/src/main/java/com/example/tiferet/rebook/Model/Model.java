@@ -29,6 +29,15 @@ public class Model {
 
     }
 
+    public void addBook(Book book){
+        model.addBook(book);
+    }
 
+    public Book getBookById(String id){
+        return model.getBookById(id);
+    }
 
+    public List<Post> getAllPosts() {
+        return model.getAllPosts();
+    }
 }

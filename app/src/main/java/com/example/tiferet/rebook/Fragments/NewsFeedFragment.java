@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.tiferet.rebook.Model.Model;
+import com.example.tiferet.rebook.Model.ModelParse;
 import com.example.tiferet.rebook.Model.Post;
 import com.example.tiferet.rebook.Model.PostDB;
 import com.example.tiferet.rebook.R;
@@ -46,7 +48,7 @@ public class NewsFeedFragment extends Fragment {
         View view = inflater.inflate(R.layout.news_feed_fragment, container, false);
 
         list = (ListView) view.findViewById(R.id.newsFeedList);
-        data = PostDB.getInstance().getAllPosts();
+        data = Model.getInstance().getAllPosts();
         CustomAdapter adapter = new CustomAdapter();
         list.setAdapter(adapter);
 
