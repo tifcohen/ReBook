@@ -56,10 +56,12 @@
         android:id="@+id/progressBar"
         android:layout_below="@+id/bookProgress">
         <ProgressBar
+            android:id="@+id/progressBarBook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="300dp"
+            android:layout_margin="10dp"
             style="@android:style/Widget.ProgressBar.Horizontal"
-            android:layout_marginRight="5dp"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
     <RelativeLayout
