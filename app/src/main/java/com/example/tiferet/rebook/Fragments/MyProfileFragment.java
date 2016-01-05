@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -26,6 +27,7 @@ import java.util.List;
 public class MyProfileFragment extends Fragment {
     public interface MyProfileFragmentDelegate{
         void OnAddNewBook();
+        void OnBookProgress(Book book);
     }
 
     ListView myReadingList;
@@ -50,6 +52,17 @@ public class MyProfileFragment extends Fragment {
         myReadingData = BookDB.getInstance().getAllBooks();
         MyBooksAdapter booksAdapter = new MyBooksAdapter();
         myReadingList.setAdapter(booksAdapter);
+
+        myReadingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("TAG", "row selected" + position);
+                Book bk = myReadingData.get(position);
+                if (delegate != null) {
+                    delegate.OnBookProgress(bk);
+                }
+            }
+        });
 
         myFollowingList = (ListView) view.findViewById(R.id.myFollowingList);
         myFollowingData = UserDB.getInstance().getAllUsers();
