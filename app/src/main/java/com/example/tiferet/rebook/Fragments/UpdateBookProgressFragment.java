@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -39,24 +40,21 @@ public class UpdateBookProgressFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.update_progress_fragment, container, false);
-        /*if(book!=null){
+        if(book!=null){
             TextView bookName = (TextView) view.findViewById(R.id.bookProgressName);
             TextView bookAuthor = (TextView) view.findViewById(R.id.bookProgressAuthor);
-            TextView bookPages = (TextView) view.findViewById(R.id.bookProgressPages);
+            TextView bookPages = (TextView) view.findViewById(R.id.outOfPages);
             ImageView bookImage = (ImageView) view.findViewById(R.id.bookProgressImage);
             ProgressBar bookProgress = (ProgressBar) view.findViewById(R.id.progressBarBook);
+            EditText currentPage = (EditText) view.findViewById(R.id.currentPage);
+            EditText currentReview = (EditText) view.findViewById(R.id.myCurrentReviewText);
 
             bookName.setText(this.book.getBookName());
             bookAuthor.setText(this.book.getAuthor());
             int pages = this.book.getPages();
-            bookPages.setText("Pages: " + pages);
+            bookPages.setText("out of " + pages + " pages");
         }
 
-        list = (ListView) view.findViewById(R.id.bookReviewList);
-        data = BookDB.getInstance().getAllBooks(); //need to fix!
-        BookProgressAdapter adapter = new BookProgressAdapter();
-        list.setAdapter(adapter);
-*/
         return view;
     }
 
