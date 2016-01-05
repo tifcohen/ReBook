@@ -25,6 +25,7 @@ import com.example.tiferet.rebook.Fragments.SinglePostFragment;
 import com.example.tiferet.rebook.Fragments.UpdateBookProgressFragment;
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.Post;
+import com.example.tiferet.rebook.Model.User;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         NewsFeedFragment.NewsFeedFragmentDelegate, SinglePostFragment.SinglePostFragmentDelegate,
         MyProfileFragment.MyProfileFragmentDelegate, AddNewBookFragment.AddNewBookFragmentDelegate,
         BookProgressFragment.BookProgressFragmentDelegate, UpdateBookProgressFragment.UpdateBookProgressFragmentDelegate,
-        OthersReviewFragment.OthersReviewFragmentDelegate{
+        OthersReviewFragment.OthersReviewFragmentDelegate, FollowingListFragment.FollowingListFragmentDelegate{
 
     String thisFrag = "login";
     MainActivityFragment loginFragment;
@@ -221,6 +222,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             ft.show(bookProgressFragment);
             ft.commit();
             thisFrag = "bookProgress";
+            invalidateOptionsMenu();
+        }
+    }
+
+    @Override
+    public void OnFollowingList() {
+        if (thisFrag.equals("myProfile")){
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            followingListFragment = new FollowingListFragment();
+            followingListFragment.setDelegate(this);
+            ft.add(R.id.container, followingListFragment);
+            ft.hide(myProfileFragment);
+            ft.addToBackStack("myProfile");
+            ft.show(followingListFragment);
+            ft.commit();
+            thisFrag = "followingList";
             invalidateOptionsMenu();
         }
     }

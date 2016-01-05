@@ -37,6 +37,7 @@ public class FollowingListFragment extends Fragment {
 
     ListView list;
     List<User> data;
+    User user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +51,8 @@ public class FollowingListFragment extends Fragment {
 
         return view;
     }
+
+    public void setUser(User user){this.user = user;}
 
 
     class CustomAdapter extends BaseAdapter {

@@ -28,6 +28,7 @@ public class MyProfileFragment extends Fragment {
     public interface MyProfileFragmentDelegate{
         void OnAddNewBook();
         void OnBookProgress(Book book);
+        void OnFollowingList();
     }
 
     ListView myReadingList;
@@ -69,10 +70,32 @@ public class MyProfileFragment extends Fragment {
         MyFollowingAdapter followingAdapter = new MyFollowingAdapter();
         myFollowingList.setAdapter(followingAdapter);
 
+        myFollowingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("TAG", "row selected" + position);
+                //User ur = myFollowingData.get(position);
+                if (delegate != null) {
+                    delegate.OnFollowingList();
+                }
+            }
+        });
+
         myBookShelfList = (ListView) view.findViewById(R.id.myBookShelfList);
         myBookShelfData = BookDB.getInstance().getAllBooks();
         MyShelfAdapter bookShelfAdapter = new MyShelfAdapter();
         myBookShelfList.setAdapter(bookShelfAdapter);
+
+        myBookShelfList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("TAG", "row selected" + position);
+                Book bk = myBookShelfData.get(position);
+                if (delegate != null) {
+                    delegate.OnBookProgress(bk);
+                }
+            }
+        });
 
         return view;
     }
