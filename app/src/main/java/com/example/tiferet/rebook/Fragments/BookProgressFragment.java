@@ -28,6 +28,7 @@ public class BookProgressFragment extends Fragment {
 
     public interface BookProgressFragmentDelegate{
         void OnUpdateProgress(Book book);
+        void OnOthersReview(Book book);
     }
 
     ListView list;
@@ -70,6 +71,16 @@ public class BookProgressFragment extends Fragment {
                     delegate.OnUpdateProgress(book);
             }
         });
+
+        Button review = (Button) view.findViewById(R.id.othersReviewBtn);
+        review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (delegate != null)
+                    delegate.OnOthersReview(book);
+            }
+        });
+
         return view;
     }
 

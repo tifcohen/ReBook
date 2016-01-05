@@ -19,6 +19,7 @@ import com.example.tiferet.rebook.Fragments.BookProgressFragment;
 import com.example.tiferet.rebook.Fragments.MainActivityFragment;
 import com.example.tiferet.rebook.Fragments.MyProfileFragment;
 import com.example.tiferet.rebook.Fragments.NewsFeedFragment;
+import com.example.tiferet.rebook.Fragments.OthersReviewFragment;
 import com.example.tiferet.rebook.Fragments.SinglePostFragment;
 import com.example.tiferet.rebook.Fragments.UpdateBookProgressFragment;
 import com.example.tiferet.rebook.Model.Book;
@@ -27,7 +28,8 @@ import com.example.tiferet.rebook.Model.Post;
 public class MainActivity extends AppCompatActivity implements MainActivityFragment.MainActivityFragmentDelegate,
         NewsFeedFragment.NewsFeedFragmentDelegate, SinglePostFragment.SinglePostFragmentDelegate,
         MyProfileFragment.MyProfileFragmentDelegate, AddNewBookFragment.AddNewBookFragmentDelegate,
-        BookProgressFragment.BookProgressFragmentDelegate, UpdateBookProgressFragment.UpdateBookProgressFragmentDelegate{
+        BookProgressFragment.BookProgressFragmentDelegate, UpdateBookProgressFragment.UpdateBookProgressFragmentDelegate,
+        OthersReviewFragment.OthersReviewFragmentDelegate{
 
     String thisFrag = "login";
     MainActivityFragment loginFragment;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     AddNewBookFragment addNewBookFragment;
     BookProgressFragment bookProgressFragment;
     UpdateBookProgressFragment updateBookProgressFragment;
+    OthersReviewFragment othersReviewFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         addNewBookFragment = (AddNewBookFragment) getFragmentManager().findFragmentById(R.id.addNewBookFragment);
         bookProgressFragment = (BookProgressFragment) getFragmentManager().findFragmentById(R.id.bookProgressFragment);
         updateBookProgressFragment = (UpdateBookProgressFragment) getFragmentManager().findFragmentById(R.id.updateBookProgressFragment);
+        othersReviewFragment = (OthersReviewFragment) getFragmentManager().findFragmentById(R.id.othersReviewFragment);
 
         loginFragment.setDelegate(this);
 
@@ -64,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         ft.hide(addNewBookFragment);
         ft.hide(bookProgressFragment);
         ft.hide(updateBookProgressFragment);
+        ft.hide(othersReviewFragment);
 
         ft.commit();
 
@@ -224,6 +229,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             ft.show(updateBookProgressFragment);
             ft.commit();
             thisFrag = "updateProgress";
+            invalidateOptionsMenu();
+        }
+    }
+
+    @Override
+    public void OnOthersReview(Book book) {
+        if (thisFrag.equals("bookProgress")){
+            Log.d("TAG", "Book selected " + book.getBookID());
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            othersReviewFragment = new OthersReviewFragment();
+            othersReviewFragment.setBook(book);
+            othersReviewFragment.setDelegate(this);
+            ft.add(R.id.container, othersReviewFragment);
+            ft.hide(bookProgressFragment);
+            ft.addToBackStack("bookProgress");
+            ft.show(othersReviewFragment);
+            ft.commit();
+            thisFrag = "othersReview";
             invalidateOptionsMenu();
         }
     }
