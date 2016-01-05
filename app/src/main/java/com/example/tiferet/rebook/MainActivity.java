@@ -23,6 +23,7 @@ import com.example.tiferet.rebook.Fragments.SinglePostFragment;
 import com.example.tiferet.rebook.Fragments.UpdateBookProgressFragment;
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.Post;
+import com.parse.Parse;
 
 public class MainActivity extends AppCompatActivity implements MainActivityFragment.MainActivityFragmentDelegate,
         NewsFeedFragment.NewsFeedFragmentDelegate, SinglePostFragment.SinglePostFragmentDelegate,
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Parse.initialize(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
