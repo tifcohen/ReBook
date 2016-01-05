@@ -41,7 +41,7 @@ public class FollowingListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.news_feed_fragment, container, false);
+        View view = inflater.inflate(R.layout.following_list_fragment, container, false);
 
         list = (ListView) view.findViewById(R.id.followingList);
         data = UserDB.getInstance().getAllUsers();

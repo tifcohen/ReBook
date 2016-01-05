@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.tiferet.rebook.Fragments.AddNewBookFragment;
 import com.example.tiferet.rebook.Fragments.BookProgressFragment;
+import com.example.tiferet.rebook.Fragments.FollowingListFragment;
 import com.example.tiferet.rebook.Fragments.MainActivityFragment;
 import com.example.tiferet.rebook.Fragments.MyProfileFragment;
 import com.example.tiferet.rebook.Fragments.NewsFeedFragment;
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     BookProgressFragment bookProgressFragment;
     UpdateBookProgressFragment updateBookProgressFragment;
     OthersReviewFragment othersReviewFragment;
+    FollowingListFragment followingListFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         bookProgressFragment = (BookProgressFragment) getFragmentManager().findFragmentById(R.id.bookProgressFragment);
         updateBookProgressFragment = (UpdateBookProgressFragment) getFragmentManager().findFragmentById(R.id.updateBookProgressFragment);
         othersReviewFragment = (OthersReviewFragment) getFragmentManager().findFragmentById(R.id.othersReviewFragment);
+        followingListFragment = (FollowingListFragment) getFragmentManager().findFragmentById(R.id.followingListFragment);
 
         loginFragment.setDelegate(this);
 
@@ -74,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         ft.hide(bookProgressFragment);
         ft.hide(updateBookProgressFragment);
         ft.hide(othersReviewFragment);
+        ft.hide(followingListFragment);
 
         ft.commit();
 
