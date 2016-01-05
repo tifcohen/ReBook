@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -26,7 +27,7 @@ import java.util.List;
 public class BookProgressFragment extends Fragment {
 
     public interface BookProgressFragmentDelegate{
-        //void OnAddNewBook();
+        void OnUpdateProgress(Book book);
     }
 
     ListView list;
@@ -61,6 +62,14 @@ public class BookProgressFragment extends Fragment {
         BookProgressAdapter adapter = new BookProgressAdapter();
         list.setAdapter(adapter);
 
+        Button update = (Button) view.findViewById(R.id.updateBookProgressBtn);
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (delegate != null)
+                    delegate.OnUpdateProgress(book);
+            }
+        });
         return view;
     }
 

@@ -29,12 +29,6 @@
                 android:text="Authotr's Name"
                 android:id="@+id/bookProgressAuthor"
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Update Progress"
-                android:id="@+id/updateBookProgressBtn"
-                android:layout_alignParentEnd="true"/>
         </LinearLayout>
     </LinearLayout>
     <RelativeLayout
@@ -46,15 +40,42 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Progress:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />/>
+            android:text="Update My Progress:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bookProgBar"
+        android:layout_below="@+id/bookProgress">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bookProgressPages"
+            android:text="At page:"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+        <EditText
+            android:id="@+id/currentPage"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:minWidth="50dp"
+            android:layout_alignEnd="@+id/bookProgressPages" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="out of: x"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_alignEnd="@+id/currentPage" />
+    </LinearLayout>
     <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
-        android:layout_below="@+id/bookProgress">
+        android:layout_below="@+id/bookProgBar">
         <ProgressBar
             android:id="@+id/progressBarBook"
             android:layout_width="wrap_content"
@@ -68,42 +89,31 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bookProgBar"
+        android:id="@+id/myCurrentReview"
         android:layout_below="@+id/progressBar">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/bookProgressPages"
-            android:text="pages:"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_centerInParent="true" />
+            android:id="@+id/myCurrentReviewTitle"
+            android:text="My thoughts so far:"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="225dp"
+            android:id="@+id/myCurrentReviewText" />
     </RelativeLayout>
-    <LinearLayout
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bookProgBar"
-        android:orientation="vertical"
-        android:id="@+id/postList">
-        <ListView
-            android:layout_width="fill_parent"
-            android:layout_height="250dp"
-            android:id="@+id/bookReviewList"
-            android:drawSelectorOnTop="false">
-        </ListView>
-    </LinearLayout>
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/postList"
+        android:layout_below="@+id/myCurrentReview"
         android:orientation="vertical">
         <Button
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/othersReviewBtn"
-            android:layout_alignParentLeft="true"
-            android:text="Other's Review"
+            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:text="Save"
             android:drawSelectorOnTop="false">
         </Button>
     </RelativeLayout>
