@@ -69,4 +69,11 @@
         android:name="com.example.tiferet.rebook.Fragments.OthersReviewFragment"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:layout="@layout/others_review_fragment" />
+    <fragment
+        android:id="@+id/followingListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.example.tiferet.rebook.Fragments.FollowingListFragment"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:layout="@layout/following_list_fragment" />
 </FrameLayout>
