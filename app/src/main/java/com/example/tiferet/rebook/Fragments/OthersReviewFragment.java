@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.Post;
+import com.example.tiferet.rebook.Model.PostDB;
 import com.example.tiferet.rebook.R;
 
 import java.util.List;
@@ -41,21 +42,28 @@ public class OthersReviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.others_review_fragment, container, false);
-        list = (ListView) view.findViewById(R.id.reviewsList);
         if(book!=null){
             TextView bookName = (TextView) view.findViewById(R.id.bookProgressName);
             TextView bookAuthor = (TextView) view.findViewById(R.id.bookProgressAuthor);
             ImageView bookImage = (ImageView) view.findViewById(R.id.bookProgressImage);
+
+            bookName.setText(this.book.getBookName());
+            bookAuthor.setText(this.book.getAuthor());
         }
+
+        list = (ListView) view.findViewById(R.id.reviewsList);
+        data = PostDB.getInstance().getAllPosts();
+        OthersReviewAdapter adapter = new OthersReviewAdapter();
+        list.setAdapter(adapter);
 
         return view;
     }
 
     public void setBook(Book book) { this.book = book;}
 
-    class CustomAdapter extends BaseAdapter {
+    class OthersReviewAdapter extends BaseAdapter {
 
-        public CustomAdapter() {
+        public OthersReviewAdapter() {
         }
 
         @Override
