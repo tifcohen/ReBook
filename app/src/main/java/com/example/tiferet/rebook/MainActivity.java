@@ -20,6 +20,7 @@ import com.example.tiferet.rebook.Fragments.FollowingListFragment;
 import com.example.tiferet.rebook.Fragments.MainActivityFragment;
 import com.example.tiferet.rebook.Fragments.MyProfileFragment;
 import com.example.tiferet.rebook.Fragments.NewsFeedFragment;
+import com.example.tiferet.rebook.Fragments.OtherProfileFragment;
 import com.example.tiferet.rebook.Fragments.OthersReviewFragment;
 import com.example.tiferet.rebook.Fragments.SinglePostFragment;
 import com.example.tiferet.rebook.Fragments.UpdateBookProgressFragment;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     UpdateBookProgressFragment updateBookProgressFragment;
     OthersReviewFragment othersReviewFragment;
     FollowingListFragment followingListFragment;
+    OtherProfileFragment otherProfileFragment;
 
 
     @Override
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         updateBookProgressFragment = (UpdateBookProgressFragment) getFragmentManager().findFragmentById(R.id.updateBookProgressFragment);
         othersReviewFragment = (OthersReviewFragment) getFragmentManager().findFragmentById(R.id.othersReviewFragment);
         followingListFragment = (FollowingListFragment) getFragmentManager().findFragmentById(R.id.followingListFragment);
+        otherProfileFragment = (OtherProfileFragment) getFragmentManager().findFragmentById(R.id.otherProfileFragment);
 
         loginFragment.setDelegate(this);
 
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         ft.hide(updateBookProgressFragment);
         ft.hide(othersReviewFragment);
         ft.hide(followingListFragment);
+        ft.hide(otherProfileFragment);
 
         ft.commit();
 
