@@ -58,8 +58,8 @@ public class BookProgressFragment extends Fragment {
 
         list = (ListView) view.findViewById(R.id.bookReviewList);
         data = BookDB.getInstance().getAllBooks(); //need to fix!
-        //BookProgressAdapter adapter = new BookProgressAdapter();
-        //list.setAdapter(adapter);
+        BookProgressAdapter adapter = new BookProgressAdapter();
+        list.setAdapter(adapter);
 
         return view;
     }
@@ -97,8 +97,8 @@ public class BookProgressFragment extends Fragment {
             TextView review = (TextView) convertView.findViewById(R.id.myReviewAtPage);
 
             Book book = data.get(position);
-            pages.setText(book.getPages()); //need to fix to current page!
-            review.setText("bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"); //need to fix!!!
+            pages.setText("At Page: "+book.getPages()); //need to fix to current page!
+            review.setText("bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"); //need to fix!!!
 
             return convertView;
         }
