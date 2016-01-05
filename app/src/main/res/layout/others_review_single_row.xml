@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/userInfo">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/userProfileImage"
+            android:src="@mipmap/ic_launcher"
+            android:focusable="false"
+            android:contentDescription="@string/appbar_scrolling_view_behavior"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="name"
+            android:id="@+id/userProfileName"
+            android:layout_toEndOf="@+id/userProfileImage"
+            android:focusable="false"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bookGrade"
+            android:src="@android:drawable/btn_star_big_on"
+            android:focusable="false" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userInfo">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="bla"
+            android:id="@+id/bookReview" />
+    </LinearLayout>
+</RelativeLayout>
