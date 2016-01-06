@@ -58,6 +58,7 @@ public class ModelParse {
         List<Post> allPosts = new LinkedList<Post>();
         ParseQuery query = new ParseQuery("Posts");
 
+
         try {
             List<ParseObject> data = query.find();
             for (ParseObject po : data) {

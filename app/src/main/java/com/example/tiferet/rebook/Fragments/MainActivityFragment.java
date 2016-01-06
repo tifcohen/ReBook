@@ -16,6 +16,7 @@ public class MainActivityFragment extends Fragment {
 
     public interface MainActivityFragmentDelegate{
         void OnNewsFeed();
+        void OnJoinRebook();
     }
 
     MainActivityFragmentDelegate delegate;

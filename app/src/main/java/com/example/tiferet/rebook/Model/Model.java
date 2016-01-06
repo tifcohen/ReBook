@@ -13,6 +13,7 @@ public class Model {
     //ModelSql model = new ModelSql();
     ModelParse model = new ModelParse();
 
+
     private Model(){}
 
     public static Model getInstance(){

@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.tiferet.rebook.Fragments.AddNewBookFragment;
 import com.example.tiferet.rebook.Fragments.BookProgressFragment;
 import com.example.tiferet.rebook.Fragments.FollowingListFragment;
+import com.example.tiferet.rebook.Fragments.JoinRebookFragment;
 import com.example.tiferet.rebook.Fragments.MainActivityFragment;
 import com.example.tiferet.rebook.Fragments.MyProfileFragment;
 import com.example.tiferet.rebook.Fragments.NewsFeedFragment;
@@ -34,7 +35,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         NewsFeedFragment.NewsFeedFragmentDelegate, SinglePostFragment.SinglePostFragmentDelegate,
         MyProfileFragment.MyProfileFragmentDelegate, AddNewBookFragment.AddNewBookFragmentDelegate,
         BookProgressFragment.BookProgressFragmentDelegate, UpdateBookProgressFragment.UpdateBookProgressFragmentDelegate,
-        OthersReviewFragment.OthersReviewFragmentDelegate, FollowingListFragment.FollowingListFragmentDelegate{
+        OthersReviewFragment.OthersReviewFragmentDelegate, FollowingListFragment.FollowingListFragmentDelegate,
+        JoinRebookFragment.JoinRebookFragmentDelegate{
 
     String thisFrag = "login";
     MainActivityFragment loginFragment;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     OthersReviewFragment othersReviewFragment;
     FollowingListFragment followingListFragment;
     OtherProfileFragment otherProfileFragment;
+    JoinRebookFragment joinRebookFragment;
 
 
     @Override
@@ -56,8 +59,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
         loginFragment = (MainActivityFragment) getFragmentManager().findFragmentById(R.id.loginFragment);
         newsFeedFragment = (NewsFeedFragment) getFragmentManager().findFragmentById(R.id.newsFeedFragment);
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         MenuItem item = menu.findItem(R.id.generalBtn);
         switch (thisFrag){
             case "login":
-                item.setTitle("");
+                item.setTitle("Join Rebook");
                 break;
             case "myProfile":
                 item.setIcon(android.R.drawable.ic_input_get);
@@ -149,6 +150,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             thisFrag = "newsfeed";
             invalidateOptionsMenu();
         }
+    }
+
+    @Override
+    public void OnJoinRebook() {
+
     }
 
     @Override
