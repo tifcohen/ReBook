@@ -97,24 +97,19 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
 
     @Override
     public void OnSinglePost(Post post) {
-        if (thisFrag.equals("newsfeed")){
-            Log.d("TAG", "post selected " + post.getPostID());
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            singlePostFragment = new SinglePostFragment();
-            singlePostFragment.setPost(post);
-            singlePostFragment.setDelegate(this);
-            ft.add(R.id.container, singlePostFragment);
-            ft.hide(newsFeedFragment);
-            ft.addToBackStack("newsfeed");
-            ft.show(singlePostFragment);
-            thisFrag = "singlePost";
-            ft.commit();
-            invalidateOptionsMenu();
-        }
-
-            Log.d("TAG","thisFrag is currently: " + thisFrag);
-
+        Log.d("TAG", "post selected " + post.getPostID());
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        singlePostFragment = new SinglePostFragment();
+        singlePostFragment.setPost(post);
+        singlePostFragment.setDelegate(this);
+        ft.add(R.id.container, singlePostFragment);
+        ft.hide(newsFeedFragment);
+        ft.addToBackStack(newsFeedFragment.toString());
+        //ft.show(singlePostFragment);
+        //thisFrag = "singlePost";
+        ft.commit();
+        invalidateOptionsMenu();
     }
 
     public void OnMyProfile() {
@@ -129,123 +124,122 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         //thisFrag = "myProfile";
         ft.commit();
         invalidateOptionsMenu();
-        Log.d("TAG","on my profile");
+        Log.d("TAG", "on my profile");
     }
 
     @Override
     public void OnAddNewBook() {
-        if (thisFrag.equals("myProfile")){
-            Log.d("TAG", "on add new book");
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            addNewBookFragment = new AddNewBookFragment();
-            addNewBookFragment.setDelegate(this);
-            ft.add(R.id.container, addNewBookFragment);
-            ft.hide(myProfileFragment);
-            ft.addToBackStack("myProfile");
-            ft.show(addNewBookFragment);
-            thisFrag = "addNewBook";
-            ft.commit();
-            invalidateOptionsMenu();
-        }
-        Log.d("TAG","thisFrag is currently: " + thisFrag);
-
+        Log.d("TAG", "on add new book");
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        addNewBookFragment = new AddNewBookFragment();
+        addNewBookFragment.setDelegate(this);
+        ft.add(R.id.container, addNewBookFragment);
+        ft.hide(myProfileFragment);
+        ft.addToBackStack(myProfileFragment.toString());
+        ft.show(addNewBookFragment);
+        //thisFrag = "addNewBook";
+        ft.commit();
+        invalidateOptionsMenu();
     }
 
     @Override
     public void OnBookProgress(Book book) {
-        if (thisFrag.equals("myProfile")){
-            Log.d("TAG", "Book selected " + book.getBookID());
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            bookProgressFragment = new BookProgressFragment();
-            bookProgressFragment.setBook(book);
-            bookProgressFragment.setDelegate(this);
-            ft.add(R.id.container, bookProgressFragment);
-            ft.hide(myProfileFragment);
-            ft.addToBackStack("myProfile");
-            ft.show(bookProgressFragment);
-            ft.commit();
-            thisFrag = "bookProgress";
-            invalidateOptionsMenu();
-        }
+        Log.d("TAG", "Book selected " + book.getBookID());
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        bookProgressFragment = new BookProgressFragment();
+        bookProgressFragment.setBook(book);
+        bookProgressFragment.setDelegate(this);
+        ft.add(R.id.container, bookProgressFragment);
+        ft.hide(myProfileFragment);
+        ft.addToBackStack(bookProgressFragment.toString());
+        //ft.show(bookProgressFragment);
+        ft.commit();
+        //thisFrag = "bookProgress";
+        invalidateOptionsMenu();
     }
 
     @Override
     public void OnFollowingList() {
-        if (thisFrag.equals("myProfile")){
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            followingListFragment = new FollowingListFragment();
-            followingListFragment.setDelegate(this);
-            ft.add(R.id.container, followingListFragment);
-            ft.hide(myProfileFragment);
-            ft.addToBackStack("myProfile");
-            ft.show(followingListFragment);
-            ft.commit();
-            thisFrag = "followingList";
-            invalidateOptionsMenu();
-        }
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        followingListFragment = new FollowingListFragment();
+        followingListFragment.setDelegate(this);
+        ft.add(R.id.container, followingListFragment);
+        ft.hide(myProfileFragment);
+        ft.addToBackStack(myProfileFragment.toString());
+        //ft.show(followingListFragment);
+        ft.commit();
+        //thisFrag = "followingList";
+        invalidateOptionsMenu();
     }
 
     @Override
     public void OnUpdateProgress(Book book) {
-        if (thisFrag.equals("bookProgress")){
-            Log.d("TAG", "Book selected " + book.getBookID());
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            updateBookProgressFragment = new UpdateBookProgressFragment();
-            updateBookProgressFragment.setBook(book);
-            updateBookProgressFragment.setDelegate(this);
-            ft.add(R.id.container, updateBookProgressFragment);
-            ft.hide(bookProgressFragment);
-            ft.addToBackStack("bookProgress");
-            ft.show(updateBookProgressFragment);
-            ft.commit();
-            thisFrag = "updateProgress";
-            invalidateOptionsMenu();
-        }
+        Log.d("TAG", "Book selected " + book.getBookID());
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        updateBookProgressFragment = new UpdateBookProgressFragment();
+        updateBookProgressFragment.setBook(book);
+        updateBookProgressFragment.setDelegate(this);
+        ft.add(R.id.container, updateBookProgressFragment);
+        ft.hide(bookProgressFragment);
+        ft.addToBackStack(updateBookProgressFragment.toString());
+        //ft.show(updateBookProgressFragment);
+        ft.commit();
+        //thisFrag = "updateProgress";
+        invalidateOptionsMenu();
     }
 
     @Override
     public void OnOthersReview(Book book) {
-        if (thisFrag.equals("bookProgress")){
-            Log.d("TAG", "Book selected " + book.getBookID());
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            othersReviewFragment = new OthersReviewFragment();
-            othersReviewFragment.setBook(book);
-            othersReviewFragment.setDelegate(this);
-            ft.add(R.id.container, othersReviewFragment);
-            ft.hide(bookProgressFragment);
-            ft.addToBackStack("bookProgress");
-            ft.show(othersReviewFragment);
-            ft.commit();
-            thisFrag = "othersReview";
-            invalidateOptionsMenu();
-        }
+        Log.d("TAG", "Book selected " + book.getBookID());
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        othersReviewFragment = new OthersReviewFragment();
+        othersReviewFragment.setBook(book);
+        othersReviewFragment.setDelegate(this);
+        ft.add(R.id.container, othersReviewFragment);
+        ft.hide(bookProgressFragment);
+        ft.addToBackStack(othersReviewFragment.toString());
+        //ft.show(othersReviewFragment);
+        ft.commit();
+        //thisFrag = "othersReview";
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    public void OnJoinRebook(User user) {
+        Log.d("TAG", "Book selected " + user.getfName());
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        joinRebookFragment = new JoinRebookFragment();
+        joinRebookFragment.setUser(user);
+        joinRebookFragment.setDelegate(this);
+        ft.add(R.id.container, joinRebookFragment);
+        ft.hide(loginFragment);
+        ft.addToBackStack(loginFragment.toString());
+        //ft.show(othersReviewFragment);
+        ft.commit();
+        //thisFrag = "othersReview";
+        invalidateOptionsMenu();
     }
 
     @Override
     public void onCancel() {
-        int count = getFragmentManager().getBackStackEntryCount();
-        if(getFragmentManager().getBackStackEntryAt(count - 1).getName().equals("myProfile"))
+        //int count = getFragmentManager().getBackStackEntryCount();
+        /*if(getFragmentManager().getBackStackEntryAt(count - 1).getName().equals("myProfile"))
             thisFrag = "myProfile";
         else
-            thisFrag = "newsfeed";
+            thisFrag = "newsfeed";*/
         invalidateOptionsMenu();
         getFragmentManager().popBackStack();
     }
 
     @Override
     public void onSave() {
-        thisFrag = "myProfile";
         invalidateOptionsMenu();
         getFragmentManager().popBackStack();
-    }
-
-    @Override
-    public void OnJoinRebook(User user) {
-
     }
 }

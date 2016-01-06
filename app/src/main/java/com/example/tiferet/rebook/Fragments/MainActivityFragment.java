@@ -30,6 +30,11 @@ public class MainActivityFragment extends Fragment {
     public MainActivityFragment() {
     }
 
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,6 +51,7 @@ public class MainActivityFragment extends Fragment {
         });
         return view;
     }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.generalBtn : {

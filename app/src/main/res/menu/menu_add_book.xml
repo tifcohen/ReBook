@@ -7,10 +7,11 @@
         android:orderInCategory="100"
         android:showAsAction="never" />
     <item
-        android:id="@+id/joinRebookBtn"
+        android:id="@+id/addBookkBtn"
         android:orderInCategory="100"
         android:visible="true"
-        android:title="Join Rebook"
+        android:title="add"
+        android:src="@android:drawable/ic_input_get"
         android:showAsAction="ifRoom"
 
         />

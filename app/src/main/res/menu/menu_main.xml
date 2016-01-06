@@ -2,7 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
-    <item android:id="@+id/action_settings"
+    <item
+        android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never" />
@@ -10,8 +11,6 @@
         android:id="@+id/generalBtn"
         android:orderInCategory="100"
         android:visible="true"
-        android:title="Join"
-        android:showAsAction="ifRoom"
-
-        />
+        android:title="@string/join_rebook"
+        android:showAsAction="ifRoom" />
 </menu>

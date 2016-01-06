@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.tiferet.rebook.MainActivity;
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.BookDB;
 import com.example.tiferet.rebook.Model.User;
@@ -42,6 +43,12 @@ public class MyProfileFragment extends Fragment {
     public void setDelegate(MyProfileFragmentDelegate delegate){ this.delegate = delegate;}
 
     public MyProfileFragment(){
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -103,16 +110,23 @@ public class MyProfileFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d("TAG", "onOptionsItemSelected was pressed");
-
         switch (item.getItemId()) {
-            case R.id.generalBtn : {
-                if (this.delegate != null)
-                    delegate.OnAddNewBook();
+            case R.id.addBookkBtn : {
+                delegate.OnAddNewBook();
                 return true;
             }
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity activity = (MainActivity) getActivity();
+        activity.menuIdToDisplay = R.menu.menu_add_book;
+        activity.invalidateOptionsMenu();
+    }
+
 
     class MyBooksAdapter extends BaseAdapter {
 
