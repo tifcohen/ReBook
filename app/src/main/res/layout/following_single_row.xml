@@ -13,7 +13,7 @@
             android:id="@+id/userProfileImage"
             android:src="@mipmap/ic_launcher"
             android:focusable="false"
-            android:contentDescription="@string/appbar_scrolling_view_behavior"/>
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

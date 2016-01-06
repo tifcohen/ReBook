@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.tiferet.rebook.MainActivity;
 import com.example.tiferet.rebook.Model.Model;
 import com.example.tiferet.rebook.Model.ModelParse;
 import com.example.tiferet.rebook.Model.Post;
@@ -77,6 +78,13 @@ public class NewsFeedFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity activity = (MainActivity) getActivity();
+        activity.menuIdToDisplay = R.menu.menu_news_feed;
+        activity.invalidateOptionsMenu();
+    }
 
     class CustomAdapter extends BaseAdapter {
 

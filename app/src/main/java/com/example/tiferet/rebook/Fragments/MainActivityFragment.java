@@ -3,6 +3,7 @@ package com.example.tiferet.rebook.Fragments;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -44,4 +45,16 @@ public class MainActivityFragment extends Fragment {
         });
         return view;
     }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.generalBtn : {
+                if (this.delegate != null)
+                    delegate.OnJoinRebook();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }
