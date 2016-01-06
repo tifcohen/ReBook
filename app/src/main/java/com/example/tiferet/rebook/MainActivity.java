@@ -57,7 +57,6 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
 
     }
 
-
     public int menuIdToDisplay = R.menu.menu_main;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -119,21 +118,18 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     }
 
     public void OnMyProfile() {
-        if (thisFrag.equals("newsfeed")){
-            Log.d("TAG", "on my profile");
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            myProfileFragment = new MyProfileFragment();
-            myProfileFragment.setDelegate(this);
-            ft.add(R.id.container, myProfileFragment);
-            ft.hide(newsFeedFragment);
-            ft.addToBackStack("newsfeed");
-            ft.show(myProfileFragment);
-            thisFrag = "myProfile";
-            ft.commit();
-            invalidateOptionsMenu();
-        }
-        Log.d("TAG","thisFrag is currently: " + thisFrag);
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        myProfileFragment = new MyProfileFragment();
+        myProfileFragment.setDelegate(this);
+        ft.add(R.id.container, myProfileFragment);
+        ft.hide(newsFeedFragment);
+        ft.addToBackStack(newsFeedFragment.toString());
+        //ft.show(myProfileFragment);
+        //thisFrag = "myProfile";
+        ft.commit();
+        invalidateOptionsMenu();
+        Log.d("TAG","on my profile");
     }
 
     @Override
