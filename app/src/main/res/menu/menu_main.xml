@@ -10,7 +10,7 @@
         android:id="@+id/generalBtn"
         android:orderInCategory="100"
         android:visible="true"
-        android:title="MY PROFILE"
+        android:title="Join"
         android:showAsAction="ifRoom"
 
         />
