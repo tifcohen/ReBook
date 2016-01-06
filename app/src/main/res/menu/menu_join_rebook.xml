@@ -1,4 +1,5 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <item android:id="@+id/action_settings"
@@ -6,10 +7,11 @@
         android:orderInCategory="100"
         android:showAsAction="never" />
     <item
-        android:id="@+id/myProfileBtn"
+        android:id="@+id/joinRebookBtn"
         android:orderInCategory="100"
         android:visible="true"
-        android:title="My Profile"
+        android:title="Join Rebook"
         android:showAsAction="ifRoom"
+
         />
 </menu>

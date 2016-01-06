@@ -68,14 +68,26 @@ public class NewsFeedFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.generalBtn : {
+        /*switch (item.getItemId()) {
+            case R.id.myProfileBtn : {
                 if (this.delegate != null)
                     delegate.OnMyProfile();
                 return true;
             }
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);*/
+        Log.d("TAG", "My Profile Pressed");
+        switch (item.getItemId()) {
+            case R.id.myProfileBtn:
+
+                delegate.OnMyProfile();
+                return true;
+            /*case R.id.help:
+                showHelp();
+                return true;*/
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

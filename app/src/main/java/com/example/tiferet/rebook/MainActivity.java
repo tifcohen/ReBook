@@ -50,47 +50,11 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         super.onCreate(savedInstanceState);
         Parse.initialize(this);
         setContentView(R.layout.content_main);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
         loginFragment = (MainActivityFragment) getFragmentManager().findFragmentById(R.id.loginFragment);
-//        newsFeedFragment = (NewsFeedFragment) getFragmentManager().findFragmentById(R.id.newsFeedFragment);
-//        singlePostFragment = (SinglePostFragment) getFragmentManager().findFragmentById(R.id.singlePostFragment);
-//        myProfileFragment = (MyProfileFragment) getFragmentManager().findFragmentById(R.id.myProfileFragment);
-//        addNewBookFragment = (AddNewBookFragment) getFragmentManager().findFragmentById(R.id.addNewBookFragment);
-//        bookProgressFragment = (BookProgressFragment) getFragmentManager().findFragmentById(R.id.bookProgressFragment);
-//        updateBookProgressFragment = (UpdateBookProgressFragment) getFragmentManager().findFragmentById(R.id.updateBookProgressFragment);
-//        othersReviewFragment = (OthersReviewFragment) getFragmentManager().findFragmentById(R.id.othersReviewFragment);
-//        followingListFragment = (FollowingListFragment) getFragmentManager().findFragmentById(R.id.followingListFragment);
-//        otherProfileFragment = (OtherProfileFragment) getFragmentManager().findFragmentById(R.id.otherProfileFragment);
-//        joinRebookFragment = (JoinRebookFragment) getFragmentManager().findFragmentById(R.id.joinRebookFragment);
 
         loginFragment.setDelegate(this);
 
-//        FragmentManager fm = getFragmentManager();
-//        FragmentTransaction ft = fm.beginTransaction();
-//
-//        ft.hide(newsFeedFragment);
-//        ft.hide(singlePostFragment);
-//        ft.hide(myProfileFragment);
-//        ft.hide(addNewBookFragment);
-//        ft.hide(bookProgressFragment);
-//        ft.hide(updateBookProgressFragment);
-//        ft.hide(othersReviewFragment);
-//        ft.hide(followingListFragment);
-//        ft.hide(otherProfileFragment);
-//        ft.hide(joinRebookFragment);
-//
-//        ft.commit();
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
     }
 
 
@@ -99,77 +63,37 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(menuIdToDisplay, menu);
-//        MenuItem item = menu.findItem(R.id.generalBtn);
-//        switch (thisFrag){
-//            case "login":
-//                item.setTitle("Join Rebook");
-//                break;
-//            case "myProfile":
-//                item.setIcon(android.R.drawable.ic_input_get);
-//                break;
-//            case "newsfeed":
-//                item.setTitle("My Profile");
-//                break;
-//            default:
-//                item.setTitle("");
-//        }
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("TAG", "onOptionsItemSelected was pressed");
-
-        switch (item.getItemId()) {
-            case R.id.generalBtn : {
-                if (thisFrag.equals("myProfile")) {
-                    OnAddNewBook();
-                }
-                if (thisFrag.equals("newsfeed")){
-                    OnMyProfile();
-                }
-                if (thisFrag.equals("login")){
-                    OnJoinRebook();
-                }
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
-
-    @Override
     public void OnNewsFeed() {
-        if (thisFrag.equals("login")) {
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            newsFeedFragment = new NewsFeedFragment();
-            newsFeedFragment.setDelegate(this);
-            ft.add(R.id.container, newsFeedFragment);
-            ft.hide(loginFragment);
-            ft.addToBackStack("login");
-            //ft.show(newsFeedFragment);
-            ft.commit();
-            thisFrag = "newsfeed";
-            invalidateOptionsMenu();
-        }
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        newsFeedFragment = new NewsFeedFragment();
+        newsFeedFragment.setDelegate(this);
+        ft.add(R.id.container, newsFeedFragment);
+        ft.hide(loginFragment);
+        ft.addToBackStack(loginFragment.toString());
+        //ft.show(newsFeedFragment);
+        ft.commit();
+        //thisFrag = "newsfeed";
+        invalidateOptionsMenu();
     }
 
     @Override
     public void OnJoinRebook() {
-        if (thisFrag.equals("login")) {
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            joinRebookFragment = new JoinRebookFragment();
-            joinRebookFragment.setDelegate(this);
-            ft.add(R.id.container, joinRebookFragment);
-            ft.hide(loginFragment);
-            ft.addToBackStack("login");
-            ft.show(joinRebookFragment);
-            ft.commit();
-            thisFrag = "joinRebook";
-            invalidateOptionsMenu();
-        }
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        joinRebookFragment = new JoinRebookFragment();
+        joinRebookFragment.setDelegate(this);
+        ft.add(R.id.container, joinRebookFragment);
+        ft.hide(loginFragment);
+        ft.addToBackStack(loginFragment.toString());
+        //ft.show(joinRebookFragment);
+        ft.commit();
+        //thisFrag = "joinRebook";
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -307,33 +231,6 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     }
 
     @Override
-//    public void onBackPressed() {
-//        Log.d("DEBUG", "Back was pressed. thisFrag = " + thisFrag);
-//        int count = getFragmentManager().getBackStackEntryCount();
-//        if (count > 0) {
-//            String name = getFragmentManager().getBackStackEntryAt(count - 1).getName();
-//
-//
-//            switch (thisFrag) {
-//                case "newsfeed":
-//                    thisFrag = "login";
-//                    break;
-//                case "singlePost":
-//                    thisFrag = "newsfeed";
-//                    break;
-//                default:
-//                    thisFrag = "login";
-//                    break;
-//            }
-//            invalidateOptionsMenu();
-//            this.getFragmentManager().popBackStack();
-//        } else {
-//            finish();
-//        }
-//
-//    }
-
-    //@Override
     public void onCancel() {
         int count = getFragmentManager().getBackStackEntryCount();
         if(getFragmentManager().getBackStackEntryAt(count - 1).getName().equals("myProfile"))

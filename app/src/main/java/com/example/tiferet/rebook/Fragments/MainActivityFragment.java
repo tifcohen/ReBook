@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.tiferet.rebook.MainActivity;
 import com.example.tiferet.rebook.R;
 
 /**
@@ -56,5 +57,13 @@ public class MainActivityFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity activity = (MainActivity) getActivity();
+        activity.menuIdToDisplay = R.menu.menu_main;
+        activity.invalidateOptionsMenu();
+    }
 
 }
