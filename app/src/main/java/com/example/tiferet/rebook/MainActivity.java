@@ -137,7 +137,7 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         ft.add(R.id.container, addNewBookFragment);
         ft.hide(myProfileFragment);
         ft.addToBackStack(myProfileFragment.toString());
-        ft.show(addNewBookFragment);
+        //ft.show(addNewBookFragment);
         //thisFrag = "addNewBook";
         ft.commit();
         invalidateOptionsMenu();
