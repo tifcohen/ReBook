@@ -49,7 +49,7 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Parse.initialize(this);
+        //Parse.initialize(this);
         setContentView(R.layout.content_main);
 
         loginFragment = (MainActivityFragment) getFragmentManager().findFragmentById(R.id.loginFragment);
