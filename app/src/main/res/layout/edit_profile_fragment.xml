@@ -34,7 +34,7 @@
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/addUserFName"
+                    android:id="@+id/editUserFName"
                     android:textAlignment="textEnd"/>
             </LinearLayout>
             <LinearLayout
@@ -51,7 +51,7 @@
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/addUserLName"
+                    android:id="@+id/editUserLName"
                     android:textAlignment="textEnd"/>
             </LinearLayout>
             <LinearLayout
@@ -68,7 +68,7 @@
                 <com.example.tiferet.rebook.Picker.Date.DateEditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/addUserBirthDate"
+                    android:id="@+id/editUserBirthDate"
                     android:textAlignment="textEnd"/>
             </LinearLayout>
             <LinearLayout
@@ -105,7 +105,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/saveNewUserBtn"
+                android:id="@+id/saveEditUserBtn"
                 android:textAlignment="center"
                 android:layout_alignParentRight="true"
                 android:text="Save" />
