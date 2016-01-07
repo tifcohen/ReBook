@@ -1,5 +1,7 @@
 package com.example.tiferet.rebook.Model;
 
+import com.parse.ParseObject;
+
 /**
  * Created by TIFERET on 31-Dec-15.
  */
@@ -16,6 +18,15 @@ public class Book {
         this.author = author;
         this.pages = pages;
         this.picture = picture;
+    }
+
+    public Book(ParseObject p)
+    {
+        this.BookID = p.getObjectId();
+        this.bookName = p.getString("bookName");
+        this.author = p.getString("author");
+        this.pages = p.getInt("Pages");
+        this.picture = p.getString("imageName");
     }
 
     public String getBookID() {

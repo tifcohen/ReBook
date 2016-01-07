@@ -1,5 +1,7 @@
 package com.example.tiferet.rebook.Model;
 
+import com.parse.ParseObject;
+
 /**
  * Created by TIFERET on 31-Dec-15.
  */
@@ -20,6 +22,16 @@ public class User {
         this.lName = lName;
         this.profPicture = profPicture;
         this.birthDate = birthDate;
+    }
+
+    public User(ParseObject p){
+        this.userId = p.getObjectId();
+        this.username = p.getString("username");
+        this.email = p.getString("Email");
+        this.fName = p.getString("fName");
+        this.lName = p.getString("lName");
+        this.profPicture = p.getString("imageName");
+        this.birthDate = p.getString("birthday");
     }
 
     public String getUserId() {

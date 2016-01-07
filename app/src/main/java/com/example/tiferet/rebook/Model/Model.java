@@ -2,7 +2,10 @@ package com.example.tiferet.rebook.Model;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Alon Abadi on 1/5/2016.
@@ -45,8 +48,19 @@ public class Model {
     public interface GetUserListener{
         public void onUserArrived(User user);
     }
+
+    public interface GetPostsAsyncListener{
+        public void onPostArrived(Post post, User user, Book book);
+    }
+
+    public void getPostsAsync(String userId, GetPostsAsyncListener listener){
+        model.getPostsAsync(userId, listener);
+
+    }
+
+
     public List<Post> getAllPosts() {
-        return model.getAllPosts();
+        return model.getAllPosts2();
     }
 
     public void getBookByIdAsync(String id, GetBookListener listener){
@@ -56,6 +70,16 @@ public class Model {
     public void getUserByIdAsync(String id, GetUserListener listener){
         model.getUserByIdAsync(id,listener);
     }
+
+
+    public interface getMyProfileReadingListListener{
+        public void onReadingListArrived();
+    }
+
+    public void getBookReadingStatusByUserId(String userId, Boolean finished, getMyProfileReadingListListener listener){
+        //model.getBookReadingStatusByUserId(userId,finished,listener);
+    }
+
 
 
 }

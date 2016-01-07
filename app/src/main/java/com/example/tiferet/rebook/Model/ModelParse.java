@@ -11,11 +11,15 @@ import com.parse.ParseQuery;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by Alon Abadi on 1/5/2016.
@@ -34,7 +38,7 @@ public class ModelParse {
     public List<Post> getAllPosts(){
         List<Post> allPosts = new LinkedList<Post>();
         ParseQuery query = new ParseQuery("Posts");
-
+        query.orderByDescending("createdAt");
 
         try {
             List<ParseObject> data = query.find();
@@ -59,7 +63,38 @@ public class ModelParse {
 
         return null;
     }
+    public List<Post> getAllPosts2(){
+        List<Post> allPosts = new LinkedList<Post>();
+        ParseQuery query = new ParseQuery("Post");
+        query.orderByDescending("createdAt");
+        query.include("book");
+        query.include("user");
 
+        try {
+            List<ParseObject> data = query.find();
+            for (ParseObject po : data) {
+                String userID = po.getString("userID");
+                ParseObject book = po.getParseObject("book");
+                Log.d("hello","Author: " + book.getString("author"));
+                String bookID = po.getString("book");
+                String text = po.getString("text");
+                Date date = po.getDate("createdAt");
+                int currentPage = po.getInt("currentPage");
+                boolean finished = po.getBoolean("finished");
+                int grade = po.getInt("grade");
+                Post temp = new Post("1", userID, bookID, text, date, currentPage, finished, grade);
+                allPosts.add(temp);
+            }
+            return allPosts;
+
+        } catch (com.parse.ParseException e) {
+            e.printStackTrace();
+        }
+
+
+
+        return null;
+    }
 
 
     public void addBook(Book book) {
@@ -115,4 +150,21 @@ public class ModelParse {
     }
 
 
+    public void getPostsAsync(String userId, Model.GetPostsAsyncListener listener) {
+        ParseQuery query = new ParseQuery("Post");
+        query.orderByDescending("createdAt");
+        query.include("book");
+        query.include("user");
+        try {
+            List<ParseObject> data = query.find();
+            for (ParseObject po : data){
+                Book book = new Book(po.getParseObject("book"));
+                User user = new User(po.getParseObject("user"));
+                Post post = new Post(po,user.getUserId(),book.getBookID());
+                listener.onPostArrived(post, user, book);
+            }
+        } catch (com.parse.ParseException e) {
+            e.printStackTrace();
+        }
+    }
 }

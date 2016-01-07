@@ -24,8 +24,10 @@ import com.example.tiferet.rebook.Model.Post;
 import com.example.tiferet.rebook.Model.PostDB;
 import com.example.tiferet.rebook.Model.User;
 import com.example.tiferet.rebook.R;
+import com.parse.ParseUser;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by TIFERET on 30-Dec-15.
@@ -44,6 +46,7 @@ public class NewsFeedFragment extends Fragment  {
 
     ListView list;
     List<Post> data;
+
     User user;
 
     @Override
@@ -127,28 +130,20 @@ public class NewsFeedFragment extends Fragment  {
             }
             final TextView userName = (TextView) convertView.findViewById(R.id.userProfileName);
             final TextView bookName = (TextView) convertView.findViewById(R.id.bookName);
-            TextView bookReview = (TextView) convertView.findViewById(R.id.bookReview);
+            final TextView bookReview = (TextView) convertView.findViewById(R.id.bookReview);
             //ImageView image = (ImageView) convertView.findViewById(R.id.imageView);
 
-            final Post post = data.get(position);
-            Model.getInstance().getBookByIdAsync(post.getBookID(), new Model.GetBookListener() {
+
+            Model.getInstance().getPostsAsync(ParseUser.getCurrentUser().getObjectId(), new Model.GetPostsAsyncListener() {
                 @Override
-                public void onBookArrived(Book book) {
+                public void onPostArrived(Post post, User user, Book book) {
                     bookName.setText(book.getBookName());
+                    userName.setText(user.getUsername());
+                    bookReview.setText(post.getText());
 
                 }
             });
 
-            Model.getInstance().getUserByIdAsync(post.getUserID(), new Model.GetUserListener() {
-                @Override
-                public void onUserArrived(User user) {
-                    userName.setText(user.getfName() + " " + user.getlName());
-                }
-            });
-
-
-            //bookName.setText(post.getBookID());
-            bookReview.setText(post.getText());
             return convertView;
         }
     }

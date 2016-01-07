@@ -1,5 +1,7 @@
 package com.example.tiferet.rebook.Model;
 
+import com.parse.ParseObject;
+
 import java.util.Date;
 
 /**
@@ -24,6 +26,17 @@ public class Post {
         this.currentPage = currentPage;
         this.finished = finished;
         this.grade = grade;
+    }
+
+    public Post(ParseObject p, String userId, String bookId){
+        this.postID = p.getObjectId();
+        this.userID = userId;
+        this.bookID = bookId;
+        this.text = p.getString("text");
+        this.date = p.getDate("createdAt");
+        this.currentPage = p.getInt("currentPage");
+        this.finished = p.getBoolean("finished");
+        this.grade = p.getInt("grade");
     }
 
     public String getPostID() {
