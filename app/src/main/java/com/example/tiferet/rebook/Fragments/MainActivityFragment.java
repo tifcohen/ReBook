@@ -7,8 +7,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.tiferet.rebook.MainActivity;
+import com.example.tiferet.rebook.Model.User;
 import com.example.tiferet.rebook.R;
 
 /**
@@ -17,11 +19,13 @@ import com.example.tiferet.rebook.R;
 public class MainActivityFragment extends Fragment {
 
     public interface MainActivityFragmentDelegate{
-        void OnNewsFeed();
+        void OnNewsFeed(User user);
         void OnJoinRebook();
     }
 
     MainActivityFragmentDelegate delegate;
+    //User user;
+
     public void setDelegate(MainActivityFragmentDelegate delegate){
         this.delegate = delegate;
     }
@@ -39,15 +43,22 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+
+        final EditText email = (EditText) view.findViewById(R.id.usr);
+        EditText psw = (EditText) view.findViewById(R.id.psw);
+
         Button loginBtn = (Button) view.findViewById(R.id.loginBtn);
+
+        //final User temp = new User("123",email.getText().toString(),"name", "name", "prof", "birtheday");
+        //user.setEmail(email.getText().toString());
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (delegate!=null){
-                    delegate.OnNewsFeed();
-                }
+                User temp = new User("123",email.getText().toString(),"name", "name", "prof", "birtheday");
+                delegate.OnNewsFeed(temp);
             }
+
         });
         return view;
     }

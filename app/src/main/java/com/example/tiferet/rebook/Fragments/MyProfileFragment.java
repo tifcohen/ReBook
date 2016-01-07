@@ -32,6 +32,7 @@ public class MyProfileFragment extends Fragment {
         void OnFollowingList();
     }
 
+    User user;
     ListView myReadingList;
     List<Book> myReadingData;
     ListView myFollowingList;
@@ -55,6 +56,10 @@ public class MyProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.my_profile_fragment, container, false);
+
+        TextView name = (TextView) view.findViewById(R.id.myProfileUsername);
+
+        name.setText(user.getEmail());
 
         myReadingList = (ListView) view.findViewById(R.id.myReadingList);
         myReadingData = BookDB.getInstance().getAllBooks();
@@ -105,6 +110,10 @@ public class MyProfileFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void setUser(User user){
+        this.user = user;
     }
 
     @Override
