@@ -1,5 +1,6 @@
 package com.example.tiferet.rebook.Model;
 
+import com.example.tiferet.rebook.R;
 import com.parse.ParseObject;
 
 /**
@@ -67,5 +68,24 @@ public class Book {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public int getStars(int grade){
+        final Integer[] starsArray = new Integer[]{
+                R.drawable.stars_0,
+                R.drawable.stars_1,
+                R.drawable.stars_2,
+                R.drawable.stars_3,
+                R.drawable.stars_4,
+                R.drawable.stars_5,
+                R.drawable.stars_6,
+                R.drawable.stars_7,
+                R.drawable.stars_8,
+                R.drawable.stars_9,
+                R.drawable.stars_10};
+        if (grade > 0 && grade < 11)
+            return starsArray[grade];
+        else
+            return starsArray[0];
     }
 }

@@ -26,6 +26,7 @@ import com.example.tiferet.rebook.Model.User;
 import com.example.tiferet.rebook.R;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -131,20 +132,22 @@ public class NewsFeedFragment extends Fragment  {
             final TextView userName = (TextView) convertView.findViewById(R.id.userProfileName);
             final TextView bookName = (TextView) convertView.findViewById(R.id.bookName);
             final TextView bookReview = (TextView) convertView.findViewById(R.id.bookReview);
-            //ImageView image = (ImageView) convertView.findViewById(R.id.imageView);
-
+            final ImageView stars = (ImageView) convertView.findViewById(R.id.bookGrade);
 
             Model.getInstance().getPostsAsync(ParseUser.getCurrentUser().getObjectId(), new Model.GetPostsAsyncListener() {
                 @Override
-                public void onPostArrived(Post post, User user, Book book) {
-                    bookName.setText(book.getBookName());
-                    userName.setText(user.getUsername());
-                    bookReview.setText(post.getText());
-
+                public void onPostsArrived(ArrayList<Post> postArray, ArrayList<User> userArray, ArrayList<Book> bookArray) {
+                    bookName.setText(bookArray.get(position).getBookName());
+                    userName.setText(userArray.get(position).getUsername());
+                    bookReview.setText(postArray.get(position).getText());
+                    stars.setImageResource(bookArray.get(position).getStars(postArray.get(position).getGrade()));
                 }
+
             });
 
             return convertView;
         }
     }
+
+
 }

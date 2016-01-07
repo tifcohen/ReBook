@@ -50,7 +50,7 @@ public class Model {
     }
 
     public interface GetPostsAsyncListener{
-        public void onPostArrived(Post post, User user, Book book);
+        public void onPostsArrived(ArrayList<Post> postArray, ArrayList<User> userArray, ArrayList<Book> bookArray);
     }
 
     public void getPostsAsync(String userId, GetPostsAsyncListener listener){

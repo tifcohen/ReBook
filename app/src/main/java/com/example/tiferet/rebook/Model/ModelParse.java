@@ -4,22 +4,13 @@ import android.content.Context;
 import android.util.Log;
 
 import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by Alon Abadi on 1/5/2016.
@@ -151,18 +142,26 @@ public class ModelParse {
 
 
     public void getPostsAsync(String userId, Model.GetPostsAsyncListener listener) {
+        ArrayList<Post> postArray = new ArrayList<Post>();
+        ArrayList<Book> bookArray = new ArrayList<Book>();
+        ArrayList<User> userArray = new ArrayList<User>();
+
         ParseQuery query = new ParseQuery("Post");
-        query.orderByDescending("createdAt");
+        query.orderByAscending("createdAt");
         query.include("book");
         query.include("user");
         try {
             List<ParseObject> data = query.find();
             for (ParseObject po : data){
-                Book book = new Book(po.getParseObject("book"));
+
                 User user = new User(po.getParseObject("user"));
+                Book book = new Book(po.getParseObject("book"));
                 Post post = new Post(po,user.getUserId(),book.getBookID());
-                listener.onPostArrived(post, user, book);
+                postArray.add(post);
+                bookArray.add(book);
+                userArray.add(user);
             }
+            listener.onPostsArrived(postArray, userArray, bookArray);
         } catch (com.parse.ParseException e) {
             e.printStackTrace();
         }
