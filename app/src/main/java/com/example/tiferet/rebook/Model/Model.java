@@ -3,9 +3,7 @@ package com.example.tiferet.rebook.Model;
 import android.content.Context;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Alon Abadi on 1/5/2016.
@@ -78,6 +76,14 @@ public class Model {
 
     public void getBookReadingStatusByUserId(String userId, Boolean finished, getMyProfileReadingListListener listener){
         //model.getBookReadingStatusByUserId(userId,finished,listener);
+    }
+
+    public interface GetFollowersListener{
+        public void onFollowersArrived(ArrayList<User> followers);
+    }
+
+    public void getFollowersList(String id, GetFollowersListener listener) {
+        model.getFollowersListByIdAsync(id, listener);
     }
 
 

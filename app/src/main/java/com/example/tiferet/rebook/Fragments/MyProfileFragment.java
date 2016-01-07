@@ -17,10 +17,15 @@ import android.widget.TextView;
 import com.example.tiferet.rebook.MainActivity;
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.BookDB;
+import com.example.tiferet.rebook.Model.Model;
 import com.example.tiferet.rebook.Model.User;
 import com.example.tiferet.rebook.Model.UserDB;
 import com.example.tiferet.rebook.R;
+import com.parse.ParseUser;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +39,7 @@ public class MyProfileFragment extends Fragment {
         void OnEditProfile();
     }
 
+    User currentUser;
     User user;
     ListView myReadingList;
     List<Book> myReadingData;
@@ -58,18 +64,34 @@ public class MyProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.my_profile_fragment, container, false);
+        final Button edit = (Button) view.findViewById(R.id.editProfile);
+        final TextView followersTextView = (TextView) view.findViewById(R.id.myProfileFollowers);
+        final TextView nameTextView = (TextView) view.findViewById(R.id.myProfileUsername);
 
-        TextView name = (TextView) view.findViewById(R.id.myProfileUsername);
+        Model.getInstance().getUserByIdAsync(ParseUser.getCurrentUser().getObjectId(), new Model.GetUserListener() {
+            @Override
+            public void onUserArrived(User user) {
+                currentUser = user;
+                nameTextView.setText(currentUser.getUsername());
+                edit.setText("Edit " + currentUser.getUsername());
 
-        name.setText(user.getEmail());
+            }
+        });
 
-        Button edit = (Button) view.findViewById(R.id.editProfile);
+        Model.getInstance().getFollowersList(ParseUser.getCurrentUser().getObjectId(), new Model.GetFollowersListener() {
+            @Override
+            public void onFollowersArrived(ArrayList<User> followers) {
+                String followersAmount = (followers.size() > 0) ? (followers.size() > 1) ? followers.size() + " Followers" : followers.size() + " Follower" : "No Followers";
+                followersTextView.setText( followersAmount);
+            }
+        });
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 delegate.OnEditProfile();
             }
         });
+
 
         myReadingList = (ListView) view.findViewById(R.id.myReadingList);
         myReadingData = BookDB.getInstance().getAllBooks();
