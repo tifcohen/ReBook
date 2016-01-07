@@ -20,7 +20,7 @@ public class UserDB {
 
     private void init(){
         for (int i = 0; i < 10; i++) {
-            User u = new User("" + i, "" + i, "" + i, "" + i, "" + i, "");
+            User u = new User(i+"", "" + i, "" + i, "" + i, "" + i, "" + i, "");
             addUser(u);
         }
     }

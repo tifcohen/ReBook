@@ -27,14 +27,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/userEmail"
-                    android:text="eMail: "
+                    android:id="@+id/usernameTextView"
+                    android:text="Username: "
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textAlignment="textStart"/>
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/addUserEmail"
+                    android:id="@+id/join1UsernameEditText"
                     android:textAlignment="textEnd"/>
             </LinearLayout>
             <LinearLayout
@@ -51,7 +51,7 @@
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/addUserPassword"
+                    android:id="@+id/join1PasswordEditText"
                     android:password="true"
                     android:textAlignment="textEnd"/>
             </LinearLayout>
@@ -69,7 +69,7 @@
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/addRepeatPassword"
+                    android:id="@+id/join1RepeatPasswordEditText"
                     android:password="true"
                     android:textAlignment="textEnd"/>
             </LinearLayout>

@@ -41,8 +41,7 @@ public class MainActivityFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        username_input = (EditText) getActivity().findViewById(R.id.usr);
-        password_input = (EditText) getActivity().findViewById(R.id.psw);
+
 
     }
 
@@ -55,6 +54,8 @@ public class MainActivityFragment extends Fragment {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                username_input = (EditText) getActivity().findViewById(R.id.usr);
+                password_input = (EditText) getActivity().findViewById(R.id.psw);
                 String password = password_input.getText().toString();
                 String username = username_input.getText().toString().toLowerCase().trim().replaceAll(" +", " ");
 
@@ -63,12 +64,18 @@ public class MainActivityFragment extends Fragment {
                     public void done(ParseUser user, ParseException e) {
 
                         if (user != null) {
-                            Toast.makeText(getActivity().getApplicationContext(), "Welcome to ReBook!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(
+                                    getActivity().getApplicationContext(),
+                                    "Welcome to Rebook!", Toast.LENGTH_LONG)
+                                    .show();
                             if (delegate != null) {
                                 delegate.OnNewsFeed();
                             }
                         } else {
-                            Toast.makeText(getActivity().getApplicationContext(), "User does not exist.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(
+                                    getActivity().getApplicationContext(),
+                                    "Unable to sign you in, Username or/and Password are incorrect.", Toast.LENGTH_LONG)
+                                    .show();
                         }
                     }
                 });
@@ -83,6 +90,9 @@ public class MainActivityFragment extends Fragment {
                 if (this.delegate != null)
                     delegate.OnJoinRebook();
                 return true;
+            }
+            case R.id.action_logout: {
+                //parseUser.logOut();
             }
         }
         return super.onOptionsItemSelected(item);

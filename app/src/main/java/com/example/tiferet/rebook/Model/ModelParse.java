@@ -104,7 +104,7 @@ public class ModelParse {
             @Override
             public void done(ParseObject object, com.parse.ParseException e) {
                 if (e == null) {
-                    User user = new User(object.getObjectId(), object.getString("email"), object.getString("fName"), object.getString("lName"), object.getString("profPicture"), object.getString("birthDate"));
+                    User user = new User(object.getObjectId(), object.getString("username"), object.getString("email"), object.getString("fName"), object.getString("lName"), object.getString("profPicture"), object.getString("birthDate"));
                     listener.onUserArrived(user);
                     Log.d("Debug", "found " + user.lName + " " + user.lName);
                 } else {
