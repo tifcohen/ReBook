@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.tiferet.rebook.Model.User;
 import com.example.tiferet.rebook.R;
 
 /**
@@ -16,7 +17,9 @@ public class JoinRebookFragment2 extends Fragment {
 
     }
 
+    User user;
     JoinRebookFragment2Delegate delegate;
+
     public void setDelegate(JoinRebookFragment2Delegate delegate) {
         this.delegate = delegate;
     }
@@ -31,4 +34,6 @@ public class JoinRebookFragment2 extends Fragment {
 
         return view;
     }
+
+    public void setUser(User user) {this.user = user;}
 }

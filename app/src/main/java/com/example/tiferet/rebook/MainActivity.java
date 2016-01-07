@@ -44,6 +44,7 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     FollowingListFragment followingListFragment;
     OtherProfileFragment otherProfileFragment;
     JoinRebookFragment joinRebookFragment;
+    JoinRebookFragment2 joinRebookFragment2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,21 +78,6 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         //ft.show(newsFeedFragment);
         ft.commit();
         //thisFrag = "newsfeed";
-        invalidateOptionsMenu();
-    }
-
-    @Override
-    public void OnJoinRebook() {
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        joinRebookFragment = new JoinRebookFragment();
-        joinRebookFragment.setDelegate(this);
-        ft.add(R.id.container, joinRebookFragment);
-        ft.hide(loginFragment);
-        ft.addToBackStack(loginFragment.toString());
-        //ft.show(joinRebookFragment);
-        ft.commit();
-        //thisFrag = "joinRebook";
         invalidateOptionsMenu();
     }
 
@@ -210,16 +196,32 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     }
 
     @Override
-    public void OnJoinRebook(User user) {
-        Log.d("TAG", "Book selected " + user.getfName());
+    public void OnJoinRebook() {
+        Log.d("TAG", "User");
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         joinRebookFragment = new JoinRebookFragment();
-        joinRebookFragment.setUser(user);
         joinRebookFragment.setDelegate(this);
         ft.add(R.id.container, joinRebookFragment);
         ft.hide(loginFragment);
         ft.addToBackStack(loginFragment.toString());
+        //ft.show(othersReviewFragment);
+        ft.commit();
+        //thisFrag = "othersReview";
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    public void OnJoinRebook2(User user) {
+        Log.d("TAG", "User" + user.getEmail());
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        joinRebookFragment2 = new JoinRebookFragment2();
+        joinRebookFragment2.setUser(user);
+        joinRebookFragment2.setDelegate(this);
+        ft.add(R.id.container, joinRebookFragment2);
+        ft.hide(joinRebookFragment);
+        ft.addToBackStack(joinRebookFragment.toString());
         //ft.show(othersReviewFragment);
         ft.commit();
         //thisFrag = "othersReview";
@@ -242,4 +244,5 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         invalidateOptionsMenu();
         getFragmentManager().popBackStack();
     }
+
 }

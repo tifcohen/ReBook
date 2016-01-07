@@ -5,7 +5,8 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/joinInfo">
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -26,14 +27,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/userEmail"
-                    android:text="eMail: "
+                    android:id="@+id/userFName"
+                    android:text="First Name: "
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textAlignment="textStart"/>
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/addUserEmail"
+                    android:id="@+id/addUserFName"
                     android:textAlignment="textEnd"/>
             </LinearLayout>
             <LinearLayout
@@ -43,14 +44,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/newUserPassword"
-                    android:text="Password:: "
+                    android:id="@+id/newUserLName"
+                    android:text="Last Name: "
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textAlignment="textStart"/>
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/addUserPassword"
+                    android:id="@+id/addUserLName"
                     android:textAlignment="textEnd"/>
             </LinearLayout>
             <LinearLayout
@@ -60,35 +61,54 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/repeatPsw"
-                    android:text="Repeat password:"
+                    android:id="@+id/userBirthDate"
+                    android:text="Birth Date: "
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textAlignment="textStart"/>
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/addRepeatPassword"
+                    android:id="@+id/addUserBirthDate"
+                    android:textAlignment="textEnd"/>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/profilePic"
+                    android:text="Set Profile Picture: "
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textAlignment="textStart"/>
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/addProfilePic"
                     android:textAlignment="textEnd"/>
             </LinearLayout>
         </LinearLayout>
         <RelativeLayout
+            android:layout_marginTop="40dp"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/joinInfo">
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/cancelNewBookBtn"
+                android:id="@+id/cancelBtn"
                 android:textAlignment="center"
-                android:text="Cancel"
+                android:text="Back"
                 android:layout_alignParentLeft="true" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/saveNewBookBtn"
+                android:id="@+id/nextBtn"
                 android:textAlignment="center"
                 android:layout_alignParentRight="true"
-                android:text="Next" />
+                android:text="Save" />
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

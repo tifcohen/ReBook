@@ -5,7 +5,8 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/joinInfo">
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -44,13 +45,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/newUserPassword"
-                    android:text="Password:: "
+                    android:text="Password: "
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textAlignment="textStart"/>
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/addUserPassword"
+                    android:password="true"
                     android:textAlignment="textEnd"/>
             </LinearLayout>
             <LinearLayout
@@ -61,20 +63,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/repeatPsw"
-                    android:text="Repeat password:"
+                    android:text="Repeat Password: "
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textAlignment="textStart"/>
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/addRepeatPassword"
+                    android:password="true"
                     android:textAlignment="textEnd"/>
             </LinearLayout>
         </LinearLayout>
         <RelativeLayout
+            android:layout_marginTop="40dp"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/joinInfo">
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
