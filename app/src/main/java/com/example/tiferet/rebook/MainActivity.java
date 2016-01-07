@@ -74,6 +74,7 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         newsFeedFragment.setDelegate(this);
         ft.add(R.id.container, newsFeedFragment);
         ft.hide(loginFragment);
+        ft.hide(joinRebookFragment2);
         ft.addToBackStack(loginFragment.toString());
         //ft.show(newsFeedFragment);
         ft.commit();
@@ -228,8 +229,8 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         invalidateOptionsMenu();
     }
 
-    @Override
-    public void OnMyProfileFirst(User user) {
+    //@Override
+    /*public void OnMyProfileFirst(User user) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         myProfileFragment = new MyProfileFragment();
@@ -242,7 +243,7 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         ft.commit();
         invalidateOptionsMenu();
         Log.d("TAG", "on my profile");
-    }
+    }*/
 
     @Override
     public void onCancel() {

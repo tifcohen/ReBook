@@ -18,7 +18,8 @@ import com.example.tiferet.rebook.R;
  */
 public class JoinRebookFragment2 extends Fragment {
     public interface JoinRebookFragment2Delegate{
-        void OnMyProfileFirst(User user);
+        // void OnMyProfileFirst(User user);
+        void OnNewsFeed();
     }
 
     User user;
@@ -51,7 +52,7 @@ public class JoinRebookFragment2 extends Fragment {
                 user.setProfPicture(profPic.getText().toString());
                 UserDB.getInstance().addUser(user);
                 Log.d("TAG", "User was added");
-                delegate.OnMyProfileFirst(user);
+                delegate.OnNewsFeed();
             }
         });
 
