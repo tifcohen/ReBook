@@ -71,7 +71,7 @@ public class JoinRebookFragment2 extends Fragment {
                     parseUser.setUsername(parseUsername);
                     parseUser.setPassword(parsePassword);
                     if (parseEmail.equals(""))
-                        parseUser.setEmail(parseUsername + "@rebook");
+                        parseUser.setEmail(parseUsername + "@rebook.co.il");
                     else
                         parseUser.setEmail(parseEmail);
                     parseUser.put("fName",parseFirstName);

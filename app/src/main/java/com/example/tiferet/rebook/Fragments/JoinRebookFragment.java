@@ -67,7 +67,7 @@ public class JoinRebookFragment extends Fragment {
                     }
                     else
                     {
-                        final User tempUser = new User(psw.toString(),username.toString(), "", "", "", "", "");
+                        final User tempUser = new User(psw.getText().toString(),username.getText().toString(), "", "", "", "", "");
                         if(delegate!=null){
                             delegate.OnJoinRebook2(tempUser);
                         }
