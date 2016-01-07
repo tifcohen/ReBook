@@ -19,7 +19,7 @@ import com.example.tiferet.rebook.R;
  */
 public class SinglePostFragment extends Fragment {
     public interface SinglePostFragmentDelegate{
-        void OnMyProfile();
+        //void OnMyProfile();
     }
 
     Post post;

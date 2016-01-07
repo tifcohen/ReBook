@@ -67,14 +67,15 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     }
 
     @Override
-    public void OnNewsFeed() {
+    public void OnNewsFeed(User user) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         newsFeedFragment = new NewsFeedFragment();
+        newsFeedFragment.setUser(user);
         newsFeedFragment.setDelegate(this);
         ft.add(R.id.container, newsFeedFragment);
         ft.hide(loginFragment);
-        ft.hide(joinRebookFragment2);
+        //ft.hide(joinRebookFragment2);
         ft.addToBackStack(loginFragment.toString());
         //ft.show(newsFeedFragment);
         ft.commit();
@@ -99,10 +100,11 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         invalidateOptionsMenu();
     }
 
-    public void OnMyProfile() {
+    public void OnMyProfile(User user) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         myProfileFragment = new MyProfileFragment();
+        myProfileFragment.setUser(user);
         myProfileFragment.setDelegate(this);
         ft.add(R.id.container, myProfileFragment);
         ft.hide(newsFeedFragment);

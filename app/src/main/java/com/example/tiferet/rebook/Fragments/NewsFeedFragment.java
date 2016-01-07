@@ -34,7 +34,7 @@ public class NewsFeedFragment extends Fragment  {
 
     public interface NewsFeedFragmentDelegate{
         void OnSinglePost(Post post);
-        void OnMyProfile();
+        void OnMyProfile(User user);
     }
 
     NewsFeedFragmentDelegate delegate;
@@ -44,6 +44,7 @@ public class NewsFeedFragment extends Fragment  {
 
     ListView list;
     List<Post> data;
+    User user;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,12 +75,16 @@ public class NewsFeedFragment extends Fragment  {
         return view;
     }
 
+    public void setUser(User user){
+        this.user=user;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d("TAG", "My Profile Pressed");
         switch (item.getItemId()) {
             case R.id.myProfileBtn:
-                delegate.OnMyProfile();
+                delegate.OnMyProfile(user);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
