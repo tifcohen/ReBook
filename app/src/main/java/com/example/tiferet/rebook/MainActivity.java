@@ -229,6 +229,22 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     }
 
     @Override
+    public void OnMyProfileFirst(User user) {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        myProfileFragment = new MyProfileFragment();
+        myProfileFragment.setDelegate(this);
+        ft.add(R.id.container, myProfileFragment);
+        ft.hide(joinRebookFragment2);
+        ft.addToBackStack(joinRebookFragment2.toString());
+        //ft.show(myProfileFragment);
+        //thisFrag = "myProfile";
+        ft.commit();
+        invalidateOptionsMenu();
+        Log.d("TAG", "on my profile");
+    }
+
+    @Override
     public void onCancel() {
         //int count = getFragmentManager().getBackStackEntryCount();
         /*if(getFragmentManager().getBackStackEntryAt(count - 1).getName().equals("myProfile"))
@@ -244,5 +260,4 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         invalidateOptionsMenu();
         getFragmentManager().popBackStack();
     }
-
 }
