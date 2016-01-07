@@ -4,16 +4,16 @@ package com.example.tiferet.rebook.Model;
  * Created by TIFERET on 31-Dec-15.
  */
 public class User {
+    String userId;
     String email;
-    String pswHash;
     String fName;
     String lName;
     String profPicture;
     String birthDate;
 
-    public User(String email, String pswHash, String fName, String lName, String profPicture, String birthDate) {
+    public User(String userId, String email, String fName, String lName, String profPicture, String birthDate) {
+        this.userId = userId;
         this.email = email;
-        this.pswHash = pswHash;
         this.fName = fName;
         this.lName = lName;
         this.profPicture = profPicture;
@@ -26,14 +26,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPswHash() {
-        return pswHash;
-    }
-
-    public void setPswHash(String pswHash) {
-        this.pswHash = pswHash;
     }
 
     public String getfName() {

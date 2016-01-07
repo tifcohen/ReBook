@@ -1,7 +1,9 @@
 package com.example.tiferet.rebook.Model;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -21,31 +23,6 @@ import java.util.List;
 public class ModelParse {
 
     public void init(Context context) {
-        //Parse.initialize(context, "ITNj6efrX3wAQY6atirz73j41dfRvuu3HKQt2NUB", "CCkY6qHc942bc1gIsWctt28Li76NzFbmTMcSBNAn");
-
-        /*
-            String postID;
-            String userID;
-            String bookID;
-            String text;
-            Date date;
-            int currentPage;
-            boolean finished;
-            int grade;
-        */
-        /*
-
-        for (int i = 0; i < 3; i++) {
-            ParseObject testObject = new ParseObject("Posts");
-            testObject.put("userID", "" + (i * 145 % 100));
-            testObject.put("bookID", "" + (i * 157 % 100));
-            testObject.put("text", "This is my post's content");
-            testObject.put("date", "2016");
-            testObject.put("currentPage", 1);
-            testObject.put("finished", false);
-            testObject.put("grade", 10);
-            testObject.saveInBackground();
-        }*/
 
     }
 
@@ -103,4 +80,39 @@ public class ModelParse {
 
         return null;
     }
+
+
+    public void getBookByIdAsync(final String id, final Model.GetBookListener listener) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Books");
+        query.getInBackground(id, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, com.parse.ParseException e) {
+                if (e == null) {
+                    Book book = new Book(object.getObjectId(), object.getString("bookName"), object.getString("author"), object.getInt("Pages"), object.getString("imageName"));
+                    listener.onBookArrived(book);
+                    Log.d("Debug", "found " + book.bookName + "");
+                } else {
+                    Log.d("Debug", "Book was not found" + id);
+                }
+            }
+        });
+    }
+
+    public void getUserByIdAsync(final String id, final Model.GetUserListener listener) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Users");
+        query.getInBackground(id, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, com.parse.ParseException e) {
+                if (e == null) {
+                    User user = new User(object.getObjectId(), object.getString("email"), object.getString("fName"), object.getString("lName"), object.getString("profPicture"), object.getString("birthDate"));
+                    listener.onUserArrived(user);
+                    Log.d("Debug", "found " + user.lName + " " + user.lName);
+                } else {
+                    Log.d("Debug", "Book was not found" + id);
+                }
+            }
+        });
+    }
+
+
 }

@@ -38,7 +38,24 @@ public class Model {
         return model.getBookById(id);
     }
 
+    public interface GetBookListener{
+        public void onBookArrived(Book book);
+    }
+
+    public interface GetUserListener{
+        public void onUserArrived(User user);
+    }
     public List<Post> getAllPosts() {
         return model.getAllPosts();
     }
+
+    public void getBookByIdAsync(String id, GetBookListener listener){
+        model.getBookByIdAsync(id,listener);
+    }
+
+    public void getUserByIdAsync(String id, GetUserListener listener){
+        model.getUserByIdAsync(id,listener);
+    }
+
+
 }
