@@ -84,7 +84,7 @@ public class JoinRebookFragment2 extends Fragment {
                             if (e == null) {
                                 UserDB.getInstance().addUser(user);
                                 Log.d("TAG", "User was added");
-                                delegate.OnNewsFeed();
+                                delegate.OnNewsFeed(new User("", "", "", "", "", "", ""));
 
                             } else {
                                 Toast.makeText(

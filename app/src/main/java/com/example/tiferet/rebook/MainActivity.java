@@ -23,7 +23,6 @@ import com.example.tiferet.rebook.Fragments.UpdateBookProgressFragment;
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.Post;
 import com.example.tiferet.rebook.Model.User;
-import com.parse.Parse;
 
 public class MainActivity extends Activity implements MainActivityFragment.MainActivityFragmentDelegate,
         NewsFeedFragment.NewsFeedFragmentDelegate, SinglePostFragment.SinglePostFragmentDelegate,
@@ -49,7 +48,6 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Parse.initialize(this);
         setContentView(R.layout.content_main);
 
         loginFragment = (MainActivityFragment) getFragmentManager().findFragmentById(R.id.loginFragment);

@@ -80,7 +80,7 @@ public class MainActivityFragment extends Fragment {
                                     "Welcome to Rebook!", Toast.LENGTH_LONG)
                                     .show();
                             if (delegate != null) {
-                                delegate.OnNewsFeed();
+                                delegate.OnNewsFeed(new User("", "", "", "", "", "", ""));
                             }
                         } else {
                             Toast.makeText(
