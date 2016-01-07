@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ public class MyProfileFragment extends Fragment {
         void OnAddNewBook();
         void OnBookProgress(Book book);
         void OnFollowingList();
+        void OnEditProfile();
     }
 
     User user;
@@ -60,6 +62,14 @@ public class MyProfileFragment extends Fragment {
         TextView name = (TextView) view.findViewById(R.id.myProfileUsername);
 
         name.setText(user.getEmail());
+
+        Button edit = (Button) view.findViewById(R.id.editProfile);
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delegate.OnEditProfile();
+            }
+        });
 
         myReadingList = (ListView) view.findViewById(R.id.myReadingList);
         myReadingData = BookDB.getInstance().getAllBooks();

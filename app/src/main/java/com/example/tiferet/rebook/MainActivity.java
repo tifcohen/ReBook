@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.example.tiferet.rebook.Fragments.AddNewBookFragment;
 import com.example.tiferet.rebook.Fragments.BookProgressFragment;
+import com.example.tiferet.rebook.Fragments.EditProfileFragment;
 import com.example.tiferet.rebook.Fragments.FollowingListFragment;
 import com.example.tiferet.rebook.Fragments.JoinRebookFragment;
 import com.example.tiferet.rebook.Fragments.JoinRebookFragment2;
@@ -29,7 +30,8 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         MyProfileFragment.MyProfileFragmentDelegate, AddNewBookFragment.AddNewBookFragmentDelegate,
         BookProgressFragment.BookProgressFragmentDelegate, UpdateBookProgressFragment.UpdateBookProgressFragmentDelegate,
         OthersReviewFragment.OthersReviewFragmentDelegate, FollowingListFragment.FollowingListFragmentDelegate,
-        JoinRebookFragment.JoinRebookFragmentDelegate, JoinRebookFragment2.JoinRebookFragment2Delegate{
+        JoinRebookFragment.JoinRebookFragmentDelegate, JoinRebookFragment2.JoinRebookFragment2Delegate,
+        EditProfileFragment.EditProfileFragmentDelegate{
 
     String thisFrag = "login";
     MainActivityFragment loginFragment;
@@ -44,6 +46,7 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     OtherProfileFragment otherProfileFragment;
     JoinRebookFragment joinRebookFragment;
     JoinRebookFragment2 joinRebookFragment2;
+    EditProfileFragment editProfileFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +163,22 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         ft.commit();
         //thisFrag = "followingList";
         invalidateOptionsMenu();
+    }
+
+    @Override
+    public void OnEditProfile() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        editProfileFragment = new EditProfileFragment();
+        editProfileFragment.setDelegate(this);
+        ft.add(R.id.container, editProfileFragment);
+        ft.hide(myProfileFragment);
+        ft.addToBackStack(myProfileFragment.toString());
+        //ft.show(followingListFragment);
+        ft.commit();
+        //thisFrag = "followingList";
+        invalidateOptionsMenu();
+
     }
 
     @Override
