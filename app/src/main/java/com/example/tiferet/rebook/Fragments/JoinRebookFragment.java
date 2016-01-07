@@ -2,20 +2,13 @@ package com.example.tiferet.rebook.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.Toast;
 
-import com.example.tiferet.rebook.MainActivity;
-import com.example.tiferet.rebook.Model.Model;
-import com.example.tiferet.rebook.Model.Post;
 import com.example.tiferet.rebook.Model.User;
 import com.example.tiferet.rebook.R;
 
@@ -46,21 +39,43 @@ public class JoinRebookFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.join_rebook_fragment, container, false);
 
-        final EditText email = (EditText) view.findViewById(R.id.addUserEmail);
-        final EditText psw = (EditText) view.findViewById(R.id.addUserPassword);
-        final EditText rpsw = (EditText) view.findViewById(R.id.addRepeatPassword);
+        final EditText username = (EditText) view.findViewById(R.id.join1UsernameEditText);
+        final EditText psw = (EditText) view.findViewById(R.id.join1PasswordEditText);
+        final EditText rpsw = (EditText) view.findViewById(R.id.join1RepeatPasswordEditText);
 
         final Button nextBtn = (Button) view.findViewById(R.id.nextBtn);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!psw.getText().toString().equals(rpsw.getText().toString())){
-                    //error message!
+
+                if (psw.getText().toString().equals("") ||
+                        rpsw.getText().toString().equals("") ||
+                        username.getText().toString().equals(""))
+                {
+                    Toast.makeText(
+                            getActivity().getApplicationContext(),
+                            "All fields are required.", Toast.LENGTH_LONG)
+                            .show();
                 }
-                final User newUser = new User(email.toString(), psw.toString(), "", "", "", "");
-                if(delegate!=null){
-                    delegate.OnJoinRebook2(newUser);
+                else
+                {
+                    if(!psw.getText().toString().equals(rpsw.getText().toString())){
+                        Toast.makeText(
+                                getActivity().getApplicationContext(),
+                                "Passwords do not match.", Toast.LENGTH_LONG)
+                                .show();
+                    }
+                    else
+                    {
+                        final User tempUser = new User(psw.toString(),username.toString(), "", "", "", "", "");
+                        if(delegate!=null){
+                            delegate.OnJoinRebook2(tempUser);
+                        }
+                    }
                 }
+
+
+
             }
         });
 
