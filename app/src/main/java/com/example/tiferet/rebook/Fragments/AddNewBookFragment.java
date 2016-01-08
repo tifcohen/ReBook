@@ -6,6 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -13,6 +16,9 @@ import android.widget.EditText;
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.BookDB;
 import com.example.tiferet.rebook.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by TIFERET on 04-Jan-16.
@@ -22,6 +28,9 @@ public class AddNewBookFragment extends Fragment {
         void onCancel();
         void onSave();
     }
+
+    List<Book> data;
+    AutoCompleteTextView bookNameList;
 
     AddNewBookFragmentDelegate delegate;
     public void setDelegate(AddNewBookFragmentDelegate delegate){ this.delegate = delegate;}
@@ -34,7 +43,19 @@ public class AddNewBookFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_new_book_fragment, container, false);
 
-        final EditText newName = (EditText) view.findViewById(R.id.addNewBookName);
+        data = BookDB.getInstance().getAllBooks();
+        bookNameList = (AutoCompleteTextView) view.findViewById(R.id.autoComplete);
+        String[] list = new String[data.size()];
+        for (int i = 0; i < data.size(); i++) {
+            list[i] = data.get(i).getBookName();
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, list);
+        bookNameList.setAdapter(adapter);
+        bookNameList.setThreshold(1);
+
+        //final EditText newName = (EditText) view.findViewById(R.id.addNewBookName);
         final EditText newAuthor = (EditText) view.findViewById(R.id.addNewBookAuthor);
         final EditText newPages = (EditText) view.findViewById(R.id.addNewBookPages);
         final EditText newPicture = (EditText) view.findViewById(R.id.addNewBookPicture);
@@ -45,7 +66,9 @@ public class AddNewBookFragment extends Fragment {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Book newBk = new Book("", newName.getText().toString(),
+                //Book newBk = new Book("", newName.getText().toString(),
+                //        newAuthor.getText().toString(), new Integer(newPages.getText().toString()), "");
+                Book newBk = new Book("", "book name",
                         newAuthor.getText().toString(), new Integer(newPages.getText().toString()), "");
                 BookDB.getInstance().addBook(newBk);
                 delegate.onSave();
