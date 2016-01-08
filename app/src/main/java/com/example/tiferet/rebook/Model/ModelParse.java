@@ -225,7 +225,7 @@ public class ModelParse {
 
     public void getReadingStatusAsync(String id, final boolean finished, final Model.GetReadingStatusListener listener) {
         final ArrayList<Book> bookList = new ArrayList<>();
-        ParseQuery<ParseObject> query1 = new ParseQuery("_User");
+        final ParseQuery<ParseObject> query1 = new ParseQuery("_User");
         query1.getInBackground(id, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject object, ParseException e) {
@@ -233,10 +233,11 @@ public class ModelParse {
                     ParseQuery query2 = new ParseQuery("ReadStatus");
                     query2.whereEqualTo("finished", finished);
                     query2.whereEqualTo("user", object);
+                    query2.include("book");
                     try {
                         List<ParseObject> data = query2.find();
                         for (ParseObject po : data){
-                            Book book = new Book(po);
+                            Book book = new Book(po.getParseObject("book"));
                             bookList.add(book);
                         }
                         listener.onReadingStatusArrived(bookList);

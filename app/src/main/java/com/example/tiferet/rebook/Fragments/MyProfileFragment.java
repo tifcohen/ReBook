@@ -95,7 +95,6 @@ public class MyProfileFragment extends Fragment {
 
 
         myReadingList = (ListView) view.findViewById(R.id.myReadingList);
-        //myReadingData = BookDB.getInstance().getAllBooks();
         Model.getInstance().getReadingStatusAsync(ParseUser.getCurrentUser().getObjectId(), false, new Model.GetReadingStatusListener() {
             @Override
             public void onReadingStatusArrived(ArrayList<Book> bookList) {
@@ -136,28 +135,18 @@ public class MyProfileFragment extends Fragment {
             }
         });
 
-        //myFollowingData = UserDB.getInstance().getAllUsers();
-
-
-
-
-
         myBookShelfList = (ListView) view.findViewById(R.id.myBookShelfList);
         myBookShelfData = BookDB.getInstance().getAllBooks();
-        MyShelfAdapter bookShelfAdapter = new MyShelfAdapter();
-        myBookShelfList.setAdapter(bookShelfAdapter);
 
-        myBookShelfList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        Model.getInstance().getReadingStatusAsync(ParseUser.getCurrentUser().getObjectId(), true, new Model.GetReadingStatusListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("TAG", "row selected" + position);
-                Book bk = myBookShelfData.get(position);
-                if (delegate != null) {
-                    delegate.OnBookProgress(bk);
-                }
+            public void onReadingStatusArrived(ArrayList<Book> bookList) {
+                myBookShelfData = bookList;
+                MyShelfAdapter bookShelfAdapter = new MyShelfAdapter();
+                myBookShelfList.setAdapter(bookShelfAdapter);
             }
         });
-
         return view;
     }
 
@@ -285,7 +274,7 @@ public class MyProfileFragment extends Fragment {
             TextView bookName = (TextView) convertView.findViewById(R.id.bookShelfName);
             ImageView bookImage = (ImageView) convertView.findViewById(R.id.bookShelfImage);
 
-            Book book = myReadingData.get(position);
+            Book book = myBookShelfData.get(position);
             bookName.setText(book.getBookName());
 
             return convertView;
