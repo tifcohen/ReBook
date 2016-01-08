@@ -44,7 +44,8 @@ public class MyProfileFragment extends Fragment {
     ListView myReadingList;
     List<Book> myReadingData;
     ListView myFollowingList;
-    List<User> myFollowingData;
+    ArrayList<User> myFollowingData;
+    //ArrayList<User> followingList;
     ListView myBookShelfList;
     List<Book> myBookShelfData;
 
@@ -72,7 +73,7 @@ public class MyProfileFragment extends Fragment {
             @Override
             public void onUserArrived(User user) {
                 currentUser = user;
-                nameTextView.setText(currentUser.getUsername());
+                nameTextView.setText(currentUser.getfName() + " " + currentUser.getlName());
                 edit.setText("Edit " + currentUser.getUsername());
 
             }
@@ -82,7 +83,7 @@ public class MyProfileFragment extends Fragment {
             @Override
             public void onFollowersArrived(ArrayList<User> followers) {
                 String followersAmount = (followers.size() > 0) ? (followers.size() > 1) ? followers.size() + " Followers" : followers.size() + " Follower" : "No Followers";
-                followersTextView.setText( followersAmount);
+                followersTextView.setText(followersAmount);
             }
         });
         edit.setOnClickListener(new View.OnClickListener() {
@@ -108,22 +109,31 @@ public class MyProfileFragment extends Fragment {
                 }
             }
         });
-
         myFollowingList = (ListView) view.findViewById(R.id.myFollowingList);
-        myFollowingData = UserDB.getInstance().getAllUsers();
-        MyFollowingAdapter followingAdapter = new MyFollowingAdapter();
-        myFollowingList.setAdapter(followingAdapter);
-
-        myFollowingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        Model.getInstance().getFollowingListByIdAsync(ParseUser.getCurrentUser().getObjectId(), new Model.GetFollowingListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("TAG", "row selected" + position);
-                //User ur = myFollowingData.get(position);
-                if (delegate != null) {
-                    delegate.OnFollowingList();
-                }
+            public void onFollowingListArrived(ArrayList<User> followers) {
+                myFollowingData = followers;
+                MyFollowingAdapter followingAdapter = new MyFollowingAdapter();
+                myFollowingList.setAdapter(followingAdapter);
+                myFollowingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Log.d("TAG", "row selected" + position);
+                        //User ur = myFollowingData.get(position);
+                        if (delegate != null) {
+                            delegate.OnFollowingList();
+                        }
+                    }
+                });
             }
         });
+
+        //myFollowingData = UserDB.getInstance().getAllUsers();
+
+
+
+
 
         myBookShelfList = (ListView) view.findViewById(R.id.myBookShelfList);
         myBookShelfData = BookDB.getInstance().getAllBooks();

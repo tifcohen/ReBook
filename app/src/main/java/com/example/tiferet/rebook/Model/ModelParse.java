@@ -167,8 +167,6 @@ public class ModelParse {
     }
 
     public void getFollowersListByIdAsync(final String id, final Model.GetFollowersListener listener) {
-
-
         ParseQuery<ParseObject> query1 = ParseQuery.getQuery("_User");
         query1.getInBackground(id, new GetCallback<ParseObject>() {
             @Override
@@ -178,9 +176,9 @@ public class ModelParse {
                     ParseQuery query = new ParseQuery("Follow");
                     query.whereEqualTo("to", object);
                     query.include("from");
-                    try{
+                    try {
                         List<ParseObject> data = query.find();
-                        for (ParseObject po : data){
+                        for (ParseObject po : data) {
                             User user = new User(po.getParseObject("from"));
                             usersArray.add(user);
                         }
@@ -193,21 +191,32 @@ public class ModelParse {
                 }
             }
         });
+    }
 
-        ArrayList<User> usersArray = new ArrayList<User>();
-        ParseQuery query = new ParseQuery("Follow");
-        query.whereEqualTo("to", id);
-        query.include("from");
-        try{
-            List<ParseObject> data = query.find();
-            for (ParseObject po : data){
-                User user = new User(po.getParseObject("from"));
-                usersArray.add(user);
+    public void getFollowingListByIdAsync(final String id, final Model.GetFollowingListener listener) {
+        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("_User");
+        query1.getInBackground(id, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, com.parse.ParseException e) {
+                if (e == null) {
+                    ArrayList<User> usersArray = new ArrayList<User>();
+                    ParseQuery query = new ParseQuery("Follow");
+                    query.whereEqualTo("from", object);
+                    query.include("to");
+                    try{
+                        List<ParseObject> data = query.find();
+                        for (ParseObject po : data){
+                            User user = new User(po.getParseObject("to"));
+                            usersArray.add(user);
+                        }
+                        listener.onFollowingListArrived(usersArray);
+                    } catch (com.parse.ParseException e1) {
+                        e1.printStackTrace();
+                    }
+                } else {
+                    Log.d("Debug", "User was not found " + id);
+                }
             }
-            listener.onFollowersArrived(usersArray);
-        } catch (com.parse.ParseException e) {
-            e.printStackTrace();
-        }
-
+        });
     }
 }

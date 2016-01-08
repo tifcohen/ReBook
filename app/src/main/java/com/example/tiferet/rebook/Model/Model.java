@@ -66,7 +66,7 @@ public class Model {
     }
 
     public void getUserByIdAsync(String id, GetUserListener listener){
-        model.getUserByIdAsync(id,listener);
+        model.getUserByIdAsync(id, listener);
     }
 
 
@@ -85,6 +85,16 @@ public class Model {
     public void getFollowersList(String id, GetFollowersListener listener) {
         model.getFollowersListByIdAsync(id, listener);
     }
+
+    public interface GetFollowingListener{
+        public void onFollowingListArrived(ArrayList<User> followers);
+    }
+
+    public void getFollowingListByIdAsync(String id, GetFollowingListener listener) {
+        model.getFollowingListByIdAsync(id, listener);
+    }
+
+
 
 
 
