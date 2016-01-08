@@ -138,9 +138,10 @@ public class NewsFeedFragment extends Fragment  {
                 @Override
                 public void onPostsArrived(ArrayList<Post> postArray, ArrayList<User> userArray, ArrayList<Book> bookArray) {
                     bookName.setText(bookArray.get(position).getBookName());
-                    userName.setText(userArray.get(position).getUsername());
+                    userName.setText(userArray.get(position).getfName() + " " + userArray.get(position).getlName());
                     bookReview.setText(postArray.get(position).getText());
                     stars.setImageResource(bookArray.get(position).getStars(postArray.get(position).getGrade()));
+
                 }
 
             });

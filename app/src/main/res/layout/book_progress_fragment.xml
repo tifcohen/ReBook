@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/othersReviewBtn"
             android:layout_alignParentLeft="true"
-            android:text="Other's Review"
+            android:text="More reviews of this book"
             android:drawSelectorOnTop="false">
         </Button>
     </RelativeLayout>

@@ -6,7 +6,6 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import com.example.tiferet.rebook.Fragments.AddNewBookFragment;
 import com.example.tiferet.rebook.Fragments.BookProgressFragment;
@@ -136,12 +135,13 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     }
 
     @Override
-    public void OnBookProgress(Book book) {
-        Log.d("TAG", "Book selected " + book.getBookID());
+    public void OnBookProgress(String userId, Book book) {
+        Log.d("TAG", "Showing book " + book.getBookName() + " from user " + userId);
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         bookProgressFragment = new BookProgressFragment();
         bookProgressFragment.setBook(book);
+        bookProgressFragment.setUserId(userId);
         bookProgressFragment.setDelegate(this);
         ft.add(R.id.container, bookProgressFragment);
         ft.hide(myProfileFragment);

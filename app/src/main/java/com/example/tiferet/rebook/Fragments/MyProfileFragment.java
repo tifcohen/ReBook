@@ -34,7 +34,7 @@ import java.util.List;
 public class MyProfileFragment extends Fragment {
     public interface MyProfileFragmentDelegate{
         void OnAddNewBook();
-        void OnBookProgress(Book book);
+        void OnBookProgress(String userId, Book book);
         void OnFollowingList(ArrayList<User> followers);
         void OnEditProfile(User user);
     }
@@ -105,9 +105,10 @@ public class MyProfileFragment extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Log.d("TAG", "row selected" + position);
-                        Book bk = myReadingData.get(position);
+                        Book book = myReadingData.get(position);
                         if (delegate != null) {
-                            delegate.OnBookProgress(bk);
+                            String userId = ParseUser.getCurrentUser().getObjectId();
+                            delegate.OnBookProgress(userId,book);
                         }
                     }
                 });

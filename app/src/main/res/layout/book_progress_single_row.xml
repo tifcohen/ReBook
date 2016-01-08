@@ -13,7 +13,7 @@
             android:layout_marginRight="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="At page:"
             android:id="@+id/atPageInfo"
             android:focusable="false"/>
@@ -24,12 +24,14 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/pageInfo">
         <TextView
-            android:layout_marginLeft="7dp"
-            android:layout_marginRight="7dp"
+            android:layout_marginTop="4px"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="review review bla bla bla"
+            android:text=""
             android:id="@+id/myReviewAtPage"
             android:focusable="false"/>
     </LinearLayout>

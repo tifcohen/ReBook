@@ -51,47 +51,46 @@
         android:id="@+id/bookProgBar"
         android:layout_below="@+id/bookProgress">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="35dp"
             android:layout_height="wrap_content"
             android:id="@+id/bookProgressPages"
-            android:text="At page:"
+            android:text="Page "
             android:textAppearance="?android:attr/textAppearanceSmall"
             />
         <EditText
             android:id="@+id/currentPage"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:minWidth="50dp"
+            android:minWidth="30dp"
             android:layout_alignEnd="@+id/bookProgressPages" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/outOfPages"
-            android:text="out of: x"
+            android:text="of:"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_alignEnd="@+id/currentPage" />
+
+        <TextView
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingTextView"
+            android:text="  Rate: "
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown" />
     </LinearLayout>
     <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:layout_below="@+id/bookProgBar">
-        <ProgressBar
-            android:id="@+id/progressBarBook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="300dp"
-            android:layout_margin="10dp"
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:layout_centerInParent="true"/>
-    </RelativeLayout>
-    <RelativeLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/myCurrentReview"
-        android:layout_below="@+id/progressBar">
+        android:layout_below="@+id/bookProgBar">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -99,8 +98,10 @@
             android:text="My thoughts so far:"
             android:textAppearance="?android:attr/textAppearanceSmall" />
         <EditText
+            android:layout_marginTop="25dp"
             android:layout_width="match_parent"
-            android:layout_height="225dp"
+            android:layout_height="180dp"
+            android:background="@drawable/outline"
             android:id="@+id/myCurrentReviewText" />
     </RelativeLayout>
     <RelativeLayout

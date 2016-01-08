@@ -70,6 +70,12 @@ public class MainActivityFragment extends Fragment {
                 String password = password_input.getText().toString();
                 String username = username_input.getText().toString().toLowerCase().trim().replaceAll(" +", " ");
 
+                if (username.equals("") && password.equals(""))
+                {
+                    username = "alon";
+                    password = "a";
+                }
+
                 ParseUser.logInInBackground(username, password, new LogInCallback() {
                     @Override
                     public void done(ParseUser user, ParseException e) {
