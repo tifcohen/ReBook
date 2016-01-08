@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.tiferet.rebook.Model.User;
-import com.example.tiferet.rebook.Picker.Date.DateEditText;
+import com.example.tiferet.rebook.Picker.DateEditText;
 import com.example.tiferet.rebook.R;
 
 /**
@@ -39,6 +39,10 @@ public class EditProfileFragment extends Fragment{
         final EditText fName = (EditText) view.findViewById(R.id.editUserFName);
         final EditText lName = (EditText) view.findViewById(R.id.editUserLName);
         final DateEditText birthDate = (DateEditText) view.findViewById(R.id.editUserBirthDate);
+
+        fName.setText(user.getfName());
+        lName.setText(user.getlName());
+        birthDate.setText(user.getBirthDate());
 
         Button saveBtn = (Button) view.findViewById(R.id.saveEditUserBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {

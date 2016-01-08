@@ -169,11 +169,12 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     }
 
     @Override
-    public void OnEditProfile() {
+    public void OnEditProfile(User user) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         editProfileFragment = new EditProfileFragment();
         editProfileFragment.setDelegate(this);
+        editProfileFragment.setUser(user);
         ft.add(R.id.container, editProfileFragment);
         ft.hide(myProfileFragment);
         ft.addToBackStack(myProfileFragment.toString());

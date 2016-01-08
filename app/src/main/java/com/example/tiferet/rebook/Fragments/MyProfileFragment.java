@@ -36,7 +36,7 @@ public class MyProfileFragment extends Fragment {
         void OnAddNewBook();
         void OnBookProgress(Book book);
         void OnFollowingList(ArrayList<User> followers);
-        void OnEditProfile();
+        void OnEditProfile(User user);
     }
 
     User currentUser;
@@ -89,7 +89,7 @@ public class MyProfileFragment extends Fragment {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                delegate.OnEditProfile();
+                delegate.OnEditProfile(currentUser);
             }
         });
 
