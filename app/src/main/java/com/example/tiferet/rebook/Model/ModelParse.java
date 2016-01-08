@@ -24,9 +24,21 @@ public class ModelParse {
 
     }
 
-    public List<Book> getAllBooks() {
-        List<Book> allBooks = new LinkedList<Book>();
-        return allBooks;
+    public void getAllBooks(Model.GetBooksListener listener) {
+        ArrayList<Book> allBooks = new ArrayList<>();
+        ParseQuery query = new ParseQuery("Books");
+        query.orderByAscending("bookName");
+        try {
+            List<ParseObject> data = query.find();
+            for(ParseObject po : data){
+                Book book = new Book(po);
+                allBooks.add(book);
+            }
+            listener.onBooksArrived(allBooks);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public List<Post> getAllPosts(){

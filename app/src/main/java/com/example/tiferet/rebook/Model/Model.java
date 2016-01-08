@@ -26,9 +26,11 @@ public class Model {
         model.init(context);
     }
 
-    public List<Book> getAllBooks(){
-        return model.getAllBooks();
-
+    public interface GetBooksListener{
+        void onBooksArrived(ArrayList<Book> books);
+    }
+    public void getAllBooks(GetBooksListener listener){
+        model.getAllBooks(listener);
     }
 
     public void addBook(Book book){

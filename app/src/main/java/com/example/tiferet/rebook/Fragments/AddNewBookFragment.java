@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.BookDB;
+import com.example.tiferet.rebook.Model.Model;
 import com.example.tiferet.rebook.R;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class AddNewBookFragment extends Fragment {
         void onSave();
     }
 
-    List<Book> data;
+    ArrayList<Book> data;
     AutoCompleteTextView bookNameList;
 
     AddNewBookFragmentDelegate delegate;
@@ -43,17 +44,23 @@ public class AddNewBookFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_new_book_fragment, container, false);
 
-        data = BookDB.getInstance().getAllBooks();
+        //data = BookDB.getInstance().getAllBooks();
         bookNameList = (AutoCompleteTextView) view.findViewById(R.id.autoComplete);
-        String[] list = new String[data.size()];
-        for (int i = 0; i < data.size(); i++) {
-            list[i] = data.get(i).getBookName();
-        }
+        Model.getInstance().getAllBooks(new Model.GetBooksListener() {
+            @Override
+            public void onBooksArrived(ArrayList<Book> books) {
+                String[] list = new String[books.size()];
+                for (int i = 0; i < books.size(); i++) {
+                    list[i] = books.get(i).getBookName();
+                }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, list);
-        bookNameList.setAdapter(adapter);
-        bookNameList.setThreshold(1);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                        android.R.layout.simple_list_item_1, list);
+                bookNameList.setAdapter(adapter);
+                bookNameList.setThreshold(1);
+            }
+        });
+
 
         //final EditText newName = (EditText) view.findViewById(R.id.addNewBookName);
         final EditText newAuthor = (EditText) view.findViewById(R.id.addNewBookAuthor);
