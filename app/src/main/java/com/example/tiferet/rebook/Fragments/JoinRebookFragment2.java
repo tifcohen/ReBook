@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.tiferet.rebook.Model.User;
 import com.example.tiferet.rebook.Model.UserDB;
+import com.example.tiferet.rebook.Picker.DateEditText;
 import com.example.tiferet.rebook.R;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -43,7 +44,7 @@ public class JoinRebookFragment2 extends Fragment {
         final EditText email = (EditText) view.findViewById(R.id.Join2EmailEditText);
         final EditText fName = (EditText) view.findViewById(R.id.addUserFName);
         final EditText lName = (EditText) view.findViewById(R.id.addUserLName);
-        final EditText birthday = (EditText) view.findViewById(R.id.addUserBirthDate);
+        final DateEditText birthday = (DateEditText) view.findViewById(R.id.addUserBirthDate);
 
         Button save = (Button) view.findViewById(R.id.saveNewUserBtn);
         save.setOnClickListener(new View.OnClickListener() {
@@ -54,7 +55,7 @@ public class JoinRebookFragment2 extends Fragment {
                 {
                     Toast.makeText(
                             getActivity().getApplicationContext(),
-                            "Please fill the name fields.", Toast.LENGTH_LONG)
+                            "Please fill the name field.", Toast.LENGTH_LONG)
                             .show();
                 }
                 else

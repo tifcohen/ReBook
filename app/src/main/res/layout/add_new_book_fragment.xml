@@ -21,11 +21,18 @@
                     android:text="Book's Name: "
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textAlignment="textStart"/>
-                <EditText
+                <!--<EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/addNewBookName"
-                    android:textAlignment="textEnd"/>
+                    android:textAlignment="textEnd"/>-->
+                <AutoCompleteTextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/autoComplete"
+                    android:ems="10">
+                    <requestFocus/>
+                </AutoCompleteTextView>
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"

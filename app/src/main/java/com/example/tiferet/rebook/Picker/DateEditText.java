@@ -1,4 +1,4 @@
-package com.example.tiferet.rebook.Picker.Date;
+package com.example.tiferet.rebook.Picker;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,9 +9,13 @@ import android.widget.EditText;
 import java.util.Calendar;
 
 /**
- * Created by TIFERET on 07-Jan-16.
+ * Created by TIFERET on 08-Jan-16.
  */
-public class DateEditText extends EditText {
+public class DateEditText extends EditText implements DatePickerFragment.OnDateSetListener {
+    int day;
+    int month;
+    int year;
+
     public DateEditText(Context context) {
         super(context);
         init();
@@ -27,11 +31,7 @@ public class DateEditText extends EditText {
         init();
     }
 
-    int day;
-    int month;
-    int year;
-
-    private void init() {
+    private void init(){
         setInputType(0);
         Calendar cal = Calendar.getInstance();
         this.year = cal.get(Calendar.YEAR);
@@ -39,22 +39,23 @@ public class DateEditText extends EditText {
         this.day = cal.get(Calendar.DAY_OF_MONTH);
     }
 
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN){
-            DatePicker dpf = new DatePicker();
-            dpf.setOnDateSetListener(this);
-            dpf.setDate(year,month,day);
-            dpf.show(((Activity)getContext()).getFragmentManager(),"TAG");
-        }
-        return true;
-    }
 
-    //@Override
-    public void OnDateSet(int year, int month, int day) {
+    @Override
+    public void onSetDate(int day, int month, int year) {
         this.day = day;
         this.month = month;
         this.year = year;
-
         setText("" + this.day + "/" + (this.month+1)+ "/" + this.year);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_DOWN){
+            DatePickerFragment dpf = new DatePickerFragment();
+            dpf.setListener(this);
+            dpf.setDate(day, month, year);
+            dpf.show(((Activity) getContext()).getFragmentManager(), "TAG");
+        }
+        return true;
     }
 }

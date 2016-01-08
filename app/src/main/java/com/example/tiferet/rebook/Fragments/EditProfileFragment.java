@@ -10,15 +10,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.tiferet.rebook.Model.User;
-import com.example.tiferet.rebook.Picker.Date.DateEditText;
+import com.example.tiferet.rebook.Picker.DateEditText;
 import com.example.tiferet.rebook.R;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 /**
  * Created by TIFERET on 07-Jan-16.
  */
 public class EditProfileFragment extends Fragment{
     public interface EditProfileFragmentDelegate{
-
+        void onSaveChanges();
     }
 
     User user;
@@ -40,14 +43,26 @@ public class EditProfileFragment extends Fragment{
         final EditText lName = (EditText) view.findViewById(R.id.editUserLName);
         final DateEditText birthDate = (DateEditText) view.findViewById(R.id.editUserBirthDate);
 
+        fName.setText(user.getfName());
+        lName.setText(user.getlName());
+        birthDate.setText(user.getBirthDate());
+
         Button saveBtn = (Button) view.findViewById(R.id.saveEditUserBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user.setfName(fName.getText().toString());
-                user.setlName(lName.getText().toString());
-                user.setBirthDate(birthDate.getText().toString());
+                try {
+                    ParseUser editUser = ParseUser.getCurrentUser();
+                    editUser.put("fName", fName.getText().toString());
+                    editUser.put("lName", lName.getText().toString());
+                    editUser.put("birthday", birthDate.getText().toString());
+                    editUser.save();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
                 Toast.makeText(getActivity().getApplicationContext(), "Edit", Toast.LENGTH_LONG).show();
+                delegate.onSaveChanges();
             }
         });
 

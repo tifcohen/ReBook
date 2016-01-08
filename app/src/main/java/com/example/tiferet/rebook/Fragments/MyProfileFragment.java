@@ -36,7 +36,7 @@ public class MyProfileFragment extends Fragment {
         void OnAddNewBook();
         void OnBookProgress(Book book);
         void OnFollowingList(ArrayList<User> followers);
-        void OnEditProfile();
+        void OnEditProfile(User user);
     }
 
     User currentUser;
@@ -72,9 +72,9 @@ public class MyProfileFragment extends Fragment {
         Model.getInstance().getUserByIdAsync(ParseUser.getCurrentUser().getObjectId(), new Model.GetUserListener() {
             @Override
             public void onUserArrived(User user) {
-                currentUser = user;
-                nameTextView.setText(currentUser.getfName() + " " + currentUser.getlName());
-                edit.setText("Edit " + currentUser.getUsername());
+                //currentUser = user;
+                nameTextView.setText(user.getfName() + " " + user.getlName());
+                edit.setText("Edit " + user.getUsername());
 
             }
         });
@@ -89,7 +89,7 @@ public class MyProfileFragment extends Fragment {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                delegate.OnEditProfile();
+                delegate.OnEditProfile(user);
             }
         });
 
@@ -169,6 +169,9 @@ public class MyProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        ParseUser curr = ParseUser.getCurrentUser();
+        User temp = new User(curr);
+        setUser(temp);
         MainActivity activity = (MainActivity) getActivity();
         activity.menuIdToDisplay = R.menu.menu_add_book;
         activity.invalidateOptionsMenu();
