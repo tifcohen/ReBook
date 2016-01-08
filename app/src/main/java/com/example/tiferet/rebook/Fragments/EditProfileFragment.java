@@ -21,7 +21,7 @@ import com.parse.ParseUser;
  */
 public class EditProfileFragment extends Fragment{
     public interface EditProfileFragmentDelegate{
-        void onSave();
+        void onSaveChanges();
     }
 
     User user;
@@ -62,7 +62,7 @@ public class EditProfileFragment extends Fragment{
                 }
 
                 Toast.makeText(getActivity().getApplicationContext(), "Edit", Toast.LENGTH_LONG).show();
-                delegate.onSave();
+                delegate.onSaveChanges();
             }
         });
 
