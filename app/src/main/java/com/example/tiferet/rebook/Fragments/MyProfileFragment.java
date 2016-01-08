@@ -35,7 +35,7 @@ public class MyProfileFragment extends Fragment {
     public interface MyProfileFragmentDelegate{
         void OnAddNewBook();
         void OnBookProgress(Book book);
-        void OnFollowingList();
+        void OnFollowingList(ArrayList<User> followers);
         void OnEditProfile();
     }
 
@@ -122,7 +122,7 @@ public class MyProfileFragment extends Fragment {
                         Log.d("TAG", "row selected" + position);
                         //User ur = myFollowingData.get(position);
                         if (delegate != null) {
-                            delegate.OnFollowingList();
+                            delegate.OnFollowingList(myFollowingData);
                         }
                     }
                 });

@@ -25,6 +25,8 @@ import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.Post;
 import com.example.tiferet.rebook.Model.User;
 
+import java.util.ArrayList;
+
 public class MainActivity extends Activity implements MainActivityFragment.MainActivityFragmentDelegate,
         NewsFeedFragment.NewsFeedFragmentDelegate, SinglePostFragment.SinglePostFragmentDelegate,
         MyProfileFragment.MyProfileFragmentDelegate, AddNewBookFragment.AddNewBookFragmentDelegate,
@@ -151,11 +153,12 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     }
 
     @Override
-    public void OnFollowingList() {
+    public void OnFollowingList(ArrayList<User> followers) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         followingListFragment = new FollowingListFragment();
         followingListFragment.setDelegate(this);
+        followingListFragment.setData(followers);
         ft.add(R.id.container, followingListFragment);
         ft.hide(myProfileFragment);
         ft.addToBackStack(myProfileFragment.toString());

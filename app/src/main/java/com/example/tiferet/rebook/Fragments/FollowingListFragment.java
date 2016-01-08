@@ -19,6 +19,7 @@ import com.example.tiferet.rebook.Model.User;
 import com.example.tiferet.rebook.Model.UserDB;
 import com.example.tiferet.rebook.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,8 +36,13 @@ public class FollowingListFragment extends Fragment {
         this.delegate = delegate;
     }
 
+    public void setData(ArrayList<User> data) {
+        this.data = data;
+    }
+
+    ArrayList<User> data;
     ListView list;
-    List<User> data;
+    //List<User> data;
     User user;
 
     @Override
@@ -45,7 +51,7 @@ public class FollowingListFragment extends Fragment {
         View view = inflater.inflate(R.layout.following_list_fragment, container, false);
 
         list = (ListView) view.findViewById(R.id.followingList);
-        data = UserDB.getInstance().getAllUsers();
+        //data = UserDB.getInstance().getAllUsers();
         CustomAdapter adapter = new CustomAdapter();
         list.setAdapter(adapter);
 
@@ -88,7 +94,7 @@ public class FollowingListFragment extends Fragment {
             ImageView image = (ImageView) convertView.findViewById(R.id.userProfileImage);
 
             User user = data.get(position);
-            first.setText(user.getfName());
+            first.setText(user.getfName() + " ");
             last.setText(user.getlName());
 
             return convertView;
