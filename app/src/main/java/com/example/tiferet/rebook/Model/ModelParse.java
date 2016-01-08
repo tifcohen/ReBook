@@ -1,9 +1,12 @@
 package com.example.tiferet.rebook.Model;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.util.Log;
 
 import com.parse.GetCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -215,6 +218,31 @@ public class ModelParse {
                     }
                 } else {
                     Log.d("Debug", "User was not found " + id);
+                }
+            }
+        });
+    }
+
+    public void getReadingStatusAsync(String id, final boolean finished, final Model.GetReadingStatusListener listener) {
+        final ArrayList<Book> bookList = new ArrayList<>();
+        ParseQuery<ParseObject> query1 = new ParseQuery("_User");
+        query1.getInBackground(id, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                if (e == null) {
+                    ParseQuery query2 = new ParseQuery("ReadStatus");
+                    query2.whereEqualTo("finished", finished);
+                    query2.whereEqualTo("user", object);
+                    try {
+                        List<ParseObject> data = query2.find();
+                        for (ParseObject po : data){
+                            Book book = new Book(po);
+                            bookList.add(book);
+                        }
+                        listener.onReadingStatusArrived(bookList);
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         });

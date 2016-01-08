@@ -42,7 +42,7 @@ public class MyProfileFragment extends Fragment {
     User currentUser;
     User user;
     ListView myReadingList;
-    List<Book> myReadingData;
+    ArrayList<Book> myReadingData;
     ListView myFollowingList;
     ArrayList<User> myFollowingData;
     //ArrayList<User> followingList;
@@ -95,20 +95,27 @@ public class MyProfileFragment extends Fragment {
 
 
         myReadingList = (ListView) view.findViewById(R.id.myReadingList);
-        myReadingData = BookDB.getInstance().getAllBooks();
-        MyBooksAdapter booksAdapter = new MyBooksAdapter();
-        myReadingList.setAdapter(booksAdapter);
-
-        myReadingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //myReadingData = BookDB.getInstance().getAllBooks();
+        Model.getInstance().getReadingStatusAsync(ParseUser.getCurrentUser().getObjectId(), false, new Model.GetReadingStatusListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("TAG", "row selected" + position);
-                Book bk = myReadingData.get(position);
-                if (delegate != null) {
-                    delegate.OnBookProgress(bk);
-                }
+            public void onReadingStatusArrived(ArrayList<Book> bookList) {
+                myReadingData = bookList;
+                MyBooksAdapter booksAdapter = new MyBooksAdapter();
+                myReadingList.setAdapter(booksAdapter);
+                myReadingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Log.d("TAG", "row selected" + position);
+                        Book bk = myReadingData.get(position);
+                        if (delegate != null) {
+                            delegate.OnBookProgress(bk);
+                        }
+                    }
+                });
             }
         });
+
+
         myFollowingList = (ListView) view.findViewById(R.id.myFollowingList);
         Model.getInstance().getFollowingListByIdAsync(ParseUser.getCurrentUser().getObjectId(), new Model.GetFollowingListener() {
             @Override

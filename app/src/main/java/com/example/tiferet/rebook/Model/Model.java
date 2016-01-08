@@ -39,6 +39,14 @@ public class Model {
         return model.getBookById(id);
     }
 
+    public interface GetReadingStatusListener{
+        public void onReadingStatusArrived(ArrayList<Book> bookList);
+    }
+
+    public void getReadingStatusAsync(String id, boolean finished, GetReadingStatusListener listener){
+        model.getReadingStatusAsync(id, finished, listener);
+    }
+
     public interface GetBookListener{
         public void onBookArrived(Book book);
     }
