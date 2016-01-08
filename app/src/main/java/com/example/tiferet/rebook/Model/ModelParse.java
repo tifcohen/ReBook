@@ -69,7 +69,6 @@ public class ModelParse {
             for (ParseObject po : data) {
                 String userID = po.getString("userID");
                 ParseObject book = po.getParseObject("book");
-                Log.d("hello","Author: " + book.getString("author"));
                 String bookID = po.getString("book");
                 String text = po.getString("text");
                 Date date = po.getDate("createdAt");
@@ -244,6 +243,52 @@ public class ModelParse {
                     } catch (ParseException e1) {
                         e1.printStackTrace();
                     }
+                }
+            }
+        });
+    }
+
+    public void getPostsByBookAndUserAsync(final String userId, final String bookId, final Model.GetPostsAsyncListener listener) {
+        final ArrayList<Post> postArray = new ArrayList<Post>();
+        final ParseQuery<ParseObject> query1 = new ParseQuery("_User");
+        query1.getInBackground(userId, new GetCallback<ParseObject>() {
+            @Override
+            public void done(final ParseObject user, ParseException e) {
+                if (e == null){
+                    final ParseQuery<ParseObject> query2 = new ParseQuery("Books");
+                    query2.getInBackground(bookId, new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject book, ParseException e2) {
+                            if (e2 == null){
+                                ParseQuery query = new ParseQuery("Post");
+                                query.orderByAscending("createdAt");
+                                query.whereEqualTo("book", book);
+                                query.whereEqualTo("user", user);
+                                try {
+                                    List<ParseObject> data = query.find();
+                                    for (ParseObject po : data)
+                                    {
+                                        Post post = new Post(po,userId,bookId);
+                                        postArray.add(post);
+                                    }
+                                    listener.onPostsArrived(postArray, null, null);
+
+                                } catch (ParseException e1) {
+                                    e1.printStackTrace();
+                                }
+
+                            }
+                            else
+                            {
+                                Log.d("Debug", "Book was not found. " + bookId);
+                            }
+
+                        }
+                    });
+                }
+                else
+                {
+                    Log.d("Debug", "User was not found. " + userId);
                 }
             }
         });

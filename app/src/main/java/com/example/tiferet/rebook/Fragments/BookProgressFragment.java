@@ -14,11 +14,13 @@ import android.widget.TextView;
 
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.BookDB;
+import com.example.tiferet.rebook.Model.Model;
 import com.example.tiferet.rebook.Model.Post;
 import com.example.tiferet.rebook.Model.User;
 import com.example.tiferet.rebook.Model.UserDB;
 import com.example.tiferet.rebook.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,8 +34,11 @@ public class BookProgressFragment extends Fragment {
     }
 
     ListView list;
-    List<Book> data;
+    ArrayList<Post> data;
     Book book;
+    String userId;
+    TextView bookPages;
+    ProgressBar bookProgress;
 
     BookProgressFragmentDelegate delegate;
     public void setDelegate(BookProgressFragmentDelegate delegate){ this.delegate = delegate;}
@@ -48,20 +53,37 @@ public class BookProgressFragment extends Fragment {
         if(book!=null){
             TextView bookName = (TextView) view.findViewById(R.id.bookProgressName);
             TextView bookAuthor = (TextView) view.findViewById(R.id.bookProgressAuthor);
-            TextView bookPages = (TextView) view.findViewById(R.id.bookProgressPages);
+            bookPages = (TextView) view.findViewById(R.id.bookProgressPages);
             ImageView bookImage = (ImageView) view.findViewById(R.id.bookProgressImage);
-            ProgressBar bookProgress = (ProgressBar) view.findViewById(R.id.progressBarBook);
+            bookProgress = (ProgressBar) view.findViewById(R.id.progressBarBook);
 
             bookName.setText(this.book.getBookName());
             bookAuthor.setText(this.book.getAuthor());
             int pages = this.book.getPages();
-            bookPages.setText("Pages: " + pages);
+            //bookPages.setText("Pages: " + pages);
         }
 
         list = (ListView) view.findViewById(R.id.bookReviewList);
-        data = BookDB.getInstance().getAllBooks(); //need to fix!
-        BookProgressAdapter adapter = new BookProgressAdapter();
-        list.setAdapter(adapter);
+        //data = BookDB.getInstance().getAllBooks(); //need to fix!
+
+        Model.getInstance().getPostsByBookAndUserAsync(userId, book.getBookID(), new Model.GetPostsAsyncListener() {
+            @Override
+            public void onPostsArrived(ArrayList<Post> postArray, ArrayList<User> userArray, ArrayList<Book> bookArray) {
+                if (userArray == null && bookArray == null) {
+                    int last_page = postArray.get(postArray.size()-1).getCurrentPage();
+                    data = postArray;
+                    BookProgressAdapter adapter = new BookProgressAdapter();
+                    list.setAdapter(adapter);
+                    bookPages.setText("Page " + last_page + " of " + book.getPages());
+                    bookProgress.setMax(book.getPages());
+                    bookProgress.setProgress(last_page);
+
+                }
+
+            }
+        });
+
+
 
         Button update = (Button) view.findViewById(R.id.updateBookProgressBtn);
         update.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +104,14 @@ public class BookProgressFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setBook(Book book) { this.book = book;}
@@ -116,9 +146,18 @@ public class BookProgressFragment extends Fragment {
             TextView pages = (TextView) convertView.findViewById(R.id.atPageInfo);
             TextView review = (TextView) convertView.findViewById(R.id.myReviewAtPage);
 
-            Book book = data.get(position);
-            pages.setText("At Page: "+book.getPages()); //need to fix to current page!
-            review.setText("bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"); //need to fix!!!
+            Post post = data.get(position);
+            String title = "Page "+post.getCurrentPage() + ": ";
+
+            review.setText(post.getText());
+            if (post.isFinished())
+            {
+                title += " - Marked as finished!";
+            }
+            pages.setText(title);
+
+
+
 
             return convertView;
         }

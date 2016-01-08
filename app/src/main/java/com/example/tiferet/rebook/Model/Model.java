@@ -64,6 +64,10 @@ public class Model {
 
     }
 
+    public void getPostsByBookAndUserAsync(String userId, String bookId, GetPostsAsyncListener listener ){
+        model.getPostsByBookAndUserAsync(userId,bookId,listener);
+    }
+
 
     public List<Post> getAllPosts() {
         return model.getAllPosts2();
