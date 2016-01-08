@@ -148,7 +148,7 @@ public class ModelParse {
         ArrayList<User> userArray = new ArrayList<User>();
 
         ParseQuery query = new ParseQuery("Post");
-        query.orderByAscending("createdAt");
+        query.orderByDescending("createdAt");
         query.include("book");
         query.include("user");
         try {
