@@ -12,13 +12,16 @@ import android.widget.Toast;
 import com.example.tiferet.rebook.Model.User;
 import com.example.tiferet.rebook.Picker.DateEditText;
 import com.example.tiferet.rebook.R;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 /**
  * Created by TIFERET on 07-Jan-16.
  */
 public class EditProfileFragment extends Fragment{
     public interface EditProfileFragmentDelegate{
-
+        void onSave();
     }
 
     User user;
@@ -48,10 +51,18 @@ public class EditProfileFragment extends Fragment{
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user.setfName(fName.getText().toString());
-                user.setlName(lName.getText().toString());
-                user.setBirthDate(birthDate.getText().toString());
+                try {
+                    ParseUser editUser = ParseUser.getCurrentUser();
+                    editUser.put("fName", fName.getText().toString());
+                    editUser.put("lName", lName.getText().toString());
+                    editUser.put("birthday", birthDate.getText().toString());
+                    editUser.save();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
                 Toast.makeText(getActivity().getApplicationContext(), "Edit", Toast.LENGTH_LONG).show();
+                delegate.onSave();
             }
         });
 
