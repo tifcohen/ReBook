@@ -95,6 +95,7 @@ public class NewsFeedFragment extends Fragment  {
         }
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
@@ -132,15 +133,30 @@ public class NewsFeedFragment extends Fragment  {
             final TextView userName = (TextView) convertView.findViewById(R.id.userProfileName);
             final TextView bookName = (TextView) convertView.findViewById(R.id.bookName);
             final TextView bookReview = (TextView) convertView.findViewById(R.id.bookReview);
-            final ImageView stars = (ImageView) convertView.findViewById(R.id.bookGrade);
+            final ImageView stars = (ImageView) convertView.findViewById(R.id.stars);
+            final TextView page = (TextView) convertView.findViewById(R.id.pageTextView);
+            final TextView action = (TextView) convertView.findViewById(R.id.actionTextView);
 
             Model.getInstance().getPostsAsync(ParseUser.getCurrentUser().getObjectId(), new Model.GetPostsAsyncListener() {
                 @Override
                 public void onPostsArrived(ArrayList<Post> postArray, ArrayList<User> userArray, ArrayList<Book> bookArray) {
-                    bookName.setText(bookArray.get(position).getBookName());
-                    userName.setText(userArray.get(position).getfName() + " " + userArray.get(position).getlName());
-                    bookReview.setText(postArray.get(position).getText());
-                    stars.setImageResource(bookArray.get(position).getStars(postArray.get(position).getGrade()));
+                    Book book = bookArray.get(position);
+                    User user = userArray.get(position);
+                    Post post = postArray.get(position);
+
+                    if (post.isFinished())
+                        action.setText(" finished ");
+                    else
+                        action.setText(" is reading ");
+
+                    userName.setText(user.getfName() + " " + user.getlName());
+                    bookName.setText(book.getBookName());
+
+
+                    bookReview.setText(post.getText());
+                    stars.setImageResource(book.getStars(post.getGrade()));
+                    page.setText(" Page: "+ post.getCurrentPage());
+
 
                 }
 
