@@ -136,6 +136,7 @@ public class NewsFeedFragment extends Fragment  {
             final ImageView stars = (ImageView) convertView.findViewById(R.id.stars);
             final TextView page = (TextView) convertView.findViewById(R.id.pageTextView);
             final TextView action = (TextView) convertView.findViewById(R.id.actionTextView);
+            final TextView action2 = (TextView) convertView.findViewById(R.id.action2TextView);
 
             Model.getInstance().getPostsAsync(ParseUser.getCurrentUser().getObjectId(), new Model.GetPostsAsyncListener() {
                 @Override
@@ -143,23 +144,46 @@ public class NewsFeedFragment extends Fragment  {
                     Book book = bookArray.get(position);
                     User user = userArray.get(position);
                     Post post = postArray.get(position);
+                    if (post.getCurrentPage() == 0){
+                        action.setText(" Started ");
+                        bookReview.setVisibility(View.GONE);
+                        action2.setText("Not yet rated.");
+                        page.setVisibility(View.GONE);
 
-                    if (post.isFinished())
-                        action.setText(" finished ");
+                    }
                     else
-                        action.setText(" is reading ");
+                    {
+                        if (post.isFinished())
+                            action.setText(" finished ");
+                        else
+                            action.setText(" is reading ");
+
+                        bookReview.setText(post.getText());
+                        stars.setImageResource(book.getStars(post.getGrade()));
+                        page.setText(" Page: " + post.getCurrentPage());
+                    }
+
 
                     userName.setText(user.getfName() + " " + user.getlName());
-                    bookName.setText(book.getBookName());
+                    if (book.getBookName().length() > 17) {
+                        bookName.setText(book.getBookName().substring(0,17) + "...");
+                    }
+                    else
+                    {
+                        bookName.setText(book.getBookName());
+                    }
+
+
+
+
 
                     bookName.setTag(post);
-
                     userName.setTag(user);
 
 
-                    bookReview.setText(post.getText());
-                    stars.setImageResource(book.getStars(post.getGrade()));
-                    page.setText(" Page: "+ post.getCurrentPage());
+
+
+
 
 
 

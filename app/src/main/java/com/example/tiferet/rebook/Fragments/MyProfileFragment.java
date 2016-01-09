@@ -68,7 +68,7 @@ public class MyProfileFragment extends Fragment {
         final TextView followersTextView = (TextView) view.findViewById(R.id.myProfileFollowers);
         final TextView nameTextView = (TextView) view.findViewById(R.id.myProfileUsername);
 
-        Model.getInstance().getUserByIdAsync(ParseUser.getCurrentUser().getObjectId(), new Model.GetUserListener() {
+        Model.getInstance().getUserByIdAsync(user.getUserId(), new Model.GetUserListener() {
             @Override
             public void onUserArrived(User user) {
                 //currentUser = user;
@@ -78,7 +78,7 @@ public class MyProfileFragment extends Fragment {
             }
         });
 
-        Model.getInstance().getFollowersList(ParseUser.getCurrentUser().getObjectId(), new Model.GetFollowersListener() {
+        Model.getInstance().getFollowersList(user.getUserId(), new Model.GetFollowersListener() {
             @Override
             public void onFollowersArrived(ArrayList<User> followers) {
                 String followersAmount = (followers.size() > 0) ? (followers.size() > 1) ? followers.size() + " Followers" : followers.size() + " Follower" : "No Followers";
@@ -94,7 +94,7 @@ public class MyProfileFragment extends Fragment {
 
 
         myReadingList = (ListView) view.findViewById(R.id.myReadingList);
-        Model.getInstance().getReadingStatusAsync(ParseUser.getCurrentUser().getObjectId(), false, new Model.GetReadingStatusListener() {
+        Model.getInstance().getReadingStatusAsync(user.getUserId(), false, new Model.GetReadingStatusListener() {
             @Override
             public void onReadingStatusArrived(ArrayList<Book> bookList) {
                 myReadingData = bookList;
@@ -106,7 +106,7 @@ public class MyProfileFragment extends Fragment {
                         Log.d("TAG", "row selected" + position);
                         Book book = myReadingData.get(position);
                         if (delegate != null) {
-                            String userId = ParseUser.getCurrentUser().getObjectId();
+                            String userId = user.getUserId();
                             delegate.OnBookProgress(userId,book);
                         }
                     }
@@ -116,7 +116,7 @@ public class MyProfileFragment extends Fragment {
 
 
         myFollowingList = (ListView) view.findViewById(R.id.myFollowingList);
-        Model.getInstance().getFollowingListByIdAsync(ParseUser.getCurrentUser().getObjectId(), new Model.GetFollowingListener() {
+        Model.getInstance().getFollowingListByIdAsync(user.getUserId(), new Model.GetFollowingListener() {
             @Override
             public void onFollowingListArrived(ArrayList<User> followers) {
                 myFollowingData = followers;
@@ -139,7 +139,7 @@ public class MyProfileFragment extends Fragment {
         myBookShelfData = BookDB.getInstance().getAllBooks();
 
 
-        Model.getInstance().getReadingStatusAsync(ParseUser.getCurrentUser().getObjectId(), true, new Model.GetReadingStatusListener() {
+        Model.getInstance().getReadingStatusAsync(user.getUserId(), true, new Model.GetReadingStatusListener() {
             @Override
             public void onReadingStatusArrived(ArrayList<Book> bookList) {
                 myBookShelfData = bookList;
