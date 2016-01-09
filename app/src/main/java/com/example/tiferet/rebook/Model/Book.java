@@ -21,9 +21,6 @@ public class Book {
         this.picture = picture;
     }
 
-    public Book() {
-    }
-
     public Book(ParseObject p)
     {
         this.BookID = p.getObjectId();

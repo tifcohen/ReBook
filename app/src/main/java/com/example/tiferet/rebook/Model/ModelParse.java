@@ -105,7 +105,7 @@ public class ModelParse {
 
 
     public void addBook(final Book book) {
-        ParseObject newBook = new ParseObject("Books");
+        final ParseObject newBook = new ParseObject("Books");
         newBook.put("bookName", book.getBookName());
         newBook.put("author", book.getAuthor());
         newBook.put("Pages", book.getPages());
@@ -113,7 +113,14 @@ public class ModelParse {
         newBook.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                addBookToUser(book);
+                if (e == null){
+                    book.setBookID(newBook.getObjectId());
+                    addBookToUser(book);
+                }
+                else
+                {
+                    Log.d("Debug", "Book was not added.");
+                }
             }
         });
     }
@@ -121,6 +128,7 @@ public class ModelParse {
     public void addBookToUser(Book book){
         final ParseObject newReadStatus = new ParseObject("ReadStatus");
         final ParseUser user = ParseUser.getCurrentUser();
+        //final ParseObject user2 = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Books");
         query.getInBackground(book.getBookID(), new GetCallback<ParseObject>() {
             @Override
