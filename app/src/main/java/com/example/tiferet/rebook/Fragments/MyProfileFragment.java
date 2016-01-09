@@ -111,7 +111,21 @@ public class MyProfileFragment extends Fragment {
                 }
                 else
                 {
-                    Model.getInstance().startFollowing(user.getUserId());
+                    boolean amIFollowing = Model.getInstance().amIFollowing(user.getUserId());
+
+                    if (amIFollowing)
+                    {
+
+                        Model.getInstance().stopFollowing(user.getUserId());
+                        edit.setText("Follow " + user.getfName());
+
+                    }
+                    else
+                    {
+                        Model.getInstance().startFollowing(user.getUserId());
+                        edit.setText("Unfollow " + user.getfName());
+                    }
+
                     Log.d("Debug", "Right !!! ");
                     //Follow button.
                 }

@@ -337,26 +337,27 @@ public class ModelParse {
     }
 
     public void startFollowing(final String userId) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
-        query.getInBackground(userId, new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject to, com.parse.ParseException e) {
-                if (e == null) {
-                    ParseObject follow = new ParseObject("Follow");
-                    follow.put("to", to);
-                    follow.put("from", ParseUser.getCurrentUser());
-                    try {
-                        follow.save();
-                    } catch (ParseException e1) {
-                        e1.printStackTrace();
+        if (amIFollowing(userId) == false) {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+            query.getInBackground(userId, new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject to, com.parse.ParseException e) {
+                    if (e == null) {
+                        ParseObject follow = new ParseObject("Follow");
+                        follow.put("to", to);
+                        follow.put("from", ParseUser.getCurrentUser());
+                        try {
+                            follow.save();
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
+                        }
+
+                    } else {
+                        Log.d("Debug", "User was not found " + userId);
                     }
-
-                } else {
-                    Log.d("Debug", "User was not found " + userId);
                 }
-            }
-        });
-
+            });
+        }
     }
 
 
@@ -380,4 +381,27 @@ public class ModelParse {
             return false;
         }
     }
+
+    public void stopFollowing(final String userId) {
+        if (amIFollowing(userId) == true)
+        {
+            try
+            {
+                ParseObject to = ParseQuery.getQuery("_User").get(userId);
+                ParseObject from = ParseUser.getCurrentUser();
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
+                query.whereEqualTo("from",from);
+                query.whereEqualTo("to", to);
+                ParseObject p = query.getFirst();
+                if (p != null)
+                    p.deleteInBackground();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+
 }

@@ -50,6 +50,10 @@ public class Model {
     public void startFollowing(String userId){
         model.startFollowing(userId);
     }
+    public void stopFollowing(String userId){
+        model.stopFollowing(userId);
+    }
+
 
     public boolean amIFollowing(String userId){
         return model.amIFollowing(userId);
