@@ -108,7 +108,8 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         myProfileFragment = new MyProfileFragment();
         myProfileFragment.setUser(user);
         myProfileFragment.setDelegate(this);
-        ft.add(R.id.container, myProfileFragment);
+        //ft.add(R.id.container, myProfileFragment);
+        ft.replace(R.id.container, myProfileFragment);
         ft.hide(newsFeedFragment);
         ft.addToBackStack(newsFeedFragment.toString());
         //ft.show(myProfileFragment);
@@ -266,6 +267,7 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     @Override
     public void onSave() {
         invalidateOptionsMenu();
+
         getFragmentManager().popBackStack();
     }
 

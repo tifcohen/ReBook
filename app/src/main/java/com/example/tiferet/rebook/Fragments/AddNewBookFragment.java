@@ -32,7 +32,8 @@ public class AddNewBookFragment extends Fragment {
     }
 
     AutoCompleteTextView bookNameList;
-
+    int flag = 0;
+    Book newBook;
     AddNewBookFragmentDelegate delegate;
     public void setDelegate(AddNewBookFragmentDelegate delegate){ this.delegate = delegate;}
 
@@ -66,9 +67,19 @@ public class AddNewBookFragment extends Fragment {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
                         String selection = (String) parent.getItemAtPosition(position);
                         Log.d("TAG", selection);
-                        newAuthor.setText(books.get(position).getAuthor());
-                        newPages.setText(""+ books.get(position).getPages());
-                        //newPicture.setText(books.get(position).getPicture());
+                        newBook = new Book("",selection,"",0,"");
+                        for(Book bk : books){
+                            if(bk.getBookName().equals(selection)){
+                                    flag = 1;
+                                    newAuthor.setText(bk.getAuthor());
+                                    newPages.setText("" + bk.getPages());
+                                    //newPicture.setText(bk.getPicture());
+                                    newBook.setBookID(bk.getBookID());
+                                    newBook.setAuthor(bk.getAuthor());
+                                    newBook.setPages(bk.getPages());
+                                break;
+                            }
+                        }
                     }
                 });
             }
@@ -80,11 +91,10 @@ public class AddNewBookFragment extends Fragment {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Book newBk = new Book("", newName.getText().toString(),
-                //        newAuthor.getText().toString(), new Integer(newPages.getText().toString()), "");
-                Book newBk = new Book("", "book name",
-                        newAuthor.getText().toString(), new Integer(newPages.getText().toString()), "");
-                BookDB.getInstance().addBook(newBk);
+                if(flag==0){
+                    Model.getInstance().addBook(newBook);
+                }
+                Model.getInstance().addBookToUser(newBook);
                 delegate.onSave();
                 //Alert alert = new Alert("" + name.getText().toString() + " Was Added Successfully :)", "Dismiss", delegate);
                 //alert.show(getFragmentManager(), "TAG");

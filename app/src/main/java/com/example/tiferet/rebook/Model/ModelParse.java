@@ -9,6 +9,7 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -103,7 +104,36 @@ public class ModelParse {
 
 
     public void addBook(Book book) {
+        ParseObject newBook = new ParseObject("Books");
+        newBook.put("bookName", book.getBookName());
+        newBook.put("author", book.getAuthor());
+        newBook.put("Pages", book.getPages());
+        newBook.put("imageName", book.getPicture());
+        newBook.saveInBackground();
+    }
 
+    public void addBookToUser(Book book){
+        final ParseObject newReadStatus = new ParseObject("ReadStatus");
+        final ParseUser user = ParseUser.getCurrentUser();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Books");
+        query.getInBackground(book.getBookID(), new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject newBook, ParseException e) {
+                ParseObject newPost = new ParseObject("Post");
+                newPost.put("book", newBook);
+                newPost.put("user", user);
+                newPost.put("finished", false);
+                newPost.put("currentPage", 0);
+                newPost.put("grade", 0);
+                newPost.put("text", "Just starting... Waiting to what the future holds!");
+                newPost.saveInBackground();
+                newReadStatus.put("book",newBook);
+                newReadStatus.put("user", user);
+                newReadStatus.put("finished", false);
+                newReadStatus.put("currentPage", 0);
+                newReadStatus.saveInBackground();
+            }
+        });
     }
 
 

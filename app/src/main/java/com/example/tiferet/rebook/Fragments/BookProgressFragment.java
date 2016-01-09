@@ -64,7 +64,6 @@ public class BookProgressFragment extends Fragment {
         }
 
         list = (ListView) view.findViewById(R.id.bookReviewList);
-        //data = BookDB.getInstance().getAllBooks(); //need to fix!
 
         Model.getInstance().getPostsByBookAndUserAsync(userId, book.getBookID(), new Model.GetPostsAsyncListener() {
             @Override
@@ -77,13 +76,9 @@ public class BookProgressFragment extends Fragment {
                     bookPages.setText("Page " + last_page + " of " + book.getPages());
                     bookProgress.setMax(book.getPages());
                     bookProgress.setProgress(last_page);
-
                 }
-
             }
         });
-
-
 
         Button update = (Button) view.findViewById(R.id.updateBookProgressBtn);
         update.setOnClickListener(new View.OnClickListener() {

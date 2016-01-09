@@ -37,6 +37,8 @@ public class Model {
         model.addBook(book);
     }
 
+    public void addBookToUser(Book book){ model.addBookToUser(book);}
+
     public Book getBookById(String id){
         return model.getBookById(id);
     }
@@ -67,7 +69,7 @@ public class Model {
     }
 
     public void getPostsByBookAndUserAsync(String userId, String bookId, GetPostsAsyncListener listener ){
-        model.getPostsByBookAndUserAsync(userId,bookId,listener);
+        model.getPostsByBookAndUserAsync(userId, bookId, listener);
     }
 
 
