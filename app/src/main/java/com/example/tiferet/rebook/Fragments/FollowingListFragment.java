@@ -9,15 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.tiferet.rebook.Model.Model;
 import com.example.tiferet.rebook.Model.Post;
 import com.example.tiferet.rebook.Model.PostDB;
 import com.example.tiferet.rebook.Model.User;
 import com.example.tiferet.rebook.Model.UserDB;
 import com.example.tiferet.rebook.R;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +42,7 @@ public class FollowingListFragment extends Fragment {
     public void setData(ArrayList<User> data) {
         this.data = data;
     }
-
+    String currentId = ParseUser.getCurrentUser().getObjectId();
     ArrayList<User> data;
     ListView list;
     //List<User> data;
@@ -88,15 +91,52 @@ public class FollowingListFragment extends Fragment {
                 convertView = inflater.inflate(R.layout.following_single_row, null);
             }
 
+            final Button follow = (Button) convertView.findViewById(R.id.unfollowBtn);
+            final User user = data.get(position);
+
+            if (user.getUserId().equals(currentId))
+                follow.setVisibility(View.GONE);
+
+            if (Model.getInstance().amIFollowing(user.getUserId()))
+            {
+                boolean amIFollowing = Model.getInstance().amIFollowing(user.getUserId());
+                if (amIFollowing)
+                {
+                    follow.setVisibility(View.VISIBLE);
+                    follow.setText("Unfollow " + user.getfName());
+                }
+                else
+                {
+                    follow.setVisibility(View.VISIBLE);
+                    follow.setText("Follow " + user.getfName());
+                }
+            }
+
             TextView first = (TextView) convertView.findViewById(R.id.userFirstName);
             TextView last = (TextView) convertView.findViewById(R.id.userLastName);
             TextView bookReview = (TextView) convertView.findViewById(R.id.bookReview);
             ImageView image = (ImageView) convertView.findViewById(R.id.userProfileImage);
-
-            User user = data.get(position);
             first.setText(user.getfName() + " ");
             last.setText(user.getlName());
 
+            follow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean amIFollowing = Model.getInstance().amIFollowing(user.getUserId());
+                    if (amIFollowing)
+                    {
+
+                        Model.getInstance().stopFollowing(user.getUserId());
+                        follow.setText("Follow " + user.getfName());
+
+                    }
+                    else
+                    {
+                        Model.getInstance().startFollowing(user.getUserId());
+                        follow.setText("Unfollow " + user.getfName());
+                    }
+                }
+            });
             return convertView;
         }
     }

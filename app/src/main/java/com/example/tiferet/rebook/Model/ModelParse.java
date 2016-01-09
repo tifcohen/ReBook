@@ -377,6 +377,7 @@ public class ModelParse {
             else
                 return true;
         } catch (ParseException e) {
+            Log.d("debug","prepare!");
             e.printStackTrace();
             return false;
         }
