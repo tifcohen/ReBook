@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 
 import com.example.tiferet.rebook.Fragments.AddNewBookFragment;
 import com.example.tiferet.rebook.Fragments.BookProgressFragment;
@@ -23,6 +24,7 @@ import com.example.tiferet.rebook.Fragments.UpdateBookProgressFragment;
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.Post;
 import com.example.tiferet.rebook.Model.User;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
@@ -100,6 +102,27 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         //thisFrag = "singlePost";
         ft.commit();
         invalidateOptionsMenu();
+    }
+    public void onClickUsername(View v){
+
+
+        OnOthersProfile(new User(ParseUser.getCurrentUser()));
+    }
+
+    public void OnOthersProfile(User user) {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        myProfileFragment = new MyProfileFragment();
+        myProfileFragment.setUser(user);
+        myProfileFragment.setDelegate(this);
+        ft.add(R.id.container, myProfileFragment);
+        ft.hide(newsFeedFragment);
+        ft.addToBackStack(newsFeedFragment.toString());
+        //ft.show(myProfileFragment);
+        //thisFrag = "myProfile";
+        ft.commit();
+        invalidateOptionsMenu();
+        Log.d("TAG", "on my profile");
     }
 
     public void OnMyProfile(User user) {
