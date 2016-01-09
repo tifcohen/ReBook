@@ -22,6 +22,7 @@ import com.example.tiferet.rebook.Fragments.OthersReviewFragment;
 import com.example.tiferet.rebook.Fragments.SinglePostFragment;
 import com.example.tiferet.rebook.Fragments.UpdateBookProgressFragment;
 import com.example.tiferet.rebook.Model.Book;
+import com.example.tiferet.rebook.Model.Model;
 import com.example.tiferet.rebook.Model.Post;
 import com.example.tiferet.rebook.Model.User;
 import com.parse.ParseUser;
@@ -103,11 +104,7 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         ft.commit();
         invalidateOptionsMenu();
     }
-    public void onClickUsername(View v){
 
-
-        OnOthersProfile(new User(ParseUser.getCurrentUser()));
-    }
 
     public void OnOthersProfile(User user) {
         FragmentManager fm = getFragmentManager();
@@ -304,5 +301,34 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         ft.hide(editProfileFragment);
         ft.addToBackStack(editProfileFragment.toString());
         ft.commit();
+    }
+
+    public void onClickUsername(View v){
+        User user = (User) v.getTag();
+
+        OnOthersProfile(user);
+    }
+
+    public void onClickBookname(View v){
+        Post post = (Post) v.getTag();
+        final String userId = post.getUserID();
+        Log.d("Debug", "Working!");
+        Model.getInstance().getBookByIdAsync(post.getBookID(), new Model.GetBookListener() {
+            @Override
+            public void onBookArrived(Book book) {
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                othersReviewFragment = new OthersReviewFragment();
+                othersReviewFragment.setBook(book);
+                //othersReviewFragment.setDelegate(this)
+                ft.add(R.id.container, othersReviewFragment);
+                ft.hide(newsFeedFragment);
+                ft.addToBackStack(othersReviewFragment.toString());
+                //ft.show(othersReviewFragment);
+                ft.commit();
+                //thisFrag = "othersReview";
+                invalidateOptionsMenu();
+            }
+        });
     }
 }

@@ -66,7 +66,7 @@ public class NewsFeedFragment extends Fragment  {
         CustomAdapter adapter = new CustomAdapter();
         list.setAdapter(adapter);
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /* list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("TAG", "row selected" + position);
@@ -75,7 +75,7 @@ public class NewsFeedFragment extends Fragment  {
                     delegate.OnSinglePost(post);
                 }
             }
-        });
+        });*/
         return view;
     }
 
@@ -152,10 +152,15 @@ public class NewsFeedFragment extends Fragment  {
                     userName.setText(user.getfName() + " " + user.getlName());
                     bookName.setText(book.getBookName());
 
+                    bookName.setTag(post);
+
+                    userName.setTag(user);
+
 
                     bookReview.setText(post.getText());
                     stars.setImageResource(book.getStars(post.getGrade()));
                     page.setText(" Page: "+ post.getCurrentPage());
+
 
 
                 }
