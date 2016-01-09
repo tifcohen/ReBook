@@ -33,6 +33,8 @@ public class Model {
         model.getAllBooks(listener);
     }
 
+    public void addPost(Post post){ model.addPost(post);}
+
     public void addBook(Book book){
         model.addBook(book);
     }

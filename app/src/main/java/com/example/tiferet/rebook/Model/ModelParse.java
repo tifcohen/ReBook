@@ -406,6 +406,30 @@ public class ModelParse {
 
     }
 
+    public void addPost(Post post) {
+        /*ParseObject newPost = new ParseObject("Post");
+        newPost.put();
 
-
+        final ParseObject newReadStatus = new ParseObject("ReadStatus");
+        final ParseUser user = ParseUser.getCurrentUser();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Books");
+        query.getInBackground(book.getBookID(), new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject newBook, ParseException e) {
+                ParseObject newPost = new ParseObject("Post");
+                newPost.put("book", newBook);
+                newPost.put("user", user);
+                newPost.put("finished", false);
+                newPost.put("currentPage", 0);
+                newPost.put("grade", 0);
+                newPost.put("text", "");
+                newPost.saveInBackground();
+                newReadStatus.put("book", newBook);
+                newReadStatus.put("user", user);
+                newReadStatus.put("finished", false);
+                newReadStatus.put("currentPage", 0);
+                newReadStatus.saveInBackground();
+            }
+        });*/
+    }
 }
