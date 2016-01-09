@@ -93,6 +93,7 @@ public class MainActivityFragment extends Fragment {
                                     getActivity().getApplicationContext(),
                                     "Unable to sign you in, Username or/and Password are incorrect.", Toast.LENGTH_LONG)
                                     .show();
+                            e.printStackTrace();
                         }
                     }
                 });
@@ -102,6 +103,8 @@ public class MainActivityFragment extends Fragment {
         });
         return view;
     }
+
+
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

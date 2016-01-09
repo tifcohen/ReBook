@@ -52,6 +52,7 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     JoinRebookFragment2 joinRebookFragment2;
     EditProfileFragment editProfileFragment;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

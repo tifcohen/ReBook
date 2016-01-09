@@ -145,51 +145,49 @@ public class NewsFeedFragment extends Fragment  {
                     Book book = bookArray.get(position);
                     User user = userArray.get(position);
                     Post post = postArray.get(position);
-                    if (post.getCurrentPage() == 0){
+                    userName.setText(user.getfName() + " " + user.getlName());
+                    userName.setTag(user);
+
+                    if (book.getBookName().length() > 17) {
+                        bookName.setText(book.getBookName().substring(0, 17) + "...");
+                    }
+                    else {
+                        bookName.setText(book.getBookName());
+                    }
+                    bookName.setTag(post);
+
+
+                    if (post.getCurrentPage() == 0 && post.getGrade() == 0) {
                         action.setText(" Started ");
                         bookReview.setVisibility(View.GONE);
                         action2.setText("Not yet rated.");
                         page.setVisibility(View.GONE);
+                        stars.setVisibility(View.GONE);
 
                     }
                     else
                     {
+                        page.setVisibility(View.VISIBLE);
+                        page.setText(" Page: " + post.getCurrentPage());
+                        stars.setImageResource(book.getStars(post.getGrade()));
+                        stars.setVisibility(View.VISIBLE);
+                        action2.setText(" rated ");
                         if (post.isFinished())
                             action.setText(" finished ");
                         else
                             action.setText(" is reading ");
 
-                        bookReview.setText(post.getText());
-                        stars.setImageResource(book.getStars(post.getGrade()));
-                        page.setText(" Page: " + post.getCurrentPage());
+                        if (post.getText().isEmpty())
+                        {
+                            bookReview.setVisibility(View.GONE);
+                        }
+                        else
+                        {
+                            bookReview.setText(post.getText());
+                            bookReview.setVisibility(View.VISIBLE);
+                        }
                     }
-
-
-                    userName.setText(user.getfName() + " " + user.getlName());
-                    if (book.getBookName().length() > 17) {
-                        bookName.setText(book.getBookName().substring(0,17) + "...");
-                    }
-                    else
-                    {
-                        bookName.setText(book.getBookName());
-                    }
-
-
-
-
-
-                    bookName.setTag(post);
-                    userName.setTag(user);
-
-
-
-
-
-
-
-
                 }
-
             });
 
             return convertView;

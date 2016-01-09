@@ -73,8 +73,12 @@ public class MyProfileFragment extends Fragment {
             public void onUserArrived(User user) {
                 //currentUser = user;
                 nameTextView.setText(user.getfName() + " " + user.getlName());
-                edit.setText("Edit " + user.getUsername());
-
+                if (user.getUserId().equals(ParseUser.getCurrentUser().getObjectId()))
+                    edit.setText("Edit My Details");
+                else
+                {
+                    edit.setText("Follow " + user.getfName());
+                }
             }
         });
 
@@ -88,7 +92,12 @@ public class MyProfileFragment extends Fragment {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                delegate.OnEditProfile(user);
+                if (user.getUserId().equals(ParseUser.getCurrentUser().getObjectId()))
+                    delegate.OnEditProfile(user);
+                else
+                {
+                    //Follow button.
+                }
             }
         });
 
