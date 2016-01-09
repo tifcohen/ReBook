@@ -88,6 +88,7 @@ public class NewsFeedFragment extends Fragment  {
         Log.d("TAG", "My Profile Pressed");
         switch (item.getItemId()) {
             case R.id.myProfileBtn:
+                User user = new User(ParseUser.getCurrentUser());
                 delegate.OnMyProfile(user);
                 return true;
             default:
