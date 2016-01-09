@@ -27,7 +27,7 @@ public class UpdateBookProgressFragment extends Fragment {
     public interface UpdateBookProgressFragmentDelegate{
         //void OnAddNewBook();
     }
-    Spinner dropdown;
+
     String[] items = new String[]{"0 Stars"
                                 ,"0.5 Stars"
                                 ,"1 Star"
@@ -52,14 +52,6 @@ public class UpdateBookProgressFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        dropdown = (Spinner) getActivity().findViewById(R.id.spinner1);
-
-
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.update_progress_fragment, container, false);
@@ -70,15 +62,15 @@ public class UpdateBookProgressFragment extends Fragment {
             ImageView bookImage = (ImageView) view.findViewById(R.id.bookProgressImage);
             EditText currentPage = (EditText) view.findViewById(R.id.currentPage);
             EditText currentReview = (EditText) view.findViewById(R.id.myCurrentReviewText);
+            Spinner dropdown = (Spinner) view.findViewById(R.id.dropdown);
+
+            ArrayAdapter<String>adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
+            dropdown.setAdapter(adapter);
 
             bookName.setText(this.book.getBookName());
             bookAuthor.setText(this.book.getAuthor());
             int pages = this.book.getPages();
             bookPages.setText(" of " + pages + ".");
-
-            //this, android.R.layout.simple_spinner_dropdown_item, items
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_dropdown_item, items);
-            //dropdown.setAdapter(adapter);
         }
 
 

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -30,7 +31,6 @@ public class AddNewBookFragment extends Fragment {
         void onSave();
     }
 
-    ArrayList<Book> data;
     AutoCompleteTextView bookNameList;
 
     AddNewBookFragmentDelegate delegate;
@@ -44,11 +44,14 @@ public class AddNewBookFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_new_book_fragment, container, false);
 
-        //data = BookDB.getInstance().getAllBooks();
+        final EditText newAuthor = (EditText) view.findViewById(R.id.addNewBookAuthor);
+        final EditText newPages = (EditText) view.findViewById(R.id.addNewBookPages);
+        final EditText newPicture = (EditText) view.findViewById(R.id.addNewBookPicture);
+
         bookNameList = (AutoCompleteTextView) view.findViewById(R.id.autoComplete);
         Model.getInstance().getAllBooks(new Model.GetBooksListener() {
             @Override
-            public void onBooksArrived(ArrayList<Book> books) {
+            public void onBooksArrived(final ArrayList<Book> books) {
                 String[] list = new String[books.size()];
                 for (int i = 0; i < books.size(); i++) {
                     list[i] = books.get(i).getBookName();
@@ -58,14 +61,18 @@ public class AddNewBookFragment extends Fragment {
                         android.R.layout.simple_list_item_1, list);
                 bookNameList.setAdapter(adapter);
                 bookNameList.setThreshold(1);
+
+                bookNameList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
+                        String selection = (String) parent.getItemAtPosition(position);
+                        Log.d("TAG", selection);
+                        newAuthor.setText(books.get(position).getAuthor());
+                        newPages.setText(""+ books.get(position).getPages());
+                        //newPicture.setText(books.get(position).getPicture());
+                    }
+                });
             }
         });
-
-
-        //final EditText newName = (EditText) view.findViewById(R.id.addNewBookName);
-        final EditText newAuthor = (EditText) view.findViewById(R.id.addNewBookAuthor);
-        final EditText newPages = (EditText) view.findViewById(R.id.addNewBookPages);
-        final EditText newPicture = (EditText) view.findViewById(R.id.addNewBookPicture);
 
         Button saveBtn = (Button) view.findViewById(R.id.saveNewBookBtn);
         Button cancelBtn = (Button) view.findViewById(R.id.cancelNewBookBtn);
