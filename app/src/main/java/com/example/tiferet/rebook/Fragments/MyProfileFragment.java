@@ -40,11 +40,11 @@ public class MyProfileFragment extends Fragment {
     }
 
     User user;
+
     ListView myReadingList;
     ArrayList<Book> myReadingData;
     ListView myFollowingList;
     ArrayList<User> myFollowingData;
-    //ArrayList<User> followingList;
     ListView myBookShelfList;
     List<Book> myBookShelfData;
 
@@ -77,7 +77,18 @@ public class MyProfileFragment extends Fragment {
                     edit.setText("Edit My Details");
                 else
                 {
-                    edit.setText("Follow " + user.getfName());
+                    boolean amIFollowing = Model.getInstance().amIFollowing(user.getUserId());
+                    Log.d("Debug","Following:"+amIFollowing);
+                    if (amIFollowing)
+                    {
+
+                        edit.setText("Unfollow " + user.getfName());
+                    }
+                    else
+                    {
+                        edit.setText("Follow " + user.getfName());
+                    }
+
                 }
             }
         });
@@ -89,13 +100,19 @@ public class MyProfileFragment extends Fragment {
                 followersTextView.setText(followersAmount);
             }
         });
+
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (user.getUserId().equals(ParseUser.getCurrentUser().getObjectId()))
+                {
                     delegate.OnEditProfile(user);
+                    Log.d("Debug","Wrong !!! user.getUserId(): " + user.getUserId() + "ParseUser: " +ParseUser.getCurrentUser().getObjectId() );
+                }
                 else
                 {
+                    Model.getInstance().startFollowing(user.getUserId());
+                    Log.d("Debug", "Right !!! ");
                     //Follow button.
                 }
             }
@@ -178,9 +195,10 @@ public class MyProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ParseUser curr = ParseUser.getCurrentUser();
+
+        /* ParseUser curr = ParseUser.getCurrentUser();
         User temp = new User(curr);
-        setUser(temp);
+        setUser(temp); */
         MainActivity activity = (MainActivity) getActivity();
         activity.menuIdToDisplay = R.menu.menu_add_book;
         activity.invalidateOptionsMenu();
@@ -252,7 +270,7 @@ public class MyProfileFragment extends Fragment {
             }
             ImageView followingImage = (ImageView) convertView.findViewById(R.id.followingImage);
 
-            User user = myFollowingData.get(position);
+            //User user = myFollowingData.get(position);
             return convertView;
         }
     }

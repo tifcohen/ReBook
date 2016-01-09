@@ -47,6 +47,14 @@ public class Model {
         public void onReadingStatusArrived(ArrayList<Book> bookList);
     }
 
+    public void startFollowing(String userId){
+        model.startFollowing(userId);
+    }
+
+    public boolean amIFollowing(String userId){
+        return model.amIFollowing(userId);
+    }
+
     public void getReadingStatusAsync(String id, boolean finished, GetReadingStatusListener listener){
         model.getReadingStatusAsync(id, finished, listener);
     }

@@ -127,7 +127,7 @@ public class ModelParse {
                 newPost.put("grade", 0);
                 newPost.put("text", "Just starting... Waiting to what the future holds!");
                 newPost.saveInBackground();
-                newReadStatus.put("book",newBook);
+                newReadStatus.put("book", newBook);
                 newReadStatus.put("user", user);
                 newReadStatus.put("finished", false);
                 newReadStatus.put("currentPage", 0);
@@ -334,5 +334,50 @@ public class ModelParse {
                 }
             }
         });
+    }
+
+    public void startFollowing(final String userId) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+        query.getInBackground(userId, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject to, com.parse.ParseException e) {
+                if (e == null) {
+                    ParseObject follow = new ParseObject("Follow");
+                    follow.put("to", to);
+                    follow.put("from", ParseUser.getCurrentUser());
+                    try {
+                        follow.save();
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+
+                } else {
+                    Log.d("Debug", "User was not found " + userId);
+                }
+            }
+        });
+
+    }
+
+
+
+    public boolean amIFollowing(String userId)
+    {
+        try
+        {
+            ParseObject to = ParseQuery.getQuery("_User").get(userId);
+            ParseObject from = ParseUser.getCurrentUser();
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Follow");
+            query.whereEqualTo("from",from);
+            query.whereEqualTo("to", to);
+            ParseObject p = query.getFirst();
+            if (p == null)
+                return false;
+            else
+                return true;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

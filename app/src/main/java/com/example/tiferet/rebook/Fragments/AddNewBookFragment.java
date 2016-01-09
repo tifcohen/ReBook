@@ -6,21 +6,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.example.tiferet.rebook.Model.Book;
-import com.example.tiferet.rebook.Model.BookDB;
 import com.example.tiferet.rebook.Model.Model;
 import com.example.tiferet.rebook.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by TIFERET on 04-Jan-16.

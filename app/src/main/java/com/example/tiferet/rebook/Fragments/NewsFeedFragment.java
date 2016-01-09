@@ -7,11 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,16 +15,13 @@ import android.widget.TextView;
 import com.example.tiferet.rebook.MainActivity;
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.Model;
-import com.example.tiferet.rebook.Model.ModelParse;
 import com.example.tiferet.rebook.Model.Post;
-import com.example.tiferet.rebook.Model.PostDB;
 import com.example.tiferet.rebook.Model.User;
 import com.example.tiferet.rebook.R;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by TIFERET on 30-Dec-15.
