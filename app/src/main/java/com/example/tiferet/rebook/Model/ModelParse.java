@@ -10,6 +10,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -103,13 +104,18 @@ public class ModelParse {
     }
 
 
-    public void addBook(Book book) {
+    public void addBook(final Book book) {
         ParseObject newBook = new ParseObject("Books");
         newBook.put("bookName", book.getBookName());
         newBook.put("author", book.getAuthor());
         newBook.put("Pages", book.getPages());
         newBook.put("imageName", book.getPicture());
-        newBook.saveInBackground();
+        newBook.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                addBookToUser(book);
+            }
+        });
     }
 
     public void addBookToUser(Book book){
@@ -125,7 +131,7 @@ public class ModelParse {
                 newPost.put("finished", false);
                 newPost.put("currentPage", 0);
                 newPost.put("grade", 0);
-                newPost.put("text", "Just starting... Waiting to what the future holds!");
+                newPost.put("text", "");
                 newPost.saveInBackground();
                 newReadStatus.put("book", newBook);
                 newReadStatus.put("user", user);
@@ -277,7 +283,7 @@ public class ModelParse {
                     query2.include("book");
                     try {
                         List<ParseObject> data = query2.find();
-                        for (ParseObject po : data){
+                        for (ParseObject po : data) {
                             Book book = new Book(po.getParseObject("book"));
                             bookList.add(book);
                         }
@@ -301,16 +307,15 @@ public class ModelParse {
                     query2.getInBackground(bookId, new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject book, ParseException e2) {
-                            if (e2 == null){
+                            if (e2 == null) {
                                 ParseQuery query = new ParseQuery("Post");
                                 query.orderByAscending("createdAt");
                                 query.whereEqualTo("book", book);
                                 query.whereEqualTo("user", user);
                                 try {
                                     List<ParseObject> data = query.find();
-                                    for (ParseObject po : data)
-                                    {
-                                        Post post = new Post(po,userId,bookId);
+                                    for (ParseObject po : data) {
+                                        Post post = new Post(po, userId, bookId);
                                         postArray.add(post);
                                     }
                                     listener.onPostsArrived(postArray, null, null);
@@ -319,9 +324,7 @@ public class ModelParse {
                                     e1.printStackTrace();
                                 }
 
-                            }
-                            else
-                            {
+                            } else {
                                 Log.d("Debug", "Book was not found. " + bookId);
                             }
 
