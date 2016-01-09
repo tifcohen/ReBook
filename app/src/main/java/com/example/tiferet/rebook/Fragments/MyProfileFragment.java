@@ -39,7 +39,6 @@ public class MyProfileFragment extends Fragment {
         void OnEditProfile(User user);
     }
 
-    User currentUser;
     User user;
     ListView myReadingList;
     ArrayList<Book> myReadingData;
