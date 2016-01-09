@@ -15,8 +15,11 @@ import android.widget.TextView;
 
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.BookDB;
+import com.example.tiferet.rebook.Model.Post;
 import com.example.tiferet.rebook.R;
+import com.parse.ParseUser;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,6 +47,7 @@ public class UpdateBookProgressFragment extends Fragment {
     ListView list;
     List<Book> data;
     Book book;
+    Post post;
 
     UpdateBookProgressFragmentDelegate delegate;
     public void setDelegate(UpdateBookProgressFragmentDelegate delegate){ this.delegate = delegate;}
@@ -55,6 +59,7 @@ public class UpdateBookProgressFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.update_progress_fragment, container, false);
+        post = new Post("", "", "", "", null, 0, false, 0);
         if(book!=null){
             TextView bookName = (TextView) view.findViewById(R.id.bookProgressName);
             TextView bookAuthor = (TextView) view.findViewById(R.id.bookProgressAuthor);
@@ -71,6 +76,12 @@ public class UpdateBookProgressFragment extends Fragment {
             bookAuthor.setText(this.book.getAuthor());
             int pages = this.book.getPages();
             bookPages.setText(" of " + pages + ".");
+
+            post.setBookID(book.getBookID());
+            post.setUserID(ParseUser.getCurrentUser().toString());
+            post.setCurrentPage(Integer.getInteger(currentPage.getText().toString()));
+            post.setGrade(Integer.getInteger(dropdown.getSelectedItem().toString()));
+            post.setText(currentReview.getText().toString());
         }
 
 

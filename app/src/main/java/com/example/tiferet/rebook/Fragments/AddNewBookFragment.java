@@ -6,17 +6,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.example.tiferet.rebook.Model.Book;
+import com.example.tiferet.rebook.Model.BookDB;
 import com.example.tiferet.rebook.Model.Model;
 import com.example.tiferet.rebook.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by TIFERET on 04-Jan-16.
@@ -58,21 +62,21 @@ public class AddNewBookFragment extends Fragment {
                         android.R.layout.simple_list_item_1, list);
                 bookNameList.setAdapter(adapter);
                 bookNameList.setThreshold(1);
-
+                newBook = new Book("","","",0,"");
                 bookNameList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
                         String selection = (String) parent.getItemAtPosition(position);
                         Log.d("TAG", selection);
-                        newBook = new Book("",selection,"",0,"");
+                        newBook.setBookName(selection);
                         for(Book bk : books){
                             if(bk.getBookName().equals(selection)){
-                                    flag = 1;
-                                    newAuthor.setText(bk.getAuthor());
-                                    newPages.setText("" + bk.getPages());
-                                    //newPicture.setText(bk.getPicture());
-                                    newBook.setBookID(bk.getBookID());
-                                    newBook.setAuthor(bk.getAuthor());
-                                    newBook.setPages(bk.getPages());
+                                flag = 1;
+                                newAuthor.setText(bk.getAuthor());
+                                newPages.setText("" + bk.getPages());
+                                //newPicture.setText(bk.getPicture());
+                                newBook.setBookID(bk.getBookID());
+                                newBook.setAuthor(bk.getAuthor());
+                                newBook.setPages(bk.getPages());
                                 break;
                             }
                         }
@@ -88,9 +92,14 @@ public class AddNewBookFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(flag==0){
+                    newBook.setBookName(bookNameList.getText().toString());
+                    newBook.setAuthor(newAuthor.getText().toString());
+                    newBook.setPages(Integer.parseInt(newPages.getText().toString()));
                     Model.getInstance().addBook(newBook);
                 }
-                Model.getInstance().addBookToUser(newBook);
+                else {
+                    Model.getInstance().addBookToUser(newBook);
+                }
                 delegate.onSave();
                 //Alert alert = new Alert("" + name.getText().toString() + " Was Added Successfully :)", "Dismiss", delegate);
                 //alert.show(getFragmentManager(), "TAG");
