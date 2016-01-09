@@ -105,23 +105,6 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         invalidateOptionsMenu();
     }
 
-
-    public void OnOthersProfile(User user) {
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        myProfileFragment = new MyProfileFragment();
-        myProfileFragment.setUser(user);
-        myProfileFragment.setDelegate(this);
-        ft.add(R.id.container, myProfileFragment);
-        ft.hide(newsFeedFragment);
-        ft.addToBackStack(newsFeedFragment.toString());
-        //ft.show(myProfileFragment);
-        //thisFrag = "myProfile";
-        ft.commit();
-        invalidateOptionsMenu();
-        Log.d("TAG", "on my profile");
-    }
-
     public void OnMyProfile(User user) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -306,7 +289,16 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     public void onClickUsername(View v){
         User user = (User) v.getTag();
 
-        OnOthersProfile(user);
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        myProfileFragment = new MyProfileFragment();
+        myProfileFragment.setUser(user);
+        myProfileFragment.setDelegate(this);
+        ft.add(R.id.container, myProfileFragment);
+        ft.hide(newsFeedFragment);
+        ft.addToBackStack(newsFeedFragment.toString());
+        ft.commit();
+        invalidateOptionsMenu();
     }
 
     public void onClickBookname(View v){
