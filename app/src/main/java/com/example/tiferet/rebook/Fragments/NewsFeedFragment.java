@@ -141,8 +141,8 @@ public class NewsFeedFragment extends Fragment  {
                     userName.setText(user.getfName() + " " + user.getlName());
                     userName.setTag(user);
 
-                    if (book.getBookName().length() > 17) {
-                        bookName.setText(book.getBookName().substring(0, 17) + "...");
+                    if (book.getBookName().length() > 27) {
+                        bookName.setText(book.getBookName().substring(0, 27) + "...");
                     }
                     else {
                         bookName.setText(book.getBookName());
@@ -151,11 +151,12 @@ public class NewsFeedFragment extends Fragment  {
 
 
                     if (post.getCurrentPage() == 0 && post.getGrade() == 0) {
-                        action.setText(" Started ");
+                        action.setText("Started ");
                         bookReview.setVisibility(View.GONE);
                         action2.setText("Not yet rated.");
                         page.setVisibility(View.GONE);
                         stars.setVisibility(View.GONE);
+                        action2.setVisibility(View.GONE);
 
                     }
                     else
@@ -164,11 +165,12 @@ public class NewsFeedFragment extends Fragment  {
                         page.setText(" Page: " + post.getCurrentPage());
                         stars.setImageResource(book.getStars(post.getGrade()));
                         stars.setVisibility(View.VISIBLE);
-                        action2.setText(" rated ");
+                        action2.setVisibility(View.VISIBLE);
+                        action2.setText("Rated ");
                         if (post.isFinished())
-                            action.setText(" finished ");
+                            action.setText("finished ");
                         else
-                            action.setText(" is reading ");
+                            action.setText("is reading ");
 
                         if (post.getText().isEmpty())
                         {
