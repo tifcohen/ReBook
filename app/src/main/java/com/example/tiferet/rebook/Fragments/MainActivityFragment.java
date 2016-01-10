@@ -58,9 +58,6 @@ public class MainActivityFragment extends Fragment {
 
         Button loginBtn = (Button) view.findViewById(R.id.loginBtn);
 
-        //final User temp = new User("123",email.getText().toString(),"name", "name", "prof", "birtheday");
-        //user.setEmail(email.getText().toString());
-
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,29 +67,18 @@ public class MainActivityFragment extends Fragment {
                 String password = password_input.getText().toString();
                 String username = username_input.getText().toString().toLowerCase().trim().replaceAll(" +", " ");
 
-                if (username.equals("") && password.equals(""))
-                {
-                    username = "alon";
-                    password = "a";
-                }
-
                 ParseUser.logInInBackground(username, password, new LogInCallback() {
                     @Override
                     public void done(ParseUser user, ParseException e) {
-
                         if (user != null) {
                             Toast.makeText(
-                                    getActivity().getApplicationContext(),
-                                    "Welcome to Rebook!", Toast.LENGTH_LONG)
-                                    .show();
+                                    getActivity().getApplicationContext(), "Welcome to Rebook!", Toast.LENGTH_LONG).show();
                             if (delegate != null) {
-                                delegate.OnNewsFeed(new User("", "", "", "", "", "", ""));
+                                delegate.OnNewsFeed(new User(user));
                             }
                         } else {
-                            Toast.makeText(
-                                    getActivity().getApplicationContext(),
-                                    "Unable to sign you in, Username or/and Password are incorrect.", Toast.LENGTH_LONG)
-                                    .show();
+                            Toast.makeText(getActivity().getApplicationContext(),
+                                    "Unable to sign you in, Username and/or Password are incorrect", Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
                     }

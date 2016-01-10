@@ -58,8 +58,21 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        /*if (currentUser != null) {
+            newsFeedFragment = (NewsFeedFragment) getFragmentManager().findFragmentById(R.layout.news_feed_fragment);
+            newsFeedFragment.setDelegate(this);
+        }
+        else {
+            loginFragment = (MainActivityFragment) getFragmentManager().findFragmentById(R.id.loginFragment);
+            loginFragment.setDelegate(this);
+        }*/
+
         loginFragment = (MainActivityFragment) getFragmentManager().findFragmentById(R.id.loginFragment);
         loginFragment.setDelegate(this);
+        if(currentUser!=null){
+            OnNewsFeed(new User(currentUser));
+        }
     }
 
     public int menuIdToDisplay = R.menu.menu_main;
@@ -85,15 +98,15 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         if(temp<1){
             ft.hide(loginFragment);
         }
-        else
+        else {
             ft.hide(currentFragment);
-        //ft.hide(joinRebookFragment2);
+        }
         ft.addToBackStack(thisFrag);
         ft.commit();
         invalidateOptionsMenu();
     }
 
-    @Override
+    /*@Override
     public void OnSinglePost(Post post) {
         Log.d("TAG", "post selected " + post.getPostID());
         FragmentManager fm = getFragmentManager();
@@ -107,7 +120,7 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         ft.addToBackStack(thisFrag);
         ft.commit();
         invalidateOptionsMenu();
-    }
+    }*/
 
     public void OnMyProfile(User user) {
         FragmentManager fm = getFragmentManager();
@@ -186,8 +199,23 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     }
 
     @Override
+    public void OnLogout() {
+        ParseUser.logOut();
+        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        loginFragment = new MainActivityFragment();
+        loginFragment.setDelegate(this);
+        thisFrag = ""+ fm.getBackStackEntryCount();
+        ft.add(R.id.container, loginFragment, thisFrag);
+        ft.addToBackStack(thisFrag);
+        ft.commit();
+        invalidateOptionsMenu();
+        this.finish();
+    }
+
+    @Override
     public void OnUpdateProgress(Book book) {
-        Log.d("TAG", "Book selected " + book.getBookID());
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         updateBookProgressFragment = new UpdateBookProgressFragment();
@@ -278,8 +306,11 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
             ft.detach(currentFragment);
             ft.attach(currentFragment);
             ft.commit();
+            getFragmentManager().popBackStack();
         }
-        getFragmentManager().popBackStack();
+        else {
+            this.finish();
+        }
     }
 
     @Override

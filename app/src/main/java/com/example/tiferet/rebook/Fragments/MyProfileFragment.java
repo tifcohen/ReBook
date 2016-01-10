@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class MyProfileFragment extends Fragment {
         void OnBookProgress(String userId, Book book);
         void OnFollowingList(ArrayList<User> followers);
         void OnEditProfile(User user);
+        void OnLogout();
     }
 
     User user;
@@ -202,17 +204,23 @@ public class MyProfileFragment extends Fragment {
                 delegate.OnAddNewBook();
                 return true;
             }
+            case R.id.action_logout : {
+                delegate.OnLogout();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
 
+ /*   @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getActivity().getMenuInflater().inflate(getActivity().menuIdToDisplay, menu);
+        return true;
+    }*/
+
     @Override
     public void onResume() {
         super.onResume();
-
-        /* ParseUser curr = ParseUser.getCurrentUser();
-        User temp = new User(curr);
-        setUser(temp); */
         MainActivity activity = (MainActivity) getActivity();
         activity.menuIdToDisplay = R.menu.menu_add_book;
         activity.invalidateOptionsMenu();

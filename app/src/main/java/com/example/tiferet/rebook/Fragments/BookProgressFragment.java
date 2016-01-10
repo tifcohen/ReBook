@@ -2,7 +2,9 @@ package com.example.tiferet.rebook.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -13,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.tiferet.rebook.MainActivity;
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.BookDB;
 import com.example.tiferet.rebook.Model.Model;
@@ -33,6 +36,8 @@ public class BookProgressFragment extends Fragment {
     public interface BookProgressFragmentDelegate{
         void OnUpdateProgress(Book book);
         void OnOthersReview(Book book);
+        void OnLogout();
+        void OnMyProfile(User user);
     }
 
     ListView list;
@@ -106,7 +111,37 @@ public class BookProgressFragment extends Fragment {
 
         return view;
     }
+/*
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d("TAG", "My Profile Pressed");
+        switch (item.getItemId()) {
+            case R.id.myProfileBtn:
+                User user = new User(ParseUser.getCurrentUser());
+                delegate.OnMyProfile(user);
+                return true;
+            case R.id.action_logout:
+                delegate.OnLogout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity activity = (MainActivity) getActivity();
+        activity.menuIdToDisplay = R.menu.menu_news_feed;
+        activity.invalidateOptionsMenu();
+    }
+*/
     public String getUserId() {
         return userId;
     }

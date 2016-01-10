@@ -29,8 +29,9 @@ import java.util.List;
 public class NewsFeedFragment extends Fragment  {
 
     public interface NewsFeedFragmentDelegate{
-        void OnSinglePost(Post post);
+        //void OnSinglePost(Post post);
         void OnMyProfile(User user);
+        void OnLogout();
     }
 
     NewsFeedFragmentDelegate delegate;
@@ -84,11 +85,13 @@ public class NewsFeedFragment extends Fragment  {
                 User user = new User(ParseUser.getCurrentUser());
                 delegate.OnMyProfile(user);
                 return true;
+            case R.id.action_logout:
+                delegate.OnLogout();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
     @Override
     public void onResume() {
