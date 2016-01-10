@@ -77,9 +77,16 @@ public class Model {
         public void onPostsArrived(ArrayList<Post> postArray, ArrayList<User> userArray, ArrayList<Book> bookArray);
     }
 
+    public interface GetBookReviewsAsyncListener{
+        public void onPostsArrived(ArrayList<Post> postArray, ArrayList<User> userArray);
+    }
+
     public void getPostsAsync(String userId, GetPostsAsyncListener listener){
         model.getPostsAsync(userId, listener);
+    }
 
+    public void getBookReviewsAsync(String bookId, GetBookReviewsAsyncListener listener){
+        model.getBookReviewsAsync(bookId, listener);
     }
 
     public void getPostsByBookAndUserAsync(String userId, String bookId, GetPostsAsyncListener listener ){
