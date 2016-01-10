@@ -1,6 +1,7 @@
 package com.example.tiferet.rebook;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -57,11 +58,8 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
-
         loginFragment = (MainActivityFragment) getFragmentManager().findFragmentById(R.id.loginFragment);
-
         loginFragment.setDelegate(this);
-
     }
 
     public int menuIdToDisplay = R.menu.menu_main;
@@ -76,16 +74,22 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     public void OnNewsFeed(User user) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
+        int temp = fm.getBackStackEntryCount()-1;
+        thisFrag = ""+ temp;
+        Fragment currentFragment = getFragmentManager().findFragmentByTag(thisFrag);
         newsFeedFragment = new NewsFeedFragment();
         newsFeedFragment.setUser(user);
         newsFeedFragment.setDelegate(this);
-        ft.add(R.id.container, newsFeedFragment);
-        ft.hide(loginFragment);
+        thisFrag = "" + fm.getBackStackEntryCount();
+        ft.add(R.id.container, newsFeedFragment, thisFrag);
+        if(temp<1){
+            ft.hide(loginFragment);
+        }
+        else
+            ft.hide(currentFragment);
         //ft.hide(joinRebookFragment2);
-        ft.addToBackStack(loginFragment.toString());
-        //ft.show(newsFeedFragment);
+        ft.addToBackStack(thisFrag);
         ft.commit();
-        //thisFrag = "newsfeed";
         invalidateOptionsMenu();
     }
 
@@ -97,11 +101,10 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         singlePostFragment = new SinglePostFragment();
         singlePostFragment.setPost(post);
         singlePostFragment.setDelegate(this);
-        ft.add(R.id.container, singlePostFragment);
+        thisFrag = ""+ fm.getBackStackEntryCount();
+        ft.add(R.id.container, singlePostFragment, thisFrag);
         ft.hide(newsFeedFragment);
-        ft.addToBackStack(newsFeedFragment.toString());
-        //ft.show(singlePostFragment);
-        //thisFrag = "singlePost";
+        ft.addToBackStack(thisFrag);
         ft.commit();
         invalidateOptionsMenu();
     }
@@ -112,15 +115,12 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         myProfileFragment = new MyProfileFragment();
         myProfileFragment.setUser(user);
         myProfileFragment.setDelegate(this);
-        //ft.add(R.id.container, myProfileFragment);
-        ft.replace(R.id.container, myProfileFragment);
+        thisFrag = ""+ fm.getBackStackEntryCount();
+        ft.add(R.id.container, myProfileFragment, thisFrag);
         ft.hide(newsFeedFragment);
-        ft.addToBackStack(newsFeedFragment.toString());
-        //ft.show(myProfileFragment);
-        //thisFrag = "myProfile";
+        ft.addToBackStack(thisFrag);
         ft.commit();
         invalidateOptionsMenu();
-        Log.d("TAG", "on my profile");
     }
 
     @Override
@@ -130,11 +130,10 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         FragmentTransaction ft = fm.beginTransaction();
         addNewBookFragment = new AddNewBookFragment();
         addNewBookFragment.setDelegate(this);
-        ft.add(R.id.container, addNewBookFragment);
+        thisFrag = ""+ fm.getBackStackEntryCount();
+        ft.add(R.id.container, addNewBookFragment, thisFrag);
         ft.hide(myProfileFragment);
-        ft.addToBackStack(myProfileFragment.toString());
-        //ft.show(addNewBookFragment);
-        //thisFrag = "addNewBook";
+        ft.addToBackStack(thisFrag);
         ft.commit();
         invalidateOptionsMenu();
     }
@@ -148,12 +147,11 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         bookProgressFragment.setBook(book);
         bookProgressFragment.setUserId(userId);
         bookProgressFragment.setDelegate(this);
-        ft.add(R.id.container, bookProgressFragment);
+        thisFrag = ""+ fm.getBackStackEntryCount();
+        ft.add(R.id.container, bookProgressFragment,thisFrag);
         ft.hide(myProfileFragment);
-        ft.addToBackStack(bookProgressFragment.toString());
-        //ft.show(bookProgressFragment);
+        ft.addToBackStack(thisFrag);
         ft.commit();
-        //thisFrag = "bookProgress";
         invalidateOptionsMenu();
     }
 
@@ -164,12 +162,11 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         followingListFragment = new FollowingListFragment();
         followingListFragment.setDelegate(this);
         followingListFragment.setData(followers);
-        ft.add(R.id.container, followingListFragment);
+        thisFrag = ""+ fm.getBackStackEntryCount();
+        ft.add(R.id.container, followingListFragment, thisFrag);
         ft.hide(myProfileFragment);
-        ft.addToBackStack(myProfileFragment.toString());
-        //ft.show(followingListFragment);
+        ft.addToBackStack(thisFrag);
         ft.commit();
-        //thisFrag = "followingList";
         invalidateOptionsMenu();
     }
 
@@ -180,14 +177,12 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         editProfileFragment = new EditProfileFragment();
         editProfileFragment.setDelegate(this);
         editProfileFragment.setUser(user);
-        ft.add(R.id.container, editProfileFragment);
+        thisFrag = ""+ fm.getBackStackEntryCount();
+        ft.add(R.id.container, editProfileFragment, thisFrag);
         ft.hide(myProfileFragment);
-        ft.addToBackStack(myProfileFragment.toString());
-        //ft.show(followingListFragment);
+        ft.addToBackStack(thisFrag);
         ft.commit();
-        //thisFrag = "followingList";
         invalidateOptionsMenu();
-
     }
 
     @Override
@@ -198,12 +193,11 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         updateBookProgressFragment = new UpdateBookProgressFragment();
         updateBookProgressFragment.setBook(book);
         updateBookProgressFragment.setDelegate(this);
-        ft.add(R.id.container, updateBookProgressFragment);
+        thisFrag = ""+ fm.getBackStackEntryCount();
+        ft.add(R.id.container, updateBookProgressFragment, thisFrag);
         ft.hide(bookProgressFragment);
-        ft.addToBackStack(updateBookProgressFragment.toString());
-        //ft.show(updateBookProgressFragment);
+        ft.addToBackStack(thisFrag);
         ft.commit();
-        //thisFrag = "updateProgress";
         invalidateOptionsMenu();
     }
 
@@ -215,12 +209,11 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         othersReviewFragment = new OthersReviewFragment();
         othersReviewFragment.setBook(book);
         othersReviewFragment.setDelegate(this);
-        ft.add(R.id.container, othersReviewFragment);
+        thisFrag = ""+ fm.getBackStackEntryCount();
+        ft.add(R.id.container, othersReviewFragment, thisFrag);
         ft.hide(bookProgressFragment);
-        ft.addToBackStack(othersReviewFragment.toString());
-        //ft.show(othersReviewFragment);
+        ft.addToBackStack(thisFrag);
         ft.commit();
-        //thisFrag = "othersReview";
         invalidateOptionsMenu();
     }
 
@@ -231,12 +224,11 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         FragmentTransaction ft = fm.beginTransaction();
         joinRebookFragment = new JoinRebookFragment();
         joinRebookFragment.setDelegate(this);
-        ft.add(R.id.container, joinRebookFragment);
+        thisFrag = ""+ fm.getBackStackEntryCount();
+        ft.add(R.id.container, joinRebookFragment, thisFrag);
         ft.hide(loginFragment);
-        ft.addToBackStack(loginFragment.toString());
-        //ft.show(othersReviewFragment);
+        ft.addToBackStack(thisFrag);
         ft.commit();
-        //thisFrag = "othersReview";
         invalidateOptionsMenu();
     }
 
@@ -248,30 +240,30 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         joinRebookFragment2 = new JoinRebookFragment2();
         joinRebookFragment2.setUser(user);
         joinRebookFragment2.setDelegate(this);
-        ft.add(R.id.container, joinRebookFragment2);
+        thisFrag = ""+ fm.getBackStackEntryCount();
+        ft.add(R.id.container, joinRebookFragment2, thisFrag);
         ft.hide(joinRebookFragment);
-        ft.addToBackStack(joinRebookFragment.toString());
-        //ft.show(othersReviewFragment);
+        ft.addToBackStack(thisFrag);
         ft.commit();
-        //thisFrag = "othersReview";
         invalidateOptionsMenu();
     }
 
     @Override
     public void onCancel() {
-        //int count = getFragmentManager().getBackStackEntryCount();
-        /*if(getFragmentManager().getBackStackEntryAt(count - 1).getName().equals("myProfile"))
-            thisFrag = "myProfile";
-        else
-            thisFrag = "newsfeed";*/
         invalidateOptionsMenu();
         getFragmentManager().popBackStack();
 }
 
     @Override
     public void onSave() {
-        invalidateOptionsMenu();
-
+        FragmentManager fm = getFragmentManager();
+        int temp = fm.getBackStackEntryCount() - 2;
+        thisFrag = ""+ temp;
+        Fragment currentFragment = getFragmentManager().findFragmentByTag(thisFrag);
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.detach(currentFragment);
+        ft.attach(currentFragment);
+        ft.commit();
         getFragmentManager().popBackStack();
     }
 
@@ -281,9 +273,10 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         FragmentTransaction ft = fm.beginTransaction();
         myProfileFragment = new MyProfileFragment();
         myProfileFragment.setDelegate(this);
-        ft.add(R.id.container, myProfileFragment);
+        thisFrag = ""+ fm.getBackStackEntryCount();
+        ft.add(R.id.container, myProfileFragment, thisFrag);
         ft.hide(editProfileFragment);
-        ft.addToBackStack(editProfileFragment.toString());
+        ft.addToBackStack(thisFrag);
         ft.commit();
     }
 
@@ -295,9 +288,10 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         myProfileFragment = new MyProfileFragment();
         myProfileFragment.setUser(user);
         myProfileFragment.setDelegate(this);
-        ft.add(R.id.container, myProfileFragment);
+        thisFrag = ""+ fm.getBackStackEntryCount();
+        ft.add(R.id.container, myProfileFragment, thisFrag);
         ft.hide(newsFeedFragment);
-        ft.addToBackStack(newsFeedFragment.toString());
+        ft.addToBackStack(thisFrag);
         ft.commit();
         invalidateOptionsMenu();
     }
@@ -314,12 +308,11 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
                 othersReviewFragment = new OthersReviewFragment();
                 othersReviewFragment.setBook(book);
                 //othersReviewFragment.setDelegate(this)
-                ft.add(R.id.container, othersReviewFragment);
+                thisFrag = ""+ fm.getBackStackEntryCount();
+                ft.add(R.id.container, othersReviewFragment, thisFrag);
                 ft.hide(newsFeedFragment);
-                ft.addToBackStack(othersReviewFragment.toString());
-                //ft.show(othersReviewFragment);
+                ft.addToBackStack(thisFrag);
                 ft.commit();
-                //thisFrag = "othersReview";
                 invalidateOptionsMenu();
             }
         });

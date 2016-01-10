@@ -47,35 +47,28 @@ public class JoinRebookFragment extends Fragment {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (psw.getText().toString().equals("") ||
                         rpsw.getText().toString().equals("") ||
-                        username.getText().toString().equals(""))
-                {
+                        username.getText().toString().equals("")) {
                     Toast.makeText(
                             getActivity().getApplicationContext(),
                             "All fields are required.", Toast.LENGTH_LONG)
                             .show();
                 }
-                else
-                {
+                else {
                     if(!psw.getText().toString().equals(rpsw.getText().toString())){
                         Toast.makeText(
                                 getActivity().getApplicationContext(),
                                 "Passwords do not match.", Toast.LENGTH_LONG)
                                 .show();
                     }
-                    else
-                    {
+                    else {
                         final User tempUser = new User(psw.getText().toString(),username.getText().toString(), "", "", "", "", "");
                         if(delegate!=null){
                             delegate.OnJoinRebook2(tempUser);
                         }
                     }
                 }
-
-
-
             }
         });
 
@@ -88,7 +81,6 @@ public class JoinRebookFragment extends Fragment {
                 }
             }
         });
-
         return view;
     }
 }
