@@ -440,4 +440,36 @@ public class ModelParse {
             }
         });*/
     }
+
+    public void getBookReviewsAsync(String bookId, final Model.GetBookReviewsAsyncListener listener) {
+        final ArrayList<Post> postArray = new ArrayList<Post>();
+        final ArrayList<User> userArray = new ArrayList<User>();
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Books");
+        query.getInBackground(bookId, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject newBook, ParseException e) {
+                Book book = new Book(newBook);
+                ParseQuery query = new ParseQuery("Post");
+                query.include("user");
+                query.whereEqualTo("book", book);
+                query.orderByDescending("createdAt");
+                //query.whereEqualTo("finished",true);
+
+                try {
+                    List<ParseObject> data = query.find();
+                    for (ParseObject po : data) {
+
+                        User user = new User(po.getParseObject("user"));
+                        Post post = new Post(po, user.getUserId(), book.getBookID());
+                        postArray.add(post);
+                        userArray.add(user);
+                    }
+                    listener.onPostsArrived(postArray,userArray);
+                }catch(ParseException e1){
+                    e1.printStackTrace();
+                }
+            }
+        });
+    }
 }
