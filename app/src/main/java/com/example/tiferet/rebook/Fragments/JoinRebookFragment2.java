@@ -55,65 +55,47 @@ public class JoinRebookFragment2 extends Fragment {
                 {
                     Toast.makeText(
                             getActivity().getApplicationContext(),
-                            "Please fill the name field.", Toast.LENGTH_LONG)
+                            "Please fill both name fields", Toast.LENGTH_LONG)
                             .show();
                 }
                 else
                 {
-                    String parseUsername = user.getUsername();
-                    String parsePassword = user.getUserId();
-                    String parseEmail = email.getText().toString();
-                    String parseFirstName = fName.getText().toString();
-                    String parseLastName = lName.getText().toString();
-                    String parseBirthday = birthday.getText().toString();
+                    //creating local user
+                    user.setfName(fName.getText().toString());
+                    user.setlName(lName.getText().toString());
+                    user.setBirthDate(birthday.getText().toString());
+                    user.setEmail(email.getText().toString());
 
+                    //creating Parse user
                     ParseUser parseUser = new ParseUser();
 
-                    parseUser.setUsername(parseUsername);
-                    parseUser.setPassword(parsePassword);
-                    if (parseEmail.equals(""))
-                        parseUser.setEmail(parseUsername + "@rebook.co.il");
+                    parseUser.setUsername(user.getUsername());
+                    parseUser.setPassword(user.getUserId());
+                    if (email.getText().toString().equals(""))
+                        parseUser.setEmail(user.getUsername() + "@rebook.co.il");
                     else
-                        parseUser.setEmail(parseEmail);
-                    parseUser.put("fName",parseFirstName);
-                    parseUser.put("lName", parseLastName);
-                    parseUser.put("birthday", parseBirthday);
+                        parseUser.setEmail(user.getEmail());
+                    parseUser.put("fName",user.getfName());
+                    parseUser.put("lName", user.getlName());
+                    parseUser.put("birthday", user.getBirthDate());
 
                     parseUser.signUpInBackground(new SignUpCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                UserDB.getInstance().addUser(user);
-                                Log.d("TAG", "User was added");
-                                delegate.OnNewsFeed(new User("", "", "", "", "", "", ""));
-
+                                delegate.OnNewsFeed(user);
                             } else {
                                 Toast.makeText(
                                         getActivity().getApplicationContext(),
                                         "Sign up failed, Please try again.", Toast.LENGTH_LONG)
                                         .show();
-
                                 e.printStackTrace();
                             }
                         }
                     });
                 }
-
-                /*user.setfName(fName.getText().toString());
-                user.setlName(lName.getText().toString());
-                user.setBirthDate(birthdate.getText().toString());
-                user.setProfPicture(profPic.getText().toString());
-                UserDB.getInstance().addUser(user);
-                Log.d("TAG", "User was added");
-                delegate.OnNewsFeed(user);*/
-
             }
         });
-
-
-
-
-
         return view;
     }
 

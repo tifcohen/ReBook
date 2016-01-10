@@ -2,10 +2,12 @@ package com.example.tiferet.rebook.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.BookDB;
+import com.example.tiferet.rebook.Model.Model;
 import com.example.tiferet.rebook.Model.Post;
 import com.example.tiferet.rebook.R;
 import com.parse.ParseUser;
@@ -28,20 +31,16 @@ import java.util.List;
 public class UpdateBookProgressFragment extends Fragment {
 
     public interface UpdateBookProgressFragmentDelegate{
+        void onSave();
         //void OnAddNewBook();
     }
 
-    String[] items = new String[]{"0 Stars"
-                                ,"0.5 Stars"
-                                ,"1 Star"
-                                ,"1.5 Stars"
-                                ,"2 Stars"
-                                ,"2.5 Stars"
-                                ,"3 Stars"
-                                ,"3.5 Stars"
-                                ,"4 Stars"
-                                ,"4.5 Stars"
-                                ,"5 Stars"};
+    String[] items = new String[]{"0"
+                                ,"1"
+                                ,"2"
+                                ,"3"
+                                ,"4"
+                                ,"5"};
 
 
     ListView list;
@@ -65,9 +64,9 @@ public class UpdateBookProgressFragment extends Fragment {
             TextView bookAuthor = (TextView) view.findViewById(R.id.bookProgressAuthor);
             TextView bookPages = (TextView) view.findViewById(R.id.outOfPages);
             ImageView bookImage = (ImageView) view.findViewById(R.id.bookProgressImage);
-            EditText currentPage = (EditText) view.findViewById(R.id.currentPage);
-            EditText currentReview = (EditText) view.findViewById(R.id.myCurrentReviewText);
-            Spinner dropdown = (Spinner) view.findViewById(R.id.dropdown);
+            final EditText currentPage = (EditText) view.findViewById(R.id.currentPage);
+            final EditText currentReview = (EditText) view.findViewById(R.id.myCurrentReviewText);
+            final Spinner dropdown = (Spinner) view.findViewById(R.id.dropdown);
 
             ArrayAdapter<String>adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
             dropdown.setAdapter(adapter);
@@ -77,17 +76,29 @@ public class UpdateBookProgressFragment extends Fragment {
             int pages = this.book.getPages();
             bookPages.setText(" of " + pages + ".");
 
-            post.setBookID(book.getBookID());
-            post.setUserID(ParseUser.getCurrentUser().toString());
-            post.setCurrentPage(Integer.getInteger(currentPage.getText().toString()));
-            post.setGrade(Integer.getInteger(dropdown.getSelectedItem().toString()));
-            post.setText(currentReview.getText().toString());
+            Button save = (Button) view.findViewById(R.id.saveProgress);
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int grade = setGrade(Integer.parseInt(dropdown.getSelectedItem().toString()));
+                    post.setBookID(book.getBookID());
+                    post.setUserID(ParseUser.getCurrentUser().toString());
+                    post.setCurrentPage(Integer.parseInt(currentPage.getText().toString()));
+                    post.setGrade(grade);
+                    post.setText(currentReview.getText().toString());
+                    Model.getInstance().addPost(post);
+                    delegate.onSave();
+                }
+            });
         }
-
-
         return view;
     }
 
     public void setBook(Book book) { this.book = book;}
+
+    public int setGrade(int star){
+        int grade = star*2;
+        return grade;
+    }
 
 }

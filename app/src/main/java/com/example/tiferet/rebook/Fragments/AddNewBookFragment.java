@@ -101,8 +101,6 @@ public class AddNewBookFragment extends Fragment {
                     Model.getInstance().addBookToUser(newBook);
                 }
                 delegate.onSave();
-                //Alert alert = new Alert("" + name.getText().toString() + " Was Added Successfully :)", "Dismiss", delegate);
-                //alert.show(getFragmentManager(), "TAG");
             }
         });
 
