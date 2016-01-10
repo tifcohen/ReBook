@@ -467,9 +467,10 @@ public class ModelParse {
                 Book book = new Book(newBook);
                 ParseQuery query = new ParseQuery("Post");
                 query.include("user");
-                query.whereEqualTo("book", book);
+                query.include("book");
+                query.whereEqualTo("book", newBook);
                 query.orderByDescending("createdAt");
-                //query.whereEqualTo("finished",true);
+                query.whereEqualTo("finished", true);
 
                 try {
                     List<ParseObject> data = query.find();
