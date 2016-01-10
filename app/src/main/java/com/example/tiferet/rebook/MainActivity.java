@@ -268,6 +268,21 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     }
 
     @Override
+    public void onBackPressed(){
+        FragmentManager fm = getFragmentManager();
+        int temp = fm.getBackStackEntryCount() - 2;
+        if (temp > 0) {
+            thisFrag = "" + temp;
+            Fragment currentFragment = getFragmentManager().findFragmentByTag(thisFrag);
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.detach(currentFragment);
+            ft.attach(currentFragment);
+            ft.commit();
+        }
+        getFragmentManager().popBackStack();
+    }
+
+    @Override
     public void onSaveChanges() {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();

@@ -4,6 +4,7 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.util.Log;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -415,7 +416,6 @@ public class ModelParse {
     }
 
     public void addPost(final Post post) {
-        final ParseObject newPost = new ParseObject("Post");
         final ParseUser user = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Books");
         query.getInBackground(post.getBookID(), new GetCallback<ParseObject>() {
@@ -429,6 +429,29 @@ public class ModelParse {
                 newPost.put("grade", post.getGrade());
                 newPost.put("text", post.getText());
                 newPost.saveInBackground();
+            }
+        });
+    }
+
+    public void updateReadStatus(final Post post){ // updates the read status table
+        final ParseUser user = ParseUser.getCurrentUser();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Books");
+        query.getInBackground(post.getBookID(), new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject book, ParseException e) {
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("ReadStatus");
+                query.whereEqualTo("book", book);
+                query.whereEqualTo("user", user);
+                query.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+                        for (ParseObject po : objects) {
+                            po.put("currentPage", post.getCurrentPage());
+                            po.put("finished", post.isFinished());
+                            po.saveInBackground();
+                        }
+                    }
+                });
             }
         });
     }
