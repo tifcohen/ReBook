@@ -80,17 +80,34 @@
             />
         <Spinner
             android:id="@+id/dropdown"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/bookProgBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/finish">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="Am I finished with this one?"/>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/isFinished"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown">
+        </Spinner>
     </LinearLayout>
     <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/myCurrentReview"
-        android:layout_below="@+id/bookProgBar">
+        android:layout_below="@+id/finish">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -26,6 +26,8 @@ public class Model {
         model.init(context);
     }
 
+    public void updateReadStatus(final Post post){ model.updateReadStatus(post);}
+
     public interface GetBooksListener{
         void onBooksArrived(ArrayList<Book> books);
     }

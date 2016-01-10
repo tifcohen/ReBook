@@ -41,8 +41,7 @@ public class UpdateBookProgressFragment extends Fragment {
                                 ,"3"
                                 ,"4"
                                 ,"5"};
-
-
+    String[] isFinished = new String[]{"No", "Yes"};
     ListView list;
     List<Book> data;
     Book book;
@@ -66,10 +65,14 @@ public class UpdateBookProgressFragment extends Fragment {
             ImageView bookImage = (ImageView) view.findViewById(R.id.bookProgressImage);
             final EditText currentPage = (EditText) view.findViewById(R.id.currentPage);
             final EditText currentReview = (EditText) view.findViewById(R.id.myCurrentReviewText);
-            final Spinner dropdown = (Spinner) view.findViewById(R.id.dropdown);
+            final Spinner rate = (Spinner) view.findViewById(R.id.dropdown);
+            final Spinner finished = (Spinner) view.findViewById(R.id.isFinished);
 
-            ArrayAdapter<String>adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
-            dropdown.setAdapter(adapter);
+            ArrayAdapter<String>rateAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
+            rate.setAdapter(rateAdapter);
+
+            final ArrayAdapter<String>finishAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, isFinished);
+            finished.setAdapter(finishAdapter);
 
             bookName.setText(this.book.getBookName());
             bookAuthor.setText(this.book.getAuthor());
@@ -80,13 +83,20 @@ public class UpdateBookProgressFragment extends Fragment {
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int grade = setGrade(Integer.parseInt(dropdown.getSelectedItem().toString()));
+                    int grade = setGrade(Integer.parseInt(rate.getSelectedItem().toString()));
                     post.setBookID(book.getBookID());
                     post.setUserID(ParseUser.getCurrentUser().toString());
                     post.setCurrentPage(Integer.parseInt(currentPage.getText().toString()));
                     post.setGrade(grade);
                     post.setText(currentReview.getText().toString());
+                    if(finished.getSelectedItem().toString().equals("No")){
+                        post.setFinished(false);
+                    }
+                    else {
+                        post.setFinished(true);
+                    }
                     Model.getInstance().addPost(post);
+                    Model.getInstance().updateReadStatus(post);
                     delegate.onSave();
                 }
             });
