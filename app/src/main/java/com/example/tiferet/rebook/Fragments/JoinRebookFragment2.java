@@ -23,8 +23,8 @@ import com.parse.SignUpCallback;
  */
 public class JoinRebookFragment2 extends Fragment {
     public interface JoinRebookFragment2Delegate{
-        // void OnMyProfileFirst(User user);
-       void OnNewsFeed(User user);
+        void OnNewsFeed(User user);
+        void onCancel();
     }
 
     User user;
@@ -50,7 +50,6 @@ public class JoinRebookFragment2 extends Fragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (fName.getText().toString().equals("") || lName.getText().toString().equals(""))
                 {
                     Toast.makeText(
@@ -94,6 +93,13 @@ public class JoinRebookFragment2 extends Fragment {
                         }
                     });
                 }
+            }
+        });
+        Button cancel = (Button) view.findViewById(R.id.cancelBtn);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delegate.onCancel();
             }
         });
         return view;
