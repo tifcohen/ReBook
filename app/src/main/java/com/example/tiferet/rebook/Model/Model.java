@@ -38,7 +38,7 @@ public class Model {
     public void init(Context context){
         model = new ModelParse();
         model.init(context);
-        modelSql = new ModelSql(context);
+        //modelSql = new ModelSql(context);
     }
 
 /*    private boolean isNetworkAvailable() {
@@ -68,12 +68,12 @@ public class Model {
             model.addPost(post);
         }*/
         model.addPost(post);
-        modelSql.addPost(post);
+        //modelSql.addPost(post);
     }
 
     public void addBook(Book book){
         model.addBook(book);
-        modelSql.addBook(book);
+        //modelSql.addBook(book);
     }
 
     public void addBookToUser(Book book){ model.addBookToUser(book);}
