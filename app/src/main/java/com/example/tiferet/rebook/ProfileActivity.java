@@ -7,6 +7,8 @@ import android.util.Log;
 import com.example.tiferet.rebook.Fragments.MyProfileFragment;
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.User;
+import com.parse.Parse;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
@@ -19,7 +21,9 @@ public class ProfileActivity extends Activity implements MyProfileFragment.MyPro
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        User user = new User(ParseUser.getCurrentUser());
         myProfileFragment = (MyProfileFragment) getFragmentManager().findFragmentById(R.id.profileFragment);
+        myProfileFragment.setUser(user);
         myProfileFragment.setDelegate(this);
 
         Log.d("TAG", "profile activity");

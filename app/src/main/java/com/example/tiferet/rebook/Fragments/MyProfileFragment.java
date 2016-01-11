@@ -1,6 +1,7 @@
 package com.example.tiferet.rebook.Fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.example.tiferet.rebook.Model.Model;
 import com.example.tiferet.rebook.Model.User;
 import com.example.tiferet.rebook.Model.UserDB;
 import com.example.tiferet.rebook.R;
+import com.parse.Parse;
 import com.parse.ParseUser;
 
 import org.w3c.dom.Text;
@@ -69,6 +71,21 @@ public class MyProfileFragment extends Fragment {
         final Button edit = (Button) view.findViewById(R.id.editProfile);
         final TextView followersTextView = (TextView) view.findViewById(R.id.myProfileFollowers);
         final TextView nameTextView = (TextView) view.findViewById(R.id.myProfileUsername);
+        Intent intent = getActivity().getIntent();
+        String userId = intent.getStringExtra("userId");
+        if (userId.equals(ParseUser.getCurrentUser().getObjectId()))
+        {
+            this.user = new User(ParseUser.getCurrentUser());
+        }
+        else
+        {
+            Model.getInstance().getUserByIdAsync(userId, new Model.GetUserListener() {
+                @Override
+                public void onUserArrived(User user) {
+                    setUser(user);
+                }
+            });
+        }
 
         Model.getInstance().getUserByIdAsync(user.getUserId(), new Model.GetUserListener() {
             @Override
@@ -206,6 +223,7 @@ public class MyProfileFragment extends Fragment {
 
     public void setUser(User user){
         this.user = user;
+        Log.d("Debug", "User was set");
     }
 
     @Override
@@ -233,9 +251,6 @@ public class MyProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        MainActivity activity = (MainActivity) getActivity();
-        activity.menuIdToDisplay = R.menu.menu_add_book;
-        activity.invalidateOptionsMenu();
     }
 
 

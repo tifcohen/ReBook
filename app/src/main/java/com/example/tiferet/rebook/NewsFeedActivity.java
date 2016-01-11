@@ -74,8 +74,10 @@ public class NewsFeedActivity extends Activity {
     }
 
     private void onMyProfile() {
-        Log.d("TAG", "on my profile");
+        User user = new User(ParseUser.getCurrentUser());
+        String userId = user.getUserId();
         Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+        intent.putExtra("userId",userId);
         startActivity(intent);
     }
 
