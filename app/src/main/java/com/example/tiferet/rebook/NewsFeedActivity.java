@@ -1,6 +1,7 @@
 package com.example.tiferet.rebook;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
@@ -113,6 +114,7 @@ public class NewsFeedActivity extends Activity {
             final TextView page = (TextView) convertView.findViewById(R.id.pageTextView);
             final TextView action = (TextView) convertView.findViewById(R.id.actionTextView);
             final TextView action2 = (TextView) convertView.findViewById(R.id.action2TextView);
+            final ImageView userProfileImage = (ImageView) convertView.findViewById(R.id.userProfileImage);
 
             Model.getInstance().getPostsAsync(ParseUser.getCurrentUser().getObjectId(), new Model.GetPostsAsyncListener() {
                 @Override
@@ -122,6 +124,32 @@ public class NewsFeedActivity extends Activity {
                     Post post = postArray.get(position);
                     userName.setText(user.getfName() + " " + user.getlName());
                     userName.setTag(user);
+
+
+
+                    if (user.getProfPicture() != null)
+                    {
+                        if (!user.getProfPicture().equals(""))
+                        {
+                            Model.getInstance().loadImage(user.getProfPicture(), new Model.LoadImageListener() {
+                                @Override
+                                public void onResult(Bitmap imageBmp) {
+                                    if (imageBmp != null) {
+                                        userProfileImage.setImageBitmap(imageBmp);
+                                    }
+                                }
+                            });
+                        }
+                        else
+                        {
+                            userProfileImage.setImageResource(R.drawable.default_image);
+                        }
+                    }
+                    else
+                    {
+                        userProfileImage.setImageResource(R.drawable.default_image);
+                    }
+
 
                     if (book.getBookName().length() > 27) {
                         bookName.setText(book.getBookName().substring(0, 27) + "...");

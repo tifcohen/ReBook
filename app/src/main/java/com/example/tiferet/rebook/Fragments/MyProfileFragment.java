@@ -2,6 +2,7 @@ package com.example.tiferet.rebook.Fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +53,7 @@ public class MyProfileFragment extends Fragment {
     ArrayList<User> myFollowingData;
     ListView myBookShelfList;
     List<Book> myBookShelfData;
+    ImageView myProfilePicture;
 
     MyProfileFragmentDelegate delegate;
     public void setDelegate(MyProfileFragmentDelegate delegate){ this.delegate = delegate;}
@@ -72,11 +74,37 @@ public class MyProfileFragment extends Fragment {
         final Button edit = (Button) view.findViewById(R.id.editProfile);
         final TextView followersTextView = (TextView) view.findViewById(R.id.myProfileFollowers);
         final TextView nameTextView = (TextView) view.findViewById(R.id.myProfileUsername);
+        myProfilePicture = (ImageView) view.findViewById(R.id.myProfilePicture);
+
         Intent intent = getActivity().getIntent();
         String userId = intent.getStringExtra("userId");
+
         if (userId.equals(ParseUser.getCurrentUser().getObjectId()))
         {
             this.user = new User(ParseUser.getCurrentUser());
+
+            if (user.getProfPicture() != null)
+            {
+                if (!user.getProfPicture().equals(""))
+                {
+                    Model.getInstance().loadImage(user.getProfPicture(), new Model.LoadImageListener() {
+                        @Override
+                        public void onResult(Bitmap imageBmp) {
+                            if (imageBmp != null) {
+                                myProfilePicture.setImageBitmap(imageBmp);
+                            }
+                        }
+                    });
+                }
+                else
+                {
+                    myProfilePicture.setImageResource(R.drawable.default_image);
+                }
+            }
+            else
+            {
+                myProfilePicture.setImageResource(R.drawable.default_image);
+            }
         }
         else
         {
@@ -84,6 +112,31 @@ public class MyProfileFragment extends Fragment {
                 @Override
                 public void onUserArrived(User user) {
                     setUser(user);
+
+
+                    if (user.getProfPicture() != null)
+                    {
+                        if (!user.getProfPicture().equals(""))
+                        {
+                            Model.getInstance().loadImage(user.getProfPicture(), new Model.LoadImageListener() {
+                                @Override
+                                public void onResult(Bitmap imageBmp) {
+                                    if (imageBmp != null) {
+                                        myProfilePicture.setImageBitmap(imageBmp);
+                                    }
+                                }
+                            });
+                        }
+                        else
+                        {
+                            myProfilePicture.setImageResource(R.drawable.default_image);
+                        }
+                    }
+                    else
+                    {
+                        myProfilePicture.setImageResource(R.drawable.default_image);
+                    }
+
                 }
             });
         }
