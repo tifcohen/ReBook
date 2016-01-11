@@ -35,6 +35,8 @@ public class EditProfileFragment extends Fragment{
 
     public interface EditProfileFragmentDelegate{
         void onSave();
+        void onLogout();
+        void onNewsFeed();
     }
 
     User user;

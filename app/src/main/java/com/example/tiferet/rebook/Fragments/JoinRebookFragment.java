@@ -17,7 +17,7 @@ import com.example.tiferet.rebook.R;
  */
 public class JoinRebookFragment extends Fragment {
     public interface JoinRebookFragmentDelegate{
-        void OnJoinRebook2(User user);
+        void onJoinRebook2(User user);
         void onCancel();
     }
 
@@ -44,33 +44,6 @@ public class JoinRebookFragment extends Fragment {
         final EditText rpsw = (EditText) view.findViewById(R.id.join1RepeatPasswordEditText);
 
         final Button nextBtn = (Button) view.findViewById(R.id.nextBtn);
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (psw.getText().toString().equals("") ||
-                        rpsw.getText().toString().equals("") ||
-                        username.getText().toString().equals("")) {
-                    Toast.makeText(
-                            getActivity().getApplicationContext(),
-                            "All fields are required.", Toast.LENGTH_LONG)
-                            .show();
-                }
-                else {
-                    if(!psw.getText().toString().equals(rpsw.getText().toString())){
-                        Toast.makeText(
-                                getActivity().getApplicationContext(),
-                                "Passwords do not match.", Toast.LENGTH_LONG)
-                                .show();
-                    }
-                    else {
-                        final User tempUser = new User(psw.getText().toString(),username.getText().toString(), "", "", "", "", "");
-                        if(delegate!=null){
-                            delegate.OnJoinRebook2(tempUser);
-                        }
-                    }
-                }
-            }
-        });
 
         Button cancelBtn = (Button) view.findViewById(R.id.cancelBtn);
         cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +54,31 @@ public class JoinRebookFragment extends Fragment {
                 }
             }
         });
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (psw.getText().toString().equals("") ||
+                        rpsw.getText().toString().equals("") ||
+                        username.getText().toString().equals("")) {
+                    Toast.makeText(
+                            getActivity().getApplicationContext(), "All fields are required", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    if(!psw.getText().toString().equals(rpsw.getText().toString())){
+                        Toast.makeText(
+                                getActivity().getApplicationContext(), "Passwords do not match", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        final User tempUser = new User(psw.getText().toString(),username.getText().toString(), "", "", "", "", "");
+                        if(delegate!=null){
+                            delegate.onJoinRebook2(tempUser);
+                        }
+                    }
+                }
+            }
+        });
+
         return view;
     }
 }

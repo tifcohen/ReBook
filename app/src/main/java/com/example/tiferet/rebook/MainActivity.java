@@ -15,10 +15,7 @@ import com.example.tiferet.rebook.Fragments.AddNewBookFragment;
 import com.example.tiferet.rebook.Fragments.BookProgressFragment;
 import com.example.tiferet.rebook.Fragments.EditProfileFragment;
 import com.example.tiferet.rebook.Fragments.FollowingListFragment;
-import com.example.tiferet.rebook.Fragments.JoinRebookFragment;
-import com.example.tiferet.rebook.Fragments.JoinRebookFragment2;
 import com.example.tiferet.rebook.Fragments.MyProfileFragment;
-import com.example.tiferet.rebook.Fragments.OtherProfileFragment;
 import com.example.tiferet.rebook.Fragments.OthersReviewFragment;
 import com.example.tiferet.rebook.Fragments.UpdateBookProgressFragment;
 import com.example.tiferet.rebook.Model.Book;
@@ -35,21 +32,13 @@ public class MainActivity extends Activity implements
         OthersReviewFragment.OthersReviewFragmentDelegate, FollowingListFragment.FollowingListFragmentDelegate,
         EditProfileFragment.EditProfileFragmentDelegate{
 
-    //JoinRebookFragment.JoinRebookFragmentDelegate, JoinRebookFragment2.JoinRebookFragment2Delegate,
-
     String thisFrag = "login";
-    //MainActivityFragment loginFragment;
-    //NewsFeedFragment newsFeedFragment;
-    //SinglePostFragment singlePostFragment;
     MyProfileFragment myProfileFragment;
     AddNewBookFragment addNewBookFragment;
     BookProgressFragment bookProgressFragment;
     UpdateBookProgressFragment updateBookProgressFragment;
     OthersReviewFragment othersReviewFragment;
     FollowingListFragment followingListFragment;
-    OtherProfileFragment otherProfileFragment;
-    JoinRebookFragment joinRebookFragment;
-    JoinRebookFragment2 joinRebookFragment2;
     EditProfileFragment editProfileFragment;
 
 
@@ -87,13 +76,12 @@ public class MainActivity extends Activity implements
         }
     }
 
-    private void onNewsFeed() {
+    public void onNewsFeed() {
         Intent intent = new Intent(getApplicationContext(), NewsFeedActivity.class);
         startActivity(intent);
-
     }
 
-    private void onLogout() {
+    public void onLogout() {
         ParseUser.logOut();
         Log.d("TAG", "on log out");
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -107,63 +95,8 @@ public class MainActivity extends Activity implements
         return true;
     }
 
-/*
-    @Override
-    public void OnNewsFeed(User user) {
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        int temp = fm.getBackStackEntryCount()-1;
-        thisFrag = ""+ temp;
-        Fragment currentFragment = getFragmentManager().findFragmentByTag(thisFrag);
-        newsFeedFragment = new NewsFeedFragment();
-        newsFeedFragment.setUser(user);
-        newsFeedFragment.setDelegate(this);
-        thisFrag = "" + fm.getBackStackEntryCount();
-        ft.add(R.id.container, newsFeedFragment, thisFrag);
-        if(temp<1){
-            ft.hide(loginFragment);
-        }
-        else {
-            ft.hide(currentFragment);
-        }
-        ft.addToBackStack(thisFrag);
-        ft.commit();
-        invalidateOptionsMenu();
-    }*/
-
-    /*@Override
-    public void OnSinglePost(Post post) {
-        Log.d("TAG", "post selected " + post.getPostID());
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        singlePostFragment = new SinglePostFragment();
-        singlePostFragment.setPost(post);
-        singlePostFragment.setDelegate(this);
-        thisFrag = ""+ fm.getBackStackEntryCount();
-        ft.add(R.id.container, singlePostFragment, thisFrag);
-        ft.hide(newsFeedFragment);
-        ft.addToBackStack(thisFrag);
-        ft.commit();
-        invalidateOptionsMenu();
-    }*/
-/*
-   public void OnMyProfile(User user) {
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        myProfileFragment = new MyProfileFragment();
-        myProfileFragment.setUser(user);
-        myProfileFragment.setDelegate(this);
-        thisFrag = ""+ fm.getBackStackEntryCount();
-        ft.add(R.id.container, myProfileFragment, thisFrag);
-        //ft.remove(newsFeedFragment);
-        ft.addToBackStack(thisFrag);
-        ft.commit();
-        invalidateOptionsMenu();
-    }
-*/
     @Override
     public void OnAddNewBook() {
-        Log.d("TAG", "on add new book");
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         addNewBookFragment = new AddNewBookFragment();
@@ -178,7 +111,6 @@ public class MainActivity extends Activity implements
 
     @Override
     public void OnBookProgress(String userId, Book book) {
-
         bookProgressFragment = new BookProgressFragment();
         bookProgressFragment.setBook(book);
         FragmentManager fm = getFragmentManager();
@@ -237,22 +169,6 @@ public class MainActivity extends Activity implements
     }
 
     @Override
-    public void OnLogout() {
-        /*ParseUser.logOut();
-        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        loginFragment = new MainActivityFragment();
-        loginFragment.setDelegate(this);
-        thisFrag = ""+ fm.getBackStackEntryCount();
-        ft.add(R.id.container, loginFragment, thisFrag);
-        ft.addToBackStack(thisFrag);
-        ft.commit();
-        invalidateOptionsMenu();
-        this.finish();*/
-    }
-
-    @Override
     public void OnUpdateProgress(Book book) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -282,36 +198,6 @@ public class MainActivity extends Activity implements
         ft.commit();
         invalidateOptionsMenu();
     }
-/*
-    @Override
-    public void OnJoinRebook() {
-        Log.d("TAG", "User");
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        joinRebookFragment = new JoinRebookFragment();
-        joinRebookFragment.setDelegate(this);
-        thisFrag = ""+ fm.getBackStackEntryCount();
-        ft.add(R.id.container, joinRebookFragment, thisFrag);
-        ft.hide(loginFragment);
-        ft.addToBackStack(thisFrag);
-        ft.commit();
-        invalidateOptionsMenu();
-    }
--*/
-    public void OnJoinRebook2(User user) {
-        Log.d("TAG", "User" + user.getEmail());
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        joinRebookFragment2 = new JoinRebookFragment2();
-        joinRebookFragment2.setUser(user);
-        //joinRebookFragment2.setDelegate(this);
-        thisFrag = ""+ fm.getBackStackEntryCount();
-        ft.add(R.id.container, joinRebookFragment2, thisFrag);
-        ft.hide(joinRebookFragment);
-        ft.addToBackStack(thisFrag);
-        ft.commit();
-        invalidateOptionsMenu();
-    }
 
     @Override
     public void onCancel() {
@@ -323,27 +209,20 @@ public class MainActivity extends Activity implements
     public void onSave() {
         FragmentManager fm = getFragmentManager();
         int temp = fm.getBackStackEntryCount() - 2;
-        thisFrag = ""+ temp;
-        Fragment currentFragment = getFragmentManager().findFragmentByTag(thisFrag);
+        Fragment currentFragment;
+        if(temp>-1) {
+            thisFrag = "" + temp;
+            currentFragment = getFragmentManager().findFragmentByTag(thisFrag);
+        }
+        else {
+            currentFragment = new MyProfileFragment();
+        }
         FragmentTransaction ft = fm.beginTransaction();
         ft.detach(currentFragment);
         ft.attach(currentFragment);
         ft.commit();
         getFragmentManager().popBackStack();
     }
-
-  /*  @Override
-    public void onSaveChanges() {
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        myProfileFragment = new MyProfileFragment();
-        myProfileFragment.setDelegate(this);
-        thisFrag = ""+ fm.getBackStackEntryCount();
-        ft.add(R.id.container, myProfileFragment, thisFrag);
-        ft.hide(editProfileFragment);
-        ft.addToBackStack(thisFrag);
-        ft.commit();
-    }*/
 
     public void onClickUsername(View v){
         User user = (User) v.getTag();
