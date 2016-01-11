@@ -266,9 +266,9 @@ public class ModelParse {
                     ParseQuery query = new ParseQuery("Follow");
                     query.whereEqualTo("from", object);
                     query.include("to");
-                    try{
+                    try {
                         List<ParseObject> data = query.find();
-                        for (ParseObject po : data){
+                        for (ParseObject po : data) {
                             User user = new User(po.getParseObject("to"));
                             usersArray.add(user);
                         }

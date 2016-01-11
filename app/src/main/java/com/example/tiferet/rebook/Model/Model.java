@@ -188,7 +188,8 @@ public class Model {
         AsyncTask<String,String,Bitmap> task = new AsyncTask<String, String, Bitmap >() {
             @Override
             protected Bitmap doInBackground(String... params) {
-                Bitmap bmp = loadImageFromFile(imageName);              //first try to fin the image on the device
+                //Bitmap bmp = loadImageFromFile(imageName);              //first try to fin the image on the device
+                Bitmap bmp = null;
                 if (bmp == null) {                                      //if image not found - try downloading it from parse
                     bmp = model.loadImage(imageName);
                     //if (bmp != null) saveImageToFile(bmp,imageName);    //save the image locally for next time

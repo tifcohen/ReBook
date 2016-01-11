@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,16 +58,19 @@ public class EditProfileFragment extends Fragment{
 
         fName.setText(user.getfName());
         lName.setText(user.getlName());
-        /*
+
         if (!user.getProfPicture().equals(""))
         {
             Model.getInstance().loadImage(user.getProfPicture(), new Model.LoadImageListener() {
                 @Override
                 public void onResult(Bitmap imageBmp) {
-                    imageView.setImageBitmap(imageBmp);
+                    if (imageBmp != null)
+                        Log.d("Tag", "Hello, this is Normal. ");
+                        //
+                         imageView.setImageBitmap(imageBmp);
                 }
             });
-        } */
+        }
         birthDate.setText(user.getBirthDate());
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
