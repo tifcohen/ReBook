@@ -30,6 +30,7 @@ public class AddNewBookFragment extends Fragment {
         void onCancel();
         void onSave();
         void onLogout();
+        void onNewsFeed();
     }
 
     AutoCompleteTextView bookNameList;

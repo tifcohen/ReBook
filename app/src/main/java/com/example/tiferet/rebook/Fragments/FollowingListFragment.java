@@ -32,6 +32,7 @@ public class FollowingListFragment extends Fragment {
 
     public interface FollowingListFragmentDelegate{
         void onLogout();
+        void onNewsFeed();
     }
 
     FollowingListFragmentDelegate delegate;

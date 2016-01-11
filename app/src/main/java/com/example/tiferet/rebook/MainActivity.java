@@ -15,10 +15,7 @@ import com.example.tiferet.rebook.Fragments.AddNewBookFragment;
 import com.example.tiferet.rebook.Fragments.BookProgressFragment;
 import com.example.tiferet.rebook.Fragments.EditProfileFragment;
 import com.example.tiferet.rebook.Fragments.FollowingListFragment;
-import com.example.tiferet.rebook.Fragments.JoinRebookFragment;
-import com.example.tiferet.rebook.Fragments.JoinRebookFragment2;
 import com.example.tiferet.rebook.Fragments.MyProfileFragment;
-import com.example.tiferet.rebook.Fragments.OtherProfileFragment;
 import com.example.tiferet.rebook.Fragments.OthersReviewFragment;
 import com.example.tiferet.rebook.Fragments.UpdateBookProgressFragment;
 import com.example.tiferet.rebook.Model.Book;
@@ -79,10 +76,9 @@ public class MainActivity extends Activity implements
         }
     }
 
-    private void onNewsFeed() {
+    public void onNewsFeed() {
         Intent intent = new Intent(getApplicationContext(), NewsFeedActivity.class);
         startActivity(intent);
-
     }
 
     public void onLogout() {
@@ -101,7 +97,6 @@ public class MainActivity extends Activity implements
 
     @Override
     public void OnAddNewBook() {
-        Log.d("TAG", "on add new book");
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         addNewBookFragment = new AddNewBookFragment();
@@ -116,7 +111,6 @@ public class MainActivity extends Activity implements
 
     @Override
     public void OnBookProgress(String userId, Book book) {
-
         bookProgressFragment = new BookProgressFragment();
         bookProgressFragment.setBook(book);
         FragmentManager fm = getFragmentManager();
@@ -215,8 +209,14 @@ public class MainActivity extends Activity implements
     public void onSave() {
         FragmentManager fm = getFragmentManager();
         int temp = fm.getBackStackEntryCount() - 2;
-        thisFrag = ""+ temp;
-        Fragment currentFragment = getFragmentManager().findFragmentByTag(thisFrag);
+        Fragment currentFragment;
+        if(temp>-1) {
+            thisFrag = "" + temp;
+            currentFragment = getFragmentManager().findFragmentByTag(thisFrag);
+        }
+        else {
+            currentFragment = new MyProfileFragment();
+        }
         FragmentTransaction ft = fm.beginTransaction();
         ft.detach(currentFragment);
         ft.attach(currentFragment);

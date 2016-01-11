@@ -41,6 +41,7 @@ public class MyProfileFragment extends Fragment {
         void OnFollowingList(ArrayList<User> followers);
         void OnEditProfile(User user);
         void onLogout();
+        void onNewsFeed();
     }
 
     User user;
