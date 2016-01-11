@@ -1,4 +1,4 @@
-package com.example.tiferet.rebook.Fragments;
+/*package com.example.tiferet.rebook.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -16,8 +16,8 @@ import com.example.tiferet.rebook.R;
 
 /**
  * Created by TIFERET on 01-Jan-16.
- */
-public class SinglePostFragment extends Fragment {
+ *//*
+/*public class SinglePostFragment extends Fragment {
     public interface SinglePostFragmentDelegate{
         //void OnMyProfile();
     }
@@ -55,9 +55,10 @@ public class SinglePostFragment extends Fragment {
             }
         }
         return super.onOptionsItemSelected(item);
-    }*/
+
 
     public void setPost(Post post) {
         this.post = post;
     }
 }
+*/

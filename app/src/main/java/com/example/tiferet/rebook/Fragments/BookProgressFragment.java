@@ -35,8 +35,6 @@ public class BookProgressFragment extends Fragment {
         void OnOthersReview(Book book);
 
         void OnBookProgress(String userId, Book book);
-        void OnLogout();
-        void OnMyProfile(User user);
     }
 
     ListView list;

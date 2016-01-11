@@ -1,3 +1,4 @@
+/*
 package com.example.tiferet.rebook.Fragments;
 
 import android.app.Fragment;
@@ -22,11 +23,11 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
-
+*/
 /**
  * Created by TIFERET on 30-Dec-15.
  */
-public class NewsFeedFragment extends Fragment  {
+/*public class NewsFeedFragment extends Fragment  {
 
     public interface NewsFeedFragmentDelegate{
         //void OnSinglePost(Post post);
@@ -69,7 +70,7 @@ public class NewsFeedFragment extends Fragment  {
                     delegate.OnSinglePost(post);
                 }
             }
-        });*/
+        });
         return view;
     }
 
@@ -77,7 +78,6 @@ public class NewsFeedFragment extends Fragment  {
         this.user=user;
     }
 
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d("TAG", "My Profile Pressed");
         switch (item.getItemId()) {
@@ -195,3 +195,4 @@ public class NewsFeedFragment extends Fragment  {
 
 
 }
+*/

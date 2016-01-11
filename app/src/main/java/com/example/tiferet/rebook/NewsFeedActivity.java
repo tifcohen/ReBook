@@ -55,7 +55,6 @@ public class NewsFeedActivity extends Activity {
             }
             default:
                 return super.onOptionsItemSelected(item);
-                //return true;
         }
     }
 
@@ -76,7 +75,7 @@ public class NewsFeedActivity extends Activity {
     private void onMyProfile() {
         User user = new User(ParseUser.getCurrentUser());
         String userId = user.getUserId();
-        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.putExtra("userId",userId);
         startActivity(intent);
     }

@@ -7,10 +7,4 @@
         android:title="Logout"
         android:orderInCategory="100"
         android:showAsAction="never" />
-    <item
-        android:id="@+id/generalBtn"
-        android:orderInCategory="100"
-        android:visible="true"
-        android:title="@string/join_rebook"
-        android:showAsAction="ifRoom" />
 </menu>

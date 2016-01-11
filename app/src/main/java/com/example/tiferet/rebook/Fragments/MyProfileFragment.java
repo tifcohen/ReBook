@@ -226,7 +226,7 @@ public class MyProfileFragment extends Fragment {
         Log.d("Debug", "User was set");
     }
 
-    @Override
+/*    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d("TAG", "onOptionsItemSelected was pressed");
         switch (item.getItemId()) {
@@ -240,20 +240,7 @@ public class MyProfileFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
- /*   @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getActivity().getMenuInflater().inflate(getActivity().menuIdToDisplay, menu);
-        return true;
-    }*/
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-
+*/
     class MyBooksAdapter extends BaseAdapter {
 
         public MyBooksAdapter() {

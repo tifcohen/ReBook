@@ -33,8 +33,6 @@ public class EditProfileFragment extends Fragment{
     String imageFileName = null;
 
     public interface EditProfileFragmentDelegate{
-        void onSaveChanges();
-
         void onSave();
     }
 

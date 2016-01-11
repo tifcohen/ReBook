@@ -1,4 +1,4 @@
-package com.example.tiferet.rebook.Fragments;
+/*package com.example.tiferet.rebook.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -16,10 +16,11 @@ import com.example.tiferet.rebook.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-
+*/
 /**
  * A placeholder fragment containing a simple view.
  */
+/*
 public class MainActivityFragment extends Fragment {
 
     EditText username_input;
@@ -116,3 +117,4 @@ public class MainActivityFragment extends Fragment {
     }
 
 }
+*/

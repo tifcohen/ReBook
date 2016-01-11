@@ -3,8 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/outline"
-    >
+    android:background="@drawable/outline">
     <LinearLayout
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -20,14 +19,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/userProfileImage"
             android:src="@mipmap/ic_launcher"
-            android:focusable="false"
-            />
+            android:focusable="false" />
         <LinearLayout
-
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
@@ -90,11 +86,7 @@
                     android:layout_toEndOf="@+id/userProfileImage"
                     android:focusable="false"/>
             </LinearLayout>
-
-
-
         </LinearLayout>
-
     </LinearLayout>
     <LinearLayout
         android:layout_marginLeft="10dp"
@@ -105,10 +97,7 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/bookInfo"
         android:layout_below="@+id/username"
-
         android:orientation="horizontal">
-
-
     </LinearLayout>
     <LinearLayout
         android:layout_marginLeft="10dp"
