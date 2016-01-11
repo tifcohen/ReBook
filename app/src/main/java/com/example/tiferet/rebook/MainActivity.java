@@ -58,21 +58,26 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        /*if (currentUser != null) {
-            newsFeedFragment = (NewsFeedFragment) getFragmentManager().findFragmentById(R.layout.news_feed_fragment);
-            newsFeedFragment.setDelegate(this);
-        }
-        else {
-            loginFragment = (MainActivityFragment) getFragmentManager().findFragmentById(R.id.loginFragment);
-            loginFragment.setDelegate(this);
-        }*/
+
+        ParseUser pu = ParseUser.getCurrentUser();
+        User user = new User(pu);
 
         loginFragment = (MainActivityFragment) getFragmentManager().findFragmentById(R.id.loginFragment);
         loginFragment.setDelegate(this);
-        if(currentUser!=null){
-            OnNewsFeed(new User(currentUser));
-        }
+
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+
+        thisFrag = ""+ fm.getBackStackEntryCount();
+
+        myProfileFragment = (MyProfileFragment) getFragmentManager().findFragmentById(R.id.profileFragment);
+        myProfileFragment.setUser(user);
+        myProfileFragment.setDelegate(this);
+
+        ft.add(R.id.container, myProfileFragment, thisFrag);
+        ft.addToBackStack(thisFrag);
+        ft.commit();
+        invalidateOptionsMenu();
     }
 
     public int menuIdToDisplay = R.menu.menu_main;
@@ -130,7 +135,7 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         myProfileFragment.setDelegate(this);
         thisFrag = ""+ fm.getBackStackEntryCount();
         ft.add(R.id.container, myProfileFragment, thisFrag);
-        ft.hide(newsFeedFragment);
+        ft.remove(newsFeedFragment);
         ft.addToBackStack(thisFrag);
         ft.commit();
         invalidateOptionsMenu();
@@ -307,7 +312,7 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         ft.commit();
         getFragmentManager().popBackStack();
     }
-
+/*
     @Override
     public void onBackPressed(){
         FragmentManager fm = getFragmentManager();
@@ -325,7 +330,7 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
             this.finish();
         }
     }
-
+*/
     @Override
     public void onSaveChanges() {
         FragmentManager fm = getFragmentManager();

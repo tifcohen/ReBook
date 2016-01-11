@@ -1,9 +1,11 @@
-package com.example.tiferet.rebook.Fragments;
+package com.example.tiferet.rebook;
 
-import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.app.Activity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,94 +14,69 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.tiferet.rebook.MainActivity;
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.Model;
 import com.example.tiferet.rebook.Model.Post;
 import com.example.tiferet.rebook.Model.User;
-import com.example.tiferet.rebook.R;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by TIFERET on 30-Dec-15.
- */
-public class NewsFeedFragment extends Fragment  {
-
-    public interface NewsFeedFragmentDelegate{
-        //void OnSinglePost(Post post);
-        void OnMyProfile(User user);
-        void OnLogout();
-    }
-
-    NewsFeedFragmentDelegate delegate;
-    public void setDelegate(NewsFeedFragmentDelegate delegate){
-        this.delegate = delegate;
-    }
+public class NewsFeedActivity extends Activity {
 
     ListView list;
     List<Post> data;
 
-    User user;
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
+        setContentView(R.layout.activity_news_feed);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.news_feed_fragment, container, false);
-
-        list = (ListView) view.findViewById(R.id.newsFeedList);
+        list = (ListView) findViewById(R.id.newsFeedList);
         data = Model.getInstance().getAllPosts();
         CustomAdapter adapter = new CustomAdapter();
         list.setAdapter(adapter);
 
-        /* list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("TAG", "row selected" + position);
-                Post post = data.get(position);
-                if (delegate != null) {
-                    delegate.OnSinglePost(post);
-                }
-            }
-        });*/
-        return view;
-    }
-
-    public void setUser(User user){
-        this.user=user;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d("TAG", "My Profile Pressed");
         switch (item.getItemId()) {
-            case R.id.myProfileBtn:
-                User user = new User(ParseUser.getCurrentUser());
-                delegate.OnMyProfile(user);
+            case R.id.myProfileBtn:{
+                onMyProfile();
+                Log.d("TAG", "finished mt profile");
                 return true;
-            case R.id.action_logout:
-                delegate.OnLogout();
+            }
+            case R.id.action_logout: {
+                onLogout();
                 return true;
+            }
             default:
                 return super.onOptionsItemSelected(item);
+                //return true;
         }
     }
 
-    @Override
-    public void onResume() {
-        Log.d("TAG","NF on resume");
-        super.onResume();
-        MainActivity activity = (MainActivity) getActivity();
-        activity.menuIdToDisplay = R.menu.menu_news_feed;
-        activity.invalidateOptionsMenu();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_news_feed, menu);
+        return true;
+    }
+
+    private void onLogout() {
+        ParseUser.logOut();
+        Log.d("TAG", "on log out");
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void onMyProfile() {
+        Log.d("TAG", "on my profile");
+        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+        startActivity(intent);
     }
 
     class CustomAdapter extends BaseAdapter {
@@ -125,7 +102,7 @@ public class NewsFeedFragment extends Fragment  {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                LayoutInflater inflater = getActivity().getLayoutInflater();
+                LayoutInflater inflater = getLayoutInflater();
                 convertView = inflater.inflate(R.layout.news_feed_single_row, null);
             }
             final TextView userName = (TextView) convertView.findViewById(R.id.userProfileName);
@@ -192,6 +169,4 @@ public class NewsFeedFragment extends Fragment  {
             return convertView;
         }
     }
-
-
 }
