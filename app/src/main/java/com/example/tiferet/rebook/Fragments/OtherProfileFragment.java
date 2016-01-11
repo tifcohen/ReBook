@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class OtherProfileFragment extends Fragment{
     interface OtherProfileFragmentDelegate{
-
+        void onLogout();
     }
 
     OtherProfileFragmentDelegate delegate;

@@ -33,6 +33,7 @@ public class UpdateBookProgressFragment extends Fragment {
     public interface UpdateBookProgressFragmentDelegate{
         void onSave();
         //void OnAddNewBook();
+        void onLogout();
     }
 
     String[] items = new String[]{"0"

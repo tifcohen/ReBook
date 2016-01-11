@@ -31,7 +31,7 @@ import java.util.List;
 public class FollowingListFragment extends Fragment {
 
     public interface FollowingListFragmentDelegate{
-
+        void onLogout();
     }
 
     FollowingListFragmentDelegate delegate;

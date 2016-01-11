@@ -23,7 +23,7 @@ import com.parse.SignUpCallback;
  */
 public class JoinRebookFragment2 extends Fragment {
     public interface JoinRebookFragment2Delegate{
-        void OnNewsFeed(User user);
+        void onNewsFeed();
         void onCancel();
     }
 
@@ -82,12 +82,10 @@ public class JoinRebookFragment2 extends Fragment {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                delegate.OnNewsFeed(user);
+                                delegate.onNewsFeed();
                             } else {
                                 Toast.makeText(
-                                        getActivity().getApplicationContext(),
-                                        "Sign up failed, Please try again.", Toast.LENGTH_LONG)
-                                        .show();
+                                        getActivity().getApplicationContext(), "Sign up failed, Please try again.", Toast.LENGTH_LONG).show();
                                 e.printStackTrace();
                             }
                         }

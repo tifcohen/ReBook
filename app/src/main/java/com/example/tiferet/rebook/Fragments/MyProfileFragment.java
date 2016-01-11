@@ -40,7 +40,7 @@ public class MyProfileFragment extends Fragment {
         void OnBookProgress(String userId, Book book);
         void OnFollowingList(ArrayList<User> followers);
         void OnEditProfile(User user);
-        void OnLogout();
+        void onLogout();
     }
 
     User user;

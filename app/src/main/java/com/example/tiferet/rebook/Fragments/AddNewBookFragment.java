@@ -29,6 +29,7 @@ public class AddNewBookFragment extends Fragment {
     public interface AddNewBookFragmentDelegate{
         void onCancel();
         void onSave();
+        void onLogout();
     }
 
     AutoCompleteTextView bookNameList;

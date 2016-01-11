@@ -25,6 +25,7 @@ import java.util.List;
 public class OthersReviewFragment extends Fragment {
     public interface OthersReviewFragmentDelegate{
         //void OnAddNewBook();
+        void onLogout();
     }
 
     ListView list;
