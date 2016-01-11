@@ -109,7 +109,6 @@ public class MyProfileFragment extends Fragment {
                 if (user.getUserId().equals(ParseUser.getCurrentUser().getObjectId()))
                 {
                     delegate.OnEditProfile(user);
-                    Log.d("Debug","Wrong !!! user.getUserId(): " + user.getUserId() + "ParseUser: " +ParseUser.getCurrentUser().getObjectId() );
                 }
                 else
                 {
@@ -145,12 +144,25 @@ public class MyProfileFragment extends Fragment {
                 myReadingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Log.d("TAG", "row selected" + position);
-                        Book book = myReadingData.get(position);
-                        if (delegate != null) {
-                            String userId = user.getUserId();
-                            delegate.OnBookProgress(userId,book);
+                        if (user.getUserId().equals(ParseUser.getCurrentUser().getObjectId()))
+                        {
+                            Book book = myReadingData.get(position);
+                            if (delegate != null) {
+                                String userId = user.getUserId();
+                                delegate.OnBookProgress(userId,book);
+                            }
+
                         }
+                        else
+                        {
+                            Book book = myReadingData.get(position);
+                            if (delegate != null) {
+                                String userId = "GLOBAL";
+                                delegate.OnBookProgress(userId,book);
+                            }
+                        }
+                        Log.d("TAG", "row selected" + position);
+
                     }
                 });
             }

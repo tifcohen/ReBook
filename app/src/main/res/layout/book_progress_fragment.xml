@@ -29,12 +29,25 @@
                 android:text="Authotr's Name"
                 android:id="@+id/bookProgressAuthor"
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Update Progress"
-                android:id="@+id/updateBookProgressBtn"
-                android:layout_alignParentEnd="true"/>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Update Progress"
+                    android:id="@+id/updateBookProgressBtn"
+                    android:layout_alignParentEnd="true"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/othersReviewBtn"
+                    android:layout_alignParentLeft="true"
+                    android:text=""
+                    android:visibility="gone"
+                    android:drawSelectorOnTop="false"
+                    />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
     <RelativeLayout
@@ -46,21 +59,23 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/bookProfileTitle"
             android:text="My Progress:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />/>
+            android:textAppearance="?android:attr/textAppearanceSmall" />
     </RelativeLayout>
     <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
+        android:layout_margin="10dp"
+
         android:layout_below="@+id/bookProgress">
         <ProgressBar
             android:id="@+id/progressBarBook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="300dp"
-            android:layout_margin="10dp"
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
@@ -70,13 +85,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/bookProgBar"
         android:layout_below="@+id/progressBar">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/bookProgressPages"
-            android:text="pages:"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_centerInParent="true" />
+
     </RelativeLayout>
     <LinearLayout
         android:layout_marginLeft="10dp"
@@ -88,25 +97,11 @@
         android:id="@+id/postList">
         <ListView
             android:layout_width="fill_parent"
-            android:layout_height="250dp"
+            android:layout_height="fill_parent"
             android:id="@+id/bookReviewList"
             android:drawSelectorOnTop="false"
             android:divider="@android:color/transparent"
             android:dividerHeight="10.0sp">
         </ListView>
     </LinearLayout>
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/postList"
-        android:orientation="vertical">
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/othersReviewBtn"
-            android:layout_alignParentLeft="true"
-            android:text="More reviews of this book"
-            android:drawSelectorOnTop="false">
-        </Button>
-    </RelativeLayout>
 </RelativeLayout>

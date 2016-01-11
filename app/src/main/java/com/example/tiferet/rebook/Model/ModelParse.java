@@ -2,17 +2,21 @@ package com.example.tiferet.rebook.Model;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -467,9 +471,10 @@ public class ModelParse {
                 Book book = new Book(newBook);
                 ParseQuery query = new ParseQuery("Post");
                 query.include("user");
-                query.whereEqualTo("book", book);
+                query.include("book");
+                query.whereEqualTo("book", newBook);
                 query.orderByDescending("createdAt");
-                //query.whereEqualTo("finished",true);
+                query.whereEqualTo("finished", true);
 
                 try {
                     List<ParseObject> data = query.find();
@@ -486,5 +491,44 @@ public class ModelParse {
                 }
             }
         });
+    }
+
+
+    public Bitmap loadImage(String imageName) {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("images");
+        query.whereEqualTo("name", imageName);
+        try {
+            List<ParseObject> list = query.find();
+            if (list.size() > 0) {
+                ParseObject po = list.get(0);
+                ParseFile pf = po.getParseFile("image");
+                byte[] data = pf.getData();
+                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                return bmp;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void saveImage(Bitmap imageBitmap, String imageName) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        ParseFile file = new ParseFile(imageName, byteArray);
+        try {
+            file.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        ParseObject images = new ParseObject("images");
+        images.put("name", imageName);
+        images.put("image", file);
+        try {
+            images.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }
