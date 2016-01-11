@@ -158,6 +158,7 @@ public class Model {
         public void onResult(Bitmap imageBmp);
     }
 
+
     public void loadImage(final String imageName, final LoadImageListener listener) {
         AsyncTask<String,String,Bitmap> task = new AsyncTask<String, String, Bitmap >() {
             @Override
