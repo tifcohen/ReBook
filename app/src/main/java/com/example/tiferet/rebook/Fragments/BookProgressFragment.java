@@ -2,6 +2,7 @@ package com.example.tiferet.rebook.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,13 +31,24 @@ public class BookProgressFragment extends Fragment {
     public interface BookProgressFragmentDelegate{
         void OnUpdateProgress(Book book);
         void OnOthersReview(Book book);
+
+        void OnBookProgress(String userId, Book book);
     }
 
     ListView list;
     ArrayList<Post> data;
     ArrayList<User> users;
     Book book;
-    User curr = new User(ParseUser.getCurrentUser());
+
+    public User getCurr() {
+        return curr;
+    }
+
+    public void setCurr(User curr) {
+        this.curr = curr;
+    }
+
+    User curr;// = new User(ParseUser.getCurrentUser());
     //User curr = null;
     String userId;
     TextView bookProgressPages;
@@ -70,12 +82,21 @@ public class BookProgressFragment extends Fragment {
 
         list = (ListView) view.findViewById(R.id.bookReviewList);
         Button update = (Button) view.findViewById(R.id.updateBookProgressBtn);
-        Button more = (Button) view.findViewById(R.id.othersReviewBtn);
+        Button more2 = (Button) view.findViewById(R.id.othersReviewBtn);
         bookProfileTitle = (TextView) view.findViewById(R.id.bookProfileTitle);
 
         if (curr != null) {
-            more.setVisibility(View.VISIBLE);
-            more.setText("More");
+            more2.setVisibility(View.GONE);
+            more2.setText("More");
+
+            more2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("Debug", "THIS SHOULD HAPPEN!!! ");
+                    delegate.OnBookProgress("",book);
+                }
+            });
+
             Model.getInstance().getPostsByBookAndUserAsync(userId, book.getBookID(), new Model.GetPostsAsyncListener() {
                 @Override
                 public void onPostsArrived(ArrayList<Post> postArray, ArrayList<User> userArray, ArrayList<Book> bookArray) {
@@ -85,7 +106,7 @@ public class BookProgressFragment extends Fragment {
                         data = postArray;
                         BookProgressAdapter adapter = new BookProgressAdapter();
                         list.setAdapter(adapter);
-                        bookProfileTitle.setText("My Progress ("+last_page+"/"+book.getPages()+")");
+                        bookProfileTitle.setText("My Progress (Page "+last_page+"/"+book.getPages()+"):");
                         bookProgress.setMax(book.getPages());
                         bookProgress.setProgress(last_page);
                     }
@@ -94,7 +115,7 @@ public class BookProgressFragment extends Fragment {
         }
         else
         {
-            more.setVisibility(View.GONE);
+            more2.setVisibility(View.GONE);
 
             update.setVisibility(View.GONE);
             bookProgress.setVisibility(View.GONE);
@@ -109,9 +130,7 @@ public class BookProgressFragment extends Fragment {
                     list.setAdapter(adapter);
                     if (postArray.size() == 0) {
                         bookProfileTitle.setText("There are no current reviews.");
-                    }
-                    else
-                    {
+                    } else {
                         bookProfileTitle.setText(postArray.size() + " Reviews of this book:");
                     }
                 }

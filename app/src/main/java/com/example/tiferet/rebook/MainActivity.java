@@ -140,12 +140,23 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
 
     @Override
     public void OnBookProgress(String userId, Book book) {
-        Log.d("TAG", "Showing book " + book.getBookName() + " from user " + userId);
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
+
         bookProgressFragment = new BookProgressFragment();
         bookProgressFragment.setBook(book);
-        bookProgressFragment.setUserId(userId);
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        if (!userId.equals(""))
+        {
+            User user = new User(ParseUser.getCurrentUser());
+            bookProgressFragment.setCurr(user);
+            bookProgressFragment.setUserId(userId);
+        }
+        else
+        {
+            bookProgressFragment.setCurr(null);
+            bookProgressFragment.setUserId(null);
+        }
+
         bookProgressFragment.setDelegate(this);
         thisFrag = ""+ fm.getBackStackEntryCount();
         ft.add(R.id.container, bookProgressFragment,thisFrag);
@@ -154,6 +165,8 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         ft.commit();
         invalidateOptionsMenu();
     }
+
+
 
     @Override
     public void OnFollowingList(ArrayList<User> followers) {
@@ -311,20 +324,25 @@ public class MainActivity extends Activity implements MainActivityFragment.MainA
         invalidateOptionsMenu();
     }
 
+
     public void onClickBookname(View v){
         Post post = (Post) v.getTag();
-        final String userId = post.getUserID();
-        Log.d("Debug", "Working!");
+        //final String userId = post.getUserID();
+        final String bookId = post.getBookID();
+
         Model.getInstance().getBookByIdAsync(post.getBookID(), new Model.GetBookListener() {
             @Override
             public void onBookArrived(Book book) {
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                othersReviewFragment = new OthersReviewFragment();
-                othersReviewFragment.setBook(book);
+                bookProgressFragment = new BookProgressFragment();
+                bookProgressFragment.setBook(book);
+                bookProgressFragment.setCurr(null);
+                //bookProgressFragment.setDelegate(this);
+
                 //othersReviewFragment.setDelegate(this)
-                thisFrag = ""+ fm.getBackStackEntryCount();
-                ft.add(R.id.container, othersReviewFragment, thisFrag);
+                thisFrag = "" + fm.getBackStackEntryCount();
+                ft.add(R.id.container, bookProgressFragment, thisFrag);
                 ft.hide(newsFeedFragment);
                 ft.addToBackStack(thisFrag);
                 ft.commit();
