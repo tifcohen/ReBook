@@ -61,18 +61,30 @@ public class EditProfileFragment extends Fragment{
         fName.setText(user.getfName());
         lName.setText(user.getlName());
 
-        if (!user.getProfPicture().equals(""))
+        if (user.getProfPicture() != null)
         {
-            Model.getInstance().loadImage(user.getProfPicture(), new Model.LoadImageListener() {
-                @Override
-                public void onResult(Bitmap imageBmp) {
-                    if (imageBmp != null)
-                        Log.d("Tag", "Hello, this is Normal. ");
-                        //
-                         imageView.setImageBitmap(imageBmp);
-                }
-            });
+            if (!user.getProfPicture().equals(""))
+            {
+                Model.getInstance().loadImage(user.getProfPicture(), new Model.LoadImageListener() {
+                    @Override
+                    public void onResult(Bitmap imageBmp) {
+                        if (imageBmp != null) {
+                            imageView.setImageBitmap(imageBmp);
+                        }
+                    }
+                });
+            }
+            else
+            {
+                imageView.setImageResource(R.drawable.default_image);
+            }
         }
+        else
+        {
+            imageView.setImageResource(R.drawable.default_image);
+        }
+
+
         birthDate.setText(user.getBirthDate());
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

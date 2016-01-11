@@ -15,9 +15,10 @@
         android:id="@+id/username">
         <ImageView
             android:layout_marginRight="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:id="@+id/userProfileImage"
+            android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher"
             android:focusable="false" />
         <LinearLayout

@@ -19,14 +19,17 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:layout_marginRight="10dp"
                 android:src="@mipmap/ic_launcher"
                 android:id="@+id/myProfilePicture" />
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
-                    android:layout_width="fill_parent"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/myProfilePicture"
                     android:text="MY PROFILE"
