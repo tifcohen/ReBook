@@ -77,13 +77,20 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/newBookPicture"
                     android:text="Book's Picture: "
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textAlignment="textStart"/>
                 <EditText
+                    android:visibility="gone"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/addNewBookPicture"
+                    android:id="@+id/addNewBookImageName"
                     android:textAlignment="textEnd"/>
+                <ImageView
+                    android:id="@+id/addNewBookImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/camera" />
+
             </LinearLayout>
         </LinearLayout>
         <RelativeLayout

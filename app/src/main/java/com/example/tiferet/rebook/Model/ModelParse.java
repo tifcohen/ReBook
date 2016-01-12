@@ -435,6 +435,7 @@ public class ModelParse {
                 newPost.put("currentPage", post.getCurrentPage());
                 newPost.put("grade", post.getGrade());
                 newPost.put("text", post.getText());
+                newPost.put("deleted", false);
                 newPost.saveInBackground();
             }
         });
