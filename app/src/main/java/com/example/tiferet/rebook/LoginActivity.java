@@ -27,6 +27,8 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        setTitle(R.string.action_sign_in_short);
+
         if(currentUser!=null){
             onNewsFeed();
         }

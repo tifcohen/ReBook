@@ -20,7 +20,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_news_feed">Rebook News Feed</string>
+    <string name="title_activity_news_feed">News Feed</string>
     <string name="title_activity_profile">My Profile</string>
     <string name="title_activity_registration">Create an Account</string>
 </resources>
