@@ -23,6 +23,15 @@ import java.util.List;
 
 public class Model {
     private final static Model instance = new Model();
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
     Context context;
     ModelSql modelSql;
     ModelParse model;
@@ -38,7 +47,7 @@ public class Model {
     public void init(Context context){
         model = new ModelParse();
         model.init(context);
-        //modelSql = new ModelSql(context);
+        modelSql = new ModelSql(context);
     }
 
 /*    private boolean isNetworkAvailable() {
@@ -169,7 +178,7 @@ public class Model {
     }
 
     public void saveImage(final Bitmap imageBitmap, final String imageName) {
-        //saveImageToFile(imageBitmap,imageName); // synchronously save image locally ****
+        saveImageToFile(imageBitmap,imageName); // synchronously save image locally ****
         Thread d = new Thread(new Runnable() {  // asynchronously save image to parse
             @Override
             public void run() {
@@ -188,11 +197,11 @@ public class Model {
         AsyncTask<String,String,Bitmap> task = new AsyncTask<String, String, Bitmap >() {
             @Override
             protected Bitmap doInBackground(String... params) {
-                //Bitmap bmp = loadImageFromFile(imageName);              //first try to fin the image on the device
-                Bitmap bmp = null;
+                Bitmap bmp = loadImageFromFile(imageName);              //first try to fin the image on the device
+                //Bitmap bmp = null;
                 if (bmp == null) {                                      //if image not found - try downloading it from parse
                     bmp = model.loadImage(imageName);
-                    //if (bmp != null) saveImageToFile(bmp,imageName);    //save the image locally for next time *****
+                    if (bmp != null) saveImageToFile(bmp,imageName);    //save the image locally for next time *****
                 }
                 return bmp;
             }

@@ -23,6 +23,7 @@ import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.Model;
 import com.example.tiferet.rebook.Model.Post;
 import com.example.tiferet.rebook.Model.User;
+import com.parse.Parse;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -41,7 +42,6 @@ public class MainActivity extends Activity implements
     Stack<Fragment> stack;
 
     MyProfileFragment myProfileFragment;
-    MyProfileFragment otherProfile;
     AddNewBookFragment addNewBookFragment;
     BookProgressFragment bookProgressFragment;
     UpdateBookProgressFragment updateBookProgressFragment;
@@ -59,23 +59,36 @@ public class MainActivity extends Activity implements
 
         String action = getIntent().getExtras().getString("fragment");
 
-        myProfileFragment = (MyProfileFragment) getFragmentManager().findFragmentById(R.id.profileFragment);
-        myProfileFragment.setDelegate(this);
-        stack.push(myProfileFragment);
 
-        if(action!=null) {
-            if (action.equals("user")) {
-                getFragmentManager().popBackStack();
-                String userId = getIntent().getExtras().getString("userId");
-                User user = new User(userId);
-                onClickUsername(user);
-            }
-            if (action.equals("book")) {
-                getFragmentManager().popBackStack();
+
+            if (action != null && action.equals("book")) {
+                bookProgressFragment = new BookProgressFragment();
                 String bookId = getIntent().getExtras().getString("bookId");
-                onClickBookname(bookId);
+                bookProgressFragment.setCurr(null);
+                bookProgressFragment.setBookId(bookId);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.add(R.id.container, bookProgressFragment, bookProgressFragment.toString());
+                ft.addToBackStack(bookProgressFragment.toString());
+                ft.commit();
+                invalidateOptionsMenu();
             }
-        }
+            else
+            {
+                String userId = getIntent().getExtras().getString("userId");
+                myProfileFragment = new MyProfileFragment(); //(MyProfileFragment) getFragmentManager().findFragmentById(R.id.profileFragment);
+                myProfileFragment.setDelegate(this);
+                stack.push(myProfileFragment);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                myProfileFragment.setUserId(userId);
+                ft.add(R.id.container, myProfileFragment, myProfileFragment.toString());
+                ft.commit();
+                invalidateOptionsMenu();
+            }
+
     }
 
     @Override
@@ -108,6 +121,7 @@ public class MainActivity extends Activity implements
         FragmentTransaction ft = fm.beginTransaction();
         myProfileFragment = new MyProfileFragment();
         myProfileFragment.setDelegate(this);
+        myProfileFragment.setUserId(ParseUser.getCurrentUser().getObjectId());
         ft.add(R.id.container, myProfileFragment, myProfileFragment.toString());
         //stack.push(currFragment);
         stack.push(myProfileFragment);
@@ -276,39 +290,7 @@ public class MainActivity extends Activity implements
     }
 
     public void onClickUsername(User user){
-        currFragment = stack.peek();
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        otherProfile = new MyProfileFragment();
-        otherProfile.setDelegate(this);
-        otherProfile.setUser(user);
-        ft.add(R.id.container, otherProfile, otherProfile.toString());
-        //stack.push(currFragment);
-        stack.push(otherProfile);
-        ft.hide(currFragment);
-        ft.addToBackStack(otherProfile.toString());
-        ft.commit();
-        invalidateOptionsMenu();
+
     }
 
-
-    public void onClickBookname(String bookId){
-        Model.getInstance().getBookByIdAsync(bookId, new Model.GetBookListener() {
-            @Override
-            public void onBookArrived(Book book) {
-                currFragment = stack.peek();
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                bookProgressFragment = new BookProgressFragment();
-                bookProgressFragment.setBook(book);
-                bookProgressFragment.setCurr(null);
-                ft.add(R.id.container, bookProgressFragment, bookProgressFragment.toString());
-                stack.push(bookProgressFragment);
-                ft.hide(currFragment);
-                ft.addToBackStack(bookProgressFragment.toString());
-                ft.commit();
-                invalidateOptionsMenu();
-            }
-        });
-    }
 }

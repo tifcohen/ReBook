@@ -14,12 +14,12 @@ import java.util.List;
  * Created by TIFERET on 10-Jan-16.
  */
 public class BookSql {
-    private static final String TABLE = "BOOKS";
-    private static final String ID = "ID";
-    private static final String NAME = "NAME";
-    private static final String AUTHOR = "AUTHOR";
-    private static final String PAGES = "PAGES";
-    private static final String IMAGE_NAME = "IMAGE_NAME";
+    private static final String TABLE = "Books";
+    private static final String ID = "id";
+    private static final String NAME = "name";
+    private static final String AUTHOR = "author";
+    private static final String PAGES = "pages";
+    private static final String IMAGE_NAME = "imageName";
 
     public static void create(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE + " (" + ID + " TEXT PRIMARY KEY," + NAME + " TEXT," + AUTHOR + " TEXT, " +

@@ -12,17 +12,4 @@
     tools:showIn="@layout/activity_main"
     tools:context=".MainActivity"
     android:id="@+id/container">
-  <!--  <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/loginFragment"
-        android:name="com.example.tiferet.rebook.Fragments.MainActivityFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/fragment_main" /> -->
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/profileFragment"
-        android:name="com.example.tiferet.rebook.Fragments.MyProfileFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/my_profile_fragment" />
 </FrameLayout>

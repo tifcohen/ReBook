@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.tiferet.rebook.Model.Model;
 import com.example.tiferet.rebook.Model.User;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -26,7 +27,7 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        Model.getInstance().setContext(getApplicationContext());
         setTitle(R.string.action_sign_in_short);
 
         if(currentUser!=null){

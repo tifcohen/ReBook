@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,7 +47,7 @@ public class MyProfileFragment extends Fragment {
         void onNewsFeed();
     }
 
-    User user = new User(ParseUser.getCurrentUser());
+    User user;
 
     ListView myReadingList;
     ArrayList<Book> myReadingData;
@@ -56,6 +57,15 @@ public class MyProfileFragment extends Fragment {
     List<Book> myBookShelfData;
     ImageView myProfilePicture;
     ArrayList<Integer> myProgressData;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     String userId;
     MyProfileFragmentDelegate delegate;
     public void setDelegate(MyProfileFragmentDelegate delegate){ this.delegate = delegate;}
@@ -67,6 +77,11 @@ public class MyProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        if (TextUtils.isEmpty(userId))
+        {
+            userId = ParseUser.getCurrentUser().getObjectId();
+        }
     }
 
     @Override
@@ -78,9 +93,9 @@ public class MyProfileFragment extends Fragment {
         final TextView nameTextView = (TextView) view.findViewById(R.id.myProfileUsername);
         myProfilePicture = (ImageView) view.findViewById(R.id.myProfilePicture);
 
-       // userId = this.user.getUserId();
 
-        if (user.getUserId().equals(ParseUser.getCurrentUser().getObjectId())) {
+
+        if (userId.equals(ParseUser.getCurrentUser().getObjectId())) {
             this.user = new User(ParseUser.getCurrentUser());
             if (user.getProfPicture() != null) {
                 if (!user.getProfPicture().equals("")) {
@@ -129,14 +144,14 @@ public class MyProfileFragment extends Fragment {
             });
         }
 
-        Model.getInstance().getUserByIdAsync(user.getUserId(), new Model.GetUserListener() {
+        Model.getInstance().getUserByIdAsync(userId, new Model.GetUserListener() {
             @Override
             public void onUserArrived(User user) {
                 nameTextView.setText(user.getfName() + " " + user.getlName());
-                if (user.getUserId().equals(ParseUser.getCurrentUser().getObjectId()))
+                if (userId.equals(ParseUser.getCurrentUser().getObjectId()))
                     edit.setText("Edit My Details");
                 else {
-                    boolean amIFollowing = Model.getInstance().amIFollowing(user.getUserId());
+                    boolean amIFollowing = Model.getInstance().amIFollowing(userId);
                     Log.d("Debug","Following:"+amIFollowing);
                     if (amIFollowing) {
 
@@ -149,7 +164,7 @@ public class MyProfileFragment extends Fragment {
             }
         });
 
-        Model.getInstance().getFollowersList(user.getUserId(), new Model.GetFollowersListener() {
+        Model.getInstance().getFollowersList(userId, new Model.GetFollowersListener() {
             @Override
             public void onFollowersArrived(ArrayList<User> followers) {
                 String followersAmount = (followers.size() > 0) ? (followers.size() > 1) ? followers.size() + " Followers" : followers.size() + " Follower" : "No Followers";
@@ -160,19 +175,19 @@ public class MyProfileFragment extends Fragment {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (user.getUserId().equals(ParseUser.getCurrentUser().getObjectId())) {
+                if (userId.equals(ParseUser.getCurrentUser().getObjectId())) {
                     delegate.OnEditProfile(user);
                 }
                 else {
-                    boolean amIFollowing = Model.getInstance().amIFollowing(user.getUserId());
+                    boolean amIFollowing = Model.getInstance().amIFollowing(userId);
                     if (amIFollowing) {
 
-                        Model.getInstance().stopFollowing(user.getUserId());
+                        Model.getInstance().stopFollowing(userId);
                         edit.setText("Follow " + user.getfName());
 
                     }
                     else {
-                        Model.getInstance().startFollowing(user.getUserId());
+                        Model.getInstance().startFollowing(userId);
                         edit.setText("Unfollow " + user.getfName());
                     }
                 }
@@ -181,9 +196,10 @@ public class MyProfileFragment extends Fragment {
 
 
         myReadingList = (ListView) view.findViewById(R.id.myReadingList);
-        Model.getInstance().getReadingStatusAsync(user.getUserId(), false, new Model.GetReadingStatusListener() {
+        Model.getInstance().getReadingStatusAsync(userId, false, new Model.GetReadingStatusListener() {
             @Override
             public void onReadingStatusArrived(ArrayList<Book> bookList, ArrayList<Integer> progressList) {
+                //myReadingData = (ArrayList) Model.getInstance().getAllBooks();
                 myReadingData = bookList;
                 myProgressData = progressList;
                 MyBooksAdapter booksAdapter = new MyBooksAdapter();
@@ -191,7 +207,7 @@ public class MyProfileFragment extends Fragment {
                 myReadingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        if (user.getUserId().equals(ParseUser.getCurrentUser().getObjectId())) {
+                        if (userId.equals(ParseUser.getCurrentUser().getObjectId())) {
                             Book book = myReadingData.get(position);
                             if (delegate != null) {
                                 String userId = user.getUserId();
@@ -212,7 +228,7 @@ public class MyProfileFragment extends Fragment {
         });
 
         myFollowingList = (ListView) view.findViewById(R.id.myFollowingList);
-        Model.getInstance().getFollowingListByIdAsync(user.getUserId(), new Model.GetFollowingListener() {
+        Model.getInstance().getFollowingListByIdAsync(userId, new Model.GetFollowingListener() {
             @Override
             public void onFollowingListArrived(ArrayList<User> followers) {
                 myFollowingData = followers;
@@ -235,7 +251,7 @@ public class MyProfileFragment extends Fragment {
         myBookShelfData = BookDB.getInstance().getAllBooks();
 
 
-        Model.getInstance().getReadingStatusAsync(user.getUserId(), true, new Model.GetReadingStatusListener() {
+        Model.getInstance().getReadingStatusAsync(userId, true, new Model.GetReadingStatusListener() {
             @Override
             public void onReadingStatusArrived(ArrayList<Book> bookList, ArrayList<Integer> progressList) {
                 myBookShelfData = bookList;
@@ -244,6 +260,12 @@ public class MyProfileFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("THIS","IS A TEST"); // ** REFRESH THE USER **
     }
 
     public void setUser(User user){
