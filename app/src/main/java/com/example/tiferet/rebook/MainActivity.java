@@ -268,6 +268,11 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onSave() {
+
+        stack.pop();
+        invalidateOptionsMenu();
+        getFragmentManager().popBackStack();
+        /*
         currFragment = stack.pop();
         prevFragment = stack.peek();
         FragmentManager fm = getFragmentManager();
@@ -280,7 +285,7 @@ public class MainActivity extends Activity implements
         ft.hide(currFragment);
         //ft.addToBackStack(prevFragment.toString());
         ft.commit();
-        invalidateOptionsMenu();
+        invalidateOptionsMenu();*/
     }
 
     @Override

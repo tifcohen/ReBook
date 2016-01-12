@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,33 +59,28 @@ public class EditProfileFragment extends Fragment{
         final EditText fName = (EditText) view.findViewById(R.id.editUserFName);
         final EditText lName = (EditText) view.findViewById(R.id.editUserLName);
         final DateEditText birthDate = (DateEditText) view.findViewById(R.id.editUserBirthDate);
+        final EditText addProfilePic = (EditText) view.findViewById(R.id.addProfilePic);
 
         fName.setText(user.getfName());
         lName.setText(user.getlName());
 
-        if (user.getProfPicture() != null)
+        if (TextUtils.isEmpty(user.getProfPicture()))
         {
-            if (!user.getProfPicture().equals(""))
-            {
-                Model.getInstance().loadImage(user.getProfPicture(), new Model.LoadImageListener() {
-                    @Override
-                    public void onResult(Bitmap imageBmp) {
-                        if (imageBmp != null) {
-                            imageView.setImageBitmap(imageBmp);
-                        }
-                    }
-                });
-            }
-            else
-            {
-                imageView.setImageResource(R.drawable.default_user);
-            }
+            imageView.setImageResource(R.drawable.default_user);
+            addProfilePic.setText("");
         }
         else
         {
-            imageView.setImageResource(R.drawable.default_user);
+            addProfilePic.setText(user.getProfPicture());
+            Model.getInstance().loadImage(user.getProfPicture(), new Model.LoadImageListener() {
+                @Override
+                public void onResult(Bitmap imageBmp) {
+                    if (imageBmp != null) {
+                        imageView.setImageBitmap(imageBmp);
+                    }
+                }
+            });
         }
-
 
         birthDate.setText(user.getBirthDate());
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -102,17 +98,26 @@ public class EditProfileFragment extends Fragment{
                     ParseUser editUser = ParseUser.getCurrentUser();
                     editUser.put("fName", fName.getText().toString());
                     editUser.put("lName", lName.getText().toString());
-                    if (!imageFileName.equals(null))
+
+                    if (!TextUtils.isEmpty(imageFileName))
                     {
                         editUser.put("imageName",imageFileName);
+                    }
+                    else
+                    {
+                        if (!TextUtils.isEmpty(addProfilePic.getText().toString())){
+                            editUser.put("imageName",addProfilePic.getText().toString());
+                        }
+                        else
+                        {
+                            editUser.put("imageName","");
+                        }
                     }
                     editUser.put("birthday", birthDate.getText().toString());
                     editUser.save();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
-                Toast.makeText(getActivity().getApplicationContext(), "Edit", Toast.LENGTH_LONG).show();
                 delegate.onSave();
             }
         });

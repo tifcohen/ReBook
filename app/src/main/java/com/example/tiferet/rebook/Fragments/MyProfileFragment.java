@@ -1,14 +1,11 @@
 package com.example.tiferet.rebook.Fragments;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,18 +15,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.tiferet.rebook.MainActivity;
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.BookDB;
 import com.example.tiferet.rebook.Model.Model;
 import com.example.tiferet.rebook.Model.User;
-import com.example.tiferet.rebook.Model.UserDB;
 import com.example.tiferet.rebook.R;
-import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseUser;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,13 +44,15 @@ public class MyProfileFragment extends Fragment {
     User user;
 
     ListView myReadingList;
-    ArrayList<Book> myReadingData;
     ListView myFollowingList;
-    ArrayList<User> myFollowingData;
     ListView myBookShelfList;
+    ArrayList<Book> myReadingData;
+    ArrayList<User> myFollowingData;
     List<Book> myBookShelfData;
     ImageView myProfilePicture;
     ArrayList<Integer> myProgressData;
+    TextView nameTextView;
+    Button edit;
 
     public String getUserId() {
         return userId;
@@ -76,93 +72,22 @@ public class MyProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-
-        if (TextUtils.isEmpty(userId))
-        {
-            userId = ParseUser.getCurrentUser().getObjectId();
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.my_profile_fragment, container, false);
-        final Button edit = (Button) view.findViewById(R.id.editProfile);
+        edit = (Button) view.findViewById(R.id.editProfile);
         final TextView followersTextView = (TextView) view.findViewById(R.id.myProfileFollowers);
-        final TextView nameTextView = (TextView) view.findViewById(R.id.myProfileUsername);
+        nameTextView = (TextView) view.findViewById(R.id.myProfileUsername);
         myProfilePicture = (ImageView) view.findViewById(R.id.myProfilePicture);
 
 
 
-        if (userId.equals(ParseUser.getCurrentUser().getObjectId())) {
-            this.user = new User(ParseUser.getCurrentUser());
-            if (user.getProfPicture() != null) {
-                if (!user.getProfPicture().equals("")) {
-                    Model.getInstance().loadImage(user.getProfPicture(), new Model.LoadImageListener() {
-                        @Override
-                        public void onResult(Bitmap imageBmp) {
-                            if (imageBmp != null) {
-                                myProfilePicture.setImageBitmap(imageBmp);
-                            }
-                        }
-                    });
-                }
-                else {
-                    myProfilePicture.setImageResource(R.drawable.default_image);
-                }
-            }
-            else {
-                myProfilePicture.setImageResource(R.drawable.default_image);
-            }
-        }
-        else {
-            Model.getInstance().getUserByIdAsync(userId, new Model.GetUserListener() {
-                @Override
-                public void onUserArrived(User user) {
-                    setUser(user);
-                    if (user.getProfPicture() != null) {
-                        if (!user.getProfPicture().equals("")) {
-                            Model.getInstance().loadImage(user.getProfPicture(), new Model.LoadImageListener() {
-                                @Override
-                                public void onResult(Bitmap imageBmp) {
-                                    if (imageBmp != null) {
-                                        myProfilePicture.setImageBitmap(imageBmp);
-                                    }
-                                }
-                            });
-                        }
-                        else {
-                            myProfilePicture.setImageResource(R.drawable.default_image);
-                        }
-                    }
-                    else {
-                        myProfilePicture.setImageResource(R.drawable.default_image);
-                    }
 
-                }
-            });
-        }
 
-        Model.getInstance().getUserByIdAsync(userId, new Model.GetUserListener() {
-            @Override
-            public void onUserArrived(User user) {
-                nameTextView.setText(user.getfName() + " " + user.getlName());
-                if (userId.equals(ParseUser.getCurrentUser().getObjectId()))
-                    edit.setText("Edit My Details");
-                else {
-                    boolean amIFollowing = Model.getInstance().amIFollowing(userId);
-                    Log.d("Debug","Following:"+amIFollowing);
-                    if (amIFollowing) {
 
-                        edit.setText("Unfollow " + user.getfName());
-                    }
-                    else {
-                        edit.setText("Follow " + user.getfName());
-                    }
-                }
-            }
-        });
 
         Model.getInstance().getFollowersList(userId, new Model.GetFollowersListener() {
             @Override
@@ -211,14 +136,13 @@ public class MyProfileFragment extends Fragment {
                             Book book = myReadingData.get(position);
                             if (delegate != null) {
                                 String userId = user.getUserId();
-                                delegate.OnBookProgress(userId,book);
+                                delegate.OnBookProgress(userId, book);
                             }
-                        }
-                        else {
+                        } else {
                             Book book = myReadingData.get(position);
                             if (delegate != null) {
                                 String userId = "GLOBAL";
-                                delegate.OnBookProgress(userId,book);
+                                delegate.OnBookProgress(userId, book);
                             }
                         }
 
@@ -248,7 +172,6 @@ public class MyProfileFragment extends Fragment {
         });
 
         myBookShelfList = (ListView) view.findViewById(R.id.myBookShelfList);
-        myBookShelfData = BookDB.getInstance().getAllBooks();
 
 
         Model.getInstance().getReadingStatusAsync(userId, true, new Model.GetReadingStatusListener() {
@@ -262,10 +185,67 @@ public class MyProfileFragment extends Fragment {
         return view;
     }
 
+    private void refreshPage(User user) {
+
+        if (!TextUtils.isEmpty(user.getProfPicture()))
+        {
+            Model.getInstance().loadImage(user.getProfPicture(), new Model.LoadImageListener() {
+                @Override
+                public void onResult(Bitmap imageBmp) {
+                    if (imageBmp != null) {
+                        myProfilePicture.setImageBitmap(imageBmp);
+                    }
+                }
+            });
+        }
+        else {
+            myProfilePicture.setImageResource(R.drawable.default_image);
+        }
+
+        nameTextView.setText(user.getfName() + " " + user.getlName());
+        if (userId.equals(ParseUser.getCurrentUser().getObjectId()))
+            edit.setText("Edit My Details");
+        else {
+            boolean amIFollowing = Model.getInstance().amIFollowing(userId);
+            Log.d("Debug","Following:"+amIFollowing);
+            if (amIFollowing) {
+
+                edit.setText("Unfollow " + user.getfName());
+            }
+            else {
+                edit.setText("Follow " + user.getfName());
+            }
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("THIS","IS A TEST"); // ** REFRESH THE USER **
+        setHasOptionsMenu(true);
+
+        if (TextUtils.isEmpty(userId))
+        {
+            try {
+                ParseUser.getCurrentUser().fetch();
+                Toast.makeText(getActivity().getApplicationContext(), ParseUser.getCurrentUser().getString("fName"), Toast.LENGTH_LONG).show();
+                userId = ParseUser.getCurrentUser().getObjectId();
+                setUser(new User(ParseUser.getCurrentUser()));
+                refreshPage(user);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            Model.getInstance().getUserByIdAsync(userId, new Model.GetUserListener() {
+                @Override
+                public void onUserArrived(User user) {
+                    setUser(user);
+                    refreshPage(user);
+                }
+            });
+        }
     }
 
     public void setUser(User user){
