@@ -83,7 +83,7 @@ public class Model {
     }
 
     public interface GetReadingStatusListener{
-        public void onReadingStatusArrived(ArrayList<Book> bookList);
+        public void onReadingStatusArrived(ArrayList<Book> bookList, ArrayList<Integer> progress);
     }
 
     public void startFollowing(String userId){
@@ -169,7 +169,7 @@ public class Model {
     }
 
     public void saveImage(final Bitmap imageBitmap, final String imageName) {
-      //  saveImageToFile(imageBitmap,imageName); // synchronously save image locally ****
+        //saveImageToFile(imageBitmap,imageName); // synchronously save image locally ****
         Thread d = new Thread(new Runnable() {  // asynchronously save image to parse
             @Override
             public void run() {
@@ -192,7 +192,7 @@ public class Model {
                 Bitmap bmp = null;
                 if (bmp == null) {                                      //if image not found - try downloading it from parse
                     bmp = model.loadImage(imageName);
-        //            if (bmp != null) saveImageToFile(bmp,imageName);    //save the image locally for next time *****
+                    //if (bmp != null) saveImageToFile(bmp,imageName);    //save the image locally for next time *****
                 }
                 return bmp;
             }
