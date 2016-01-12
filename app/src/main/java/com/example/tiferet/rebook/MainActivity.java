@@ -63,16 +63,18 @@ public class MainActivity extends Activity implements
         myProfileFragment.setDelegate(this);
         stack.push(myProfileFragment);
 
-        if(action.equals("user")) {
-            getFragmentManager().popBackStack();
-            String userId = getIntent().getExtras().getString("userId");
-            User user = new User(userId);
-            onClickUsername(user);
-        }
-        if(action.equals("book")){
-            getFragmentManager().popBackStack();
-            String bookId = getIntent().getExtras().getString("bookId");
-            onClickBookname(bookId);
+        if(action!=null) {
+            if (action.equals("user")) {
+                getFragmentManager().popBackStack();
+                String userId = getIntent().getExtras().getString("userId");
+                User user = new User(userId);
+                onClickUsername(user);
+            }
+            if (action.equals("book")) {
+                getFragmentManager().popBackStack();
+                String bookId = getIntent().getExtras().getString("bookId");
+                onClickBookname(bookId);
+            }
         }
     }
 
