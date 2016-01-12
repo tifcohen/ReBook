@@ -15,6 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.tiferet.rebook.MainActivity;
@@ -54,6 +55,7 @@ public class MyProfileFragment extends Fragment {
     ListView myBookShelfList;
     List<Book> myBookShelfData;
     ImageView myProfilePicture;
+    ArrayList<Integer> myProgressData;
 
     MyProfileFragmentDelegate delegate;
     public void setDelegate(MyProfileFragmentDelegate delegate){ this.delegate = delegate;}
@@ -208,8 +210,9 @@ public class MyProfileFragment extends Fragment {
         myReadingList = (ListView) view.findViewById(R.id.myReadingList);
         Model.getInstance().getReadingStatusAsync(user.getUserId(), false, new Model.GetReadingStatusListener() {
             @Override
-            public void onReadingStatusArrived(ArrayList<Book> bookList) {
+            public void onReadingStatusArrived(ArrayList<Book> bookList, ArrayList<Integer> progressList) {
                 myReadingData = bookList;
+                myProgressData = progressList;
                 MyBooksAdapter booksAdapter = new MyBooksAdapter();
                 myReadingList.setAdapter(booksAdapter);
                 myReadingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -232,7 +235,6 @@ public class MyProfileFragment extends Fragment {
                                 delegate.OnBookProgress(userId,book);
                             }
                         }
-                        Log.d("TAG", "row selected" + position);
 
                     }
                 });
@@ -266,7 +268,7 @@ public class MyProfileFragment extends Fragment {
 
         Model.getInstance().getReadingStatusAsync(user.getUserId(), true, new Model.GetReadingStatusListener() {
             @Override
-            public void onReadingStatusArrived(ArrayList<Book> bookList) {
+            public void onReadingStatusArrived(ArrayList<Book> bookList, ArrayList<Integer> progressList) {
                 myBookShelfData = bookList;
                 MyShelfAdapter bookShelfAdapter = new MyShelfAdapter();
                 myBookShelfList.setAdapter(bookShelfAdapter);
@@ -323,11 +325,17 @@ public class MyProfileFragment extends Fragment {
             }
             TextView bookName = (TextView) convertView.findViewById(R.id.myBookName);
             ImageView bookImage = (ImageView) convertView.findViewById(R.id.myBookImage);
-            ImageView bookProgress = (ImageView) convertView.findViewById(R.id.bookProgress);
+            ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.bookProgressBar);
+
+
 
             Book book = myReadingData.get(position);
-            bookName.setText(book.getBookName());
 
+            int percent = (int)((myProgressData.get(position) * 100.0f) / book.getPages());
+            bookName.setText(book.getBookName() + " (" + percent + "%)");
+
+            progressBar.setMax(book.getPages());
+            progressBar.setProgress(myProgressData.get(position));
             return convertView;
         }
     }
@@ -358,9 +366,32 @@ public class MyProfileFragment extends Fragment {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 convertView = inflater.inflate(R.layout.my_following_list_single_column, null);
             }
-            ImageView followingImage = (ImageView) convertView.findViewById(R.id.followingImage);
+            final ImageView followingImage = (ImageView) convertView.findViewById(R.id.followingImage);
 
-            //User user = myFollowingData.get(position);
+            User toFollow = myFollowingData.get(position);
+
+            if (toFollow.getProfPicture() != null)
+            {
+                if (!toFollow.getProfPicture().equals(""))
+                {
+                    Model.getInstance().loadImage(toFollow.getProfPicture(), new Model.LoadImageListener() {
+                        @Override
+                        public void onResult(Bitmap imageBmp) {
+                            if (imageBmp != null) {
+                                followingImage.setImageBitmap(imageBmp);
+                            }
+                        }
+                    });
+                }
+                else
+                {
+                    followingImage.setImageResource(R.drawable.default_image);
+                }
+            }
+            else
+            {
+                followingImage.setImageResource(R.drawable.default_image);
+            }
             return convertView;
         }
     }

@@ -15,18 +15,28 @@
             android:id="@+id/myBookImage"
             android:src="@android:drawable/ic_input_get"
             android:focusable="false"/>
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="book"
-            android:id="@+id/myBookName"
-            android:focusable="false"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/bookProgress"
-            android:src="@drawable/logo"
-            android:focusable="false" />
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="book"
+                android:id="@+id/myBookName"
+                android:focusable="false"/>
+            <ProgressBar
+                android:id="@+id/bookProgressBar"
+                android:layout_width="fill_parent"
+                android:layout_height="10dp"
+                android:minWidth="300dp"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_centerInParent="true"
+
+                />
+
+        </LinearLayout>
+
     </LinearLayout>
 </RelativeLayout>
