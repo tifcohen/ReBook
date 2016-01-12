@@ -109,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/cancelBtn"
                 android:textAlignment="center"
-                android:text="Back"
+                android:text="Cancel"
                 android:layout_alignParentLeft="true" />
             <Button
                 android:layout_width="wrap_content"

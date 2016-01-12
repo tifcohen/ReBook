@@ -7,14 +7,21 @@
         android:id="@+id/action_add_book"
         android:title="Add a Book"
         android:orderInCategory="100"
-        android:showAsAction="never" />
+        android:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_news_feed"
         android:orderInCategory="100"
         android:visible="true"
         android:title="News Feed"
-        android:showAsAction="ifRoom" />
+        android:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_my_profile"
+        android:orderInCategory="100"
+        android:visible="true"
+        android:title="My Profile"
+        android:showAsAction="never" />
 
     <item
         android:id="@+id/action_logout"

@@ -54,4 +54,11 @@ public class RegistrationActivity extends Activity implements JoinRebookFragment
         invalidateOptionsMenu();
         getFragmentManager().popBackStack();
     }
+
+    @Override
+    public void onCancelReg() {
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
+    }
+
 }

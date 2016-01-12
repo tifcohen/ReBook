@@ -37,6 +37,7 @@ public class EditProfileFragment extends Fragment{
         void onSave();
         void onLogout();
         void onNewsFeed();
+        void onCancel();
     }
 
     User user;
@@ -116,7 +117,15 @@ public class EditProfileFragment extends Fragment{
             }
         });
 
-
+        Button cancelBtn = (Button) view.findViewById(R.id.cancelBtn);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(delegate!=null){
+                    delegate.onCancel();
+                }
+            }
+        });
         return view;
     }
     static final int REQUEST_IMAGE_CAPTURE = 1;
