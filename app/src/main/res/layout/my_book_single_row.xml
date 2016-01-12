@@ -10,10 +10,10 @@
         android:id="@+id/bookInfo"
         android:layout_below="@+id/username">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:id="@+id/myBookImage"
-            android:src="@android:drawable/ic_input_get"
+            android:src="@drawable/default_book"
             android:focusable="false"/>
         <LinearLayout
             android:layout_width="fill_parent"

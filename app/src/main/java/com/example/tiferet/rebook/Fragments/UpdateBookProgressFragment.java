@@ -1,6 +1,7 @@
 package com.example.tiferet.rebook.Fragments;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -64,7 +65,7 @@ public class UpdateBookProgressFragment extends Fragment {
             TextView bookName = (TextView) view.findViewById(R.id.bookProgressName);
             TextView bookAuthor = (TextView) view.findViewById(R.id.bookProgressAuthor);
             TextView bookPages = (TextView) view.findViewById(R.id.outOfPages);
-            ImageView bookImage = (ImageView) view.findViewById(R.id.bookProgressImage);
+            final ImageView bookImage = (ImageView) view.findViewById(R.id.bookProgressImage);
             final EditText currentPage = (EditText) view.findViewById(R.id.currentPage);
             final EditText currentReview = (EditText) view.findViewById(R.id.myCurrentReviewText);
             final Spinner rate = (Spinner) view.findViewById(R.id.dropdown);
@@ -76,6 +77,28 @@ public class UpdateBookProgressFragment extends Fragment {
             final ArrayAdapter<String>finishAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, isFinished);
             finished.setAdapter(finishAdapter);
 
+            if (book.getPicture() != null)
+            {
+                if (!book.getPicture().equals(""))
+                {
+                    Model.getInstance().loadImage(book.getPicture(), new Model.LoadImageListener() {
+                        @Override
+                        public void onResult(Bitmap imageBmp) {
+                            if (imageBmp != null) {
+                                bookImage.setImageBitmap(imageBmp);
+                            }
+                        }
+                    });
+                }
+                else
+                {
+                    bookImage.setImageResource(R.drawable.default_user);
+                }
+            }
+            else
+            {
+                bookImage.setImageResource(R.drawable.default_user);
+            }
             bookName.setText(this.book.getBookName());
             bookAuthor.setText(this.book.getAuthor());
             int pages = this.book.getPages();

@@ -1,6 +1,7 @@
 package com.example.tiferet.rebook.Fragments;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,6 +59,7 @@ public class BookProgressFragment extends Fragment {
     ProgressBar bookProgress;
     RelativeLayout bookProgressLayout;
     TextView bookProfileTitle;
+    ImageView bookImage;
 
     BookProgressFragmentDelegate delegate;
     public void setDelegate(BookProgressFragmentDelegate delegate){ this.delegate = delegate;}
@@ -71,11 +73,33 @@ public class BookProgressFragment extends Fragment {
         View view = inflater.inflate(R.layout.book_progress_fragment, container, false);
         if(book!=null){
             TextView bookName = (TextView) view.findViewById(R.id.bookProgressName);
+            bookImage = (ImageView) view.findViewById(R.id.bookProgressImage);
             TextView bookAuthor = (TextView) view.findViewById(R.id.bookProgressAuthor);
-            ImageView bookImage = (ImageView) view.findViewById(R.id.bookProgressImage);
             bookProgress = (ProgressBar) view.findViewById(R.id.progressBarBook);
             bookProgressPages = (TextView) view.findViewById(R.id.bookProgressPages);
 
+            if (book.getPicture() != null)
+            {
+                if (!book.getPicture().equals(""))
+                {
+                    Model.getInstance().loadImage(book.getPicture(), new Model.LoadImageListener() {
+                        @Override
+                        public void onResult(Bitmap imageBmp) {
+                            if (imageBmp != null) {
+                                bookImage.setImageBitmap(imageBmp);
+                            }
+                        }
+                    });
+                }
+                else
+                {
+                    bookImage.setImageResource(R.drawable.default_user);
+                }
+            }
+            else
+            {
+                bookImage.setImageResource(R.drawable.default_user);
+            }
 
             bookName.setText(this.book.getBookName());
             bookAuthor.setText(" By " + this.book.getAuthor() + ". Pages: " + this.book.getPages());
