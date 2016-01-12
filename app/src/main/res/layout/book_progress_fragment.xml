@@ -10,7 +10,9 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@android:drawable/ic_input_get"
+            android:scaleType="centerCrop"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/default_book"
             android:id="@+id/bookProgressImage" />
         <LinearLayout
             android:layout_width="fill_parent"
@@ -20,13 +22,13 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/bookProgressImage"
-                android:text="Book's Name"
+                android:text="Book Name"
                 android:id="@+id/bookProgressName"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Authotr's Name"
+                android:text="Authotr Name"
                 android:id="@+id/bookProgressAuthor"
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
             <LinearLayout
