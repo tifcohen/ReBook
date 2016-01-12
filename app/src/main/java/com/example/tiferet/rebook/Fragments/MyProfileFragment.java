@@ -83,12 +83,6 @@ public class MyProfileFragment extends Fragment {
         nameTextView = (TextView) view.findViewById(R.id.myProfileUsername);
         myProfilePicture = (ImageView) view.findViewById(R.id.myProfilePicture);
 
-
-
-
-
-
-
         Model.getInstance().getFollowersList(userId, new Model.GetFollowersListener() {
             @Override
             public void onFollowersArrived(ArrayList<User> followers) {
@@ -118,7 +112,6 @@ public class MyProfileFragment extends Fragment {
                 }
             }
         });
-
 
         myReadingList = (ListView) view.findViewById(R.id.myReadingList);
         Model.getInstance().getReadingStatusAsync(userId, false, new Model.GetReadingStatusListener() {
@@ -173,7 +166,6 @@ public class MyProfileFragment extends Fragment {
 
         myBookShelfList = (ListView) view.findViewById(R.id.myBookShelfList);
 
-
         Model.getInstance().getReadingStatusAsync(userId, true, new Model.GetReadingStatusListener() {
             @Override
             public void onReadingStatusArrived(ArrayList<Book> bookList, ArrayList<Integer> progressList) {
@@ -186,7 +178,6 @@ public class MyProfileFragment extends Fragment {
     }
 
     private void refreshPage(User user) {
-
         if (!TextUtils.isEmpty(user.getProfPicture()))
         {
             Model.getInstance().loadImage(user.getProfPicture(), new Model.LoadImageListener() {
@@ -207,7 +198,7 @@ public class MyProfileFragment extends Fragment {
             edit.setText("Edit My Details");
         else {
             boolean amIFollowing = Model.getInstance().amIFollowing(userId);
-            Log.d("Debug","Following:"+amIFollowing);
+            Log.d("Debug", "Following:" + amIFollowing);
             if (amIFollowing) {
 
                 edit.setText("Unfollow " + user.getfName());
@@ -223,21 +214,18 @@ public class MyProfileFragment extends Fragment {
         super.onResume();
         setHasOptionsMenu(true);
 
-        if (TextUtils.isEmpty(userId))
-        {
+        if (TextUtils.isEmpty(userId)) {
             try {
                 ParseUser.getCurrentUser().fetch();
                 Toast.makeText(getActivity().getApplicationContext(), ParseUser.getCurrentUser().getString("fName"), Toast.LENGTH_LONG).show();
                 userId = ParseUser.getCurrentUser().getObjectId();
                 setUser(new User(ParseUser.getCurrentUser()));
                 refreshPage(user);
-
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
-        else
-        {
+        else {
             Model.getInstance().getUserByIdAsync(userId, new Model.GetUserListener() {
                 @Override
                 public void onUserArrived(User user) {
