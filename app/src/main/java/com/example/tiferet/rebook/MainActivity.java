@@ -25,6 +25,7 @@ import com.example.tiferet.rebook.Model.User;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class MainActivity extends Activity implements
         MyProfileFragment.MyProfileFragmentDelegate, AddNewBookFragment.AddNewBookFragmentDelegate,
@@ -32,7 +33,12 @@ public class MainActivity extends Activity implements
         OthersReviewFragment.OthersReviewFragmentDelegate, FollowingListFragment.FollowingListFragmentDelegate,
         EditProfileFragment.EditProfileFragmentDelegate{
 
-    String thisFrag = "login";
+    String thisFrag = "0";
+    Fragment currFragment = new Fragment();
+    Fragment prevFragment = new Fragment();
+
+    Stack<Fragment> stack;
+
     MyProfileFragment myProfileFragment;
     AddNewBookFragment addNewBookFragment;
     BookProgressFragment bookProgressFragment;
@@ -47,18 +53,18 @@ public class MainActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
 
+        stack = new Stack<>();
         ParseUser pu = ParseUser.getCurrentUser();
         User user = new User(pu);
 
         myProfileFragment = (MyProfileFragment) getFragmentManager().findFragmentById(R.id.profileFragment);
         myProfileFragment.setUser(user);
         myProfileFragment.setDelegate(this);
-
+        stack.push(myProfileFragment);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("TAG", "My Profile Pressed");
         switch (item.getItemId()) {
             case R.id.action_logout:{
                 onLogout();
@@ -70,10 +76,30 @@ public class MainActivity extends Activity implements
             }
             case R.id.action_news_feed: {
                 onNewsFeed();
+                return true;
+            }
+            case R.id.action_my_profile: {
+                onMyProfile();
+                return true;
             }
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void onMyProfile() {
+        currFragment = stack.peek();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        myProfileFragment = new MyProfileFragment();
+        myProfileFragment.setDelegate(this);
+        ft.add(R.id.container, myProfileFragment, myProfileFragment.toString());
+        //stack.push(currFragment);
+        stack.push(myProfileFragment);
+        ft.hide(currFragment);
+        ft.addToBackStack(myProfileFragment.toString());
+        ft.commit();
+        invalidateOptionsMenu();
     }
 
     public void onNewsFeed() {
@@ -83,7 +109,6 @@ public class MainActivity extends Activity implements
 
     public void onLogout() {
         ParseUser.logOut();
-        Log.d("TAG", "on log out");
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
         finish();
@@ -97,131 +122,142 @@ public class MainActivity extends Activity implements
 
     @Override
     public void OnAddNewBook() {
+        currFragment = stack.peek();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         addNewBookFragment = new AddNewBookFragment();
         addNewBookFragment.setDelegate(this);
-        thisFrag = ""+ fm.getBackStackEntryCount();
-        ft.add(R.id.container, addNewBookFragment, thisFrag);
-        ft.hide(myProfileFragment);
-        ft.addToBackStack(thisFrag);
+        ft.add(R.id.container, addNewBookFragment, addNewBookFragment.toString());
+        //stack.push(currFragment);
+        stack.push(addNewBookFragment);
+        ft.hide(currFragment);
+        ft.addToBackStack(addNewBookFragment.toString());
         ft.commit();
         invalidateOptionsMenu();
     }
 
     @Override
     public void OnBookProgress(String userId, Book book) {
-        bookProgressFragment = new BookProgressFragment();
-        bookProgressFragment.setBook(book);
+        currFragment = stack.peek();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        if (!userId.equals(""))
-        {
+        bookProgressFragment = new BookProgressFragment();
+        bookProgressFragment.setBook(book);
+        if (!userId.equals("")) {
             User user = new User(ParseUser.getCurrentUser());
             bookProgressFragment.setCurr(user);
             bookProgressFragment.setUserId(userId);
         }
-        else
-        {
+        else {
             bookProgressFragment.setCurr(null);
             bookProgressFragment.setUserId(null);
         }
-
         bookProgressFragment.setDelegate(this);
-        thisFrag = ""+ fm.getBackStackEntryCount();
-        ft.add(R.id.container, bookProgressFragment,thisFrag);
-        ft.hide(myProfileFragment);
-        ft.addToBackStack(thisFrag);
+        ft.add(R.id.container, bookProgressFragment, bookProgressFragment.toString());
+        //stack.push(currFragment);
+        stack.push(bookProgressFragment);
+        ft.hide(currFragment);
+        ft.addToBackStack(bookProgressFragment.toString());
         ft.commit();
         invalidateOptionsMenu();
     }
 
-
-
     @Override
     public void OnFollowingList(ArrayList<User> followers) {
+        currFragment = stack.peek();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         followingListFragment = new FollowingListFragment();
         followingListFragment.setDelegate(this);
         followingListFragment.setData(followers);
-        thisFrag = ""+ fm.getBackStackEntryCount();
-        ft.add(R.id.container, followingListFragment, thisFrag);
-        ft.hide(myProfileFragment);
-        ft.addToBackStack(thisFrag);
+        ft.add(R.id.container, followingListFragment, followingListFragment.toString());
+        //stack.push(currFragment);
+        stack.push(followingListFragment);
+        ft.hide(currFragment);
+        ft.addToBackStack(followingListFragment.toString());
         ft.commit();
         invalidateOptionsMenu();
     }
 
     @Override
     public void OnEditProfile(User user) {
+        currFragment = stack.peek();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         editProfileFragment = new EditProfileFragment();
         editProfileFragment.setDelegate(this);
         editProfileFragment.setUser(user);
-        thisFrag = ""+ fm.getBackStackEntryCount();
-        ft.add(R.id.container, editProfileFragment, thisFrag);
-        ft.hide(myProfileFragment);
-        ft.addToBackStack(thisFrag);
+        ft.add(R.id.container, editProfileFragment, editProfileFragment.toString());
+        //stack.push(currFragment);
+        stack.push(editProfileFragment);
+        ft.hide(currFragment);
+        ft.addToBackStack(editProfileFragment.toString());
         ft.commit();
         invalidateOptionsMenu();
     }
 
     @Override
     public void OnUpdateProgress(Book book) {
+        currFragment = stack.peek();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         updateBookProgressFragment = new UpdateBookProgressFragment();
         updateBookProgressFragment.setBook(book);
         updateBookProgressFragment.setDelegate(this);
-        thisFrag = ""+ fm.getBackStackEntryCount();
-        ft.add(R.id.container, updateBookProgressFragment, thisFrag);
-        ft.hide(bookProgressFragment);
-        ft.addToBackStack(thisFrag);
+        ft.add(R.id.container, updateBookProgressFragment, updateBookProgressFragment.toString());
+        //stack.push(currFragment);
+        stack.push(updateBookProgressFragment);
+        ft.hide(currFragment);
+        ft.addToBackStack(updateBookProgressFragment.toString());
         ft.commit();
         invalidateOptionsMenu();
     }
 
     @Override
     public void OnOthersReview(Book book) {
-        Log.d("TAG", "Book selected " + book.getBookID());
+        currFragment = stack.peek();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         othersReviewFragment = new OthersReviewFragment();
         othersReviewFragment.setBook(book);
         othersReviewFragment.setDelegate(this);
-        thisFrag = ""+ fm.getBackStackEntryCount();
-        ft.add(R.id.container, othersReviewFragment, thisFrag);
-        ft.hide(bookProgressFragment);
-        ft.addToBackStack(thisFrag);
+        ft.add(R.id.container, othersReviewFragment, othersReviewFragment.toString());
+        //stack.push(currFragment);
+        stack.push(othersReviewFragment);
+        ft.hide(currFragment);
+        ft.addToBackStack(othersReviewFragment.toString());
         ft.commit();
         invalidateOptionsMenu();
     }
 
     @Override
     public void onCancel() {
+        stack.pop();
         invalidateOptionsMenu();
         getFragmentManager().popBackStack();
 }
 
     @Override
     public void onSave() {
+        currFragment = stack.pop();
+        prevFragment = stack.peek();
         FragmentManager fm = getFragmentManager();
-        int temp = fm.getBackStackEntryCount() - 2;
-        Fragment currentFragment;
-        if(temp>-1) {
-            thisFrag = "" + temp;
-            currentFragment = getFragmentManager().findFragmentByTag(thisFrag);
-        }
-        else {
-            currentFragment = new MyProfileFragment();
-        }
         FragmentTransaction ft = fm.beginTransaction();
-        ft.detach(currentFragment);
-        ft.attach(currentFragment);
+        //getFragmentManager().popBackStack();
+        //ft.add(R.id.container, prevFragment);
+        ft.show(prevFragment);
+        stack.push(prevFragment);
+        //stack.push(myProfileFragment);
+        ft.hide(currFragment);
+        //ft.addToBackStack(prevFragment.toString());
         ft.commit();
-        getFragmentManager().popBackStack();
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        stack.pop();
     }
 
     public void onClickUsername(View v){
@@ -231,7 +267,7 @@ public class MainActivity extends Activity implements
         myProfileFragment = new MyProfileFragment();
         myProfileFragment.setUser(user);
         myProfileFragment.setDelegate(this);
-        thisFrag = ""+ fm.getBackStackEntryCount();
+        thisFrag = "" + (fm.getBackStackEntryCount()+1);
         ft.add(R.id.container, myProfileFragment, thisFrag);
         ft.addToBackStack(thisFrag);
         ft.commit();

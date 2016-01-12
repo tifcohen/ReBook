@@ -109,7 +109,6 @@ public class AddNewBookFragment extends Fragment {
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("TAG", "Canceling adding of Student");
                 if (delegate != null)
                     delegate.onCancel();
             }
