@@ -91,6 +91,14 @@ public class NewsFeedActivity extends Activity {
         startActivity(intent);
     }
 
+    public void onClickBookname(View v) {
+        Post post = (Post) v.getTag();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra("fragment", "book");
+        intent.putExtra("bookId", post.getBookID());
+        startActivity(intent);
+    }
+
 
     class CustomAdapter extends BaseAdapter {
 

@@ -24,6 +24,16 @@ public class User {
         this.birthDate = birthDate;
     }
 
+    public User(String userId) {
+        this.userId = userId;
+        this.username = "";
+        this.email = "";
+        this.fName = "";
+        this.lName = "";
+        this.profPicture = "";
+        this.birthDate = "";
+    }
+
     public User(ParseObject p){
         this.userId = p.getObjectId();
         this.username = p.getString("username");

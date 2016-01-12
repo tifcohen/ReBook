@@ -43,6 +43,7 @@ public class BookProgressFragment extends Fragment {
     ArrayList<Post> data;
     ArrayList<User> users;
     Book book;
+    String bookId;
 
     public User getCurr() {
         return curr;
@@ -187,6 +188,10 @@ public class BookProgressFragment extends Fragment {
 
     public String getUserId() {
         return userId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 
     public void setUserId(String userId) {

@@ -46,7 +46,7 @@ public class MyProfileFragment extends Fragment {
         void onNewsFeed();
     }
 
-    User user;
+    User user = new User(ParseUser.getCurrentUser());
 
     ListView myReadingList;
     ArrayList<Book> myReadingData;
@@ -78,7 +78,9 @@ public class MyProfileFragment extends Fragment {
         final TextView nameTextView = (TextView) view.findViewById(R.id.myProfileUsername);
         myProfilePicture = (ImageView) view.findViewById(R.id.myProfilePicture);
 
-        if (userId.equals(ParseUser.getCurrentUser().getObjectId())) {
+       // userId = this.user.getUserId();
+
+        if (user.getUserId().equals(ParseUser.getCurrentUser().getObjectId())) {
             this.user = new User(ParseUser.getCurrentUser());
             if (user.getProfPicture() != null) {
                 if (!user.getProfPicture().equals("")) {
@@ -249,26 +251,6 @@ public class MyProfileFragment extends Fragment {
         Log.d("Debug", "User was set");
     }
 
-    public void setUserId(String userId){
-        this.user = user;
-        Log.d("Debug", "User was set");
-    }
-
-/*    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("TAG", "onOptionsItemSelected was pressed");
-        switch (item.getItemId()) {
-            case R.id.addBookkBtn : {
-                delegate.OnAddNewBook();
-                return true;
-            }
-            case R.id.action_logout : {
-                delegate.OnLogout();
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-*/
     class MyBooksAdapter extends BaseAdapter {
 
         public MyBooksAdapter() {

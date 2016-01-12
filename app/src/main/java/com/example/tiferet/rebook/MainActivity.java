@@ -41,6 +41,7 @@ public class MainActivity extends Activity implements
     Stack<Fragment> stack;
 
     MyProfileFragment myProfileFragment;
+    MyProfileFragment otherProfile;
     AddNewBookFragment addNewBookFragment;
     BookProgressFragment bookProgressFragment;
     UpdateBookProgressFragment updateBookProgressFragment;
@@ -57,23 +58,22 @@ public class MainActivity extends Activity implements
         stack = new Stack<>();
 
         String action = getIntent().getExtras().getString("fragment");
-        String userId = getIntent().getExtras().getString("userId");
 
-        if(action.equals("user")){
-            myProfileFragment = (MyProfileFragment) getFragmentManager().findFragmentById(R.id.profileFragment);
-            myProfileFragment.setDelegate(this);
-            myProfileFragment.setUserId(userId);
-            stack.push(myProfileFragment);
-            Log.d("TAG", "moving to profile");
+        myProfileFragment = (MyProfileFragment) getFragmentManager().findFragmentById(R.id.profileFragment);
+        myProfileFragment.setDelegate(this);
+        stack.push(myProfileFragment);
+
+        if(action.equals("user")) {
+            getFragmentManager().popBackStack();
+            String userId = getIntent().getExtras().getString("userId");
+            User user = new User(userId);
+            onClickUsername(user);
         }
-       /* else{
-            ParseUser pu = ParseUser.getCurrentUser();
-            User user = new User(pu);
-            myProfileFragment = (MyProfileFragment) getFragmentManager().findFragmentById(R.id.profileFragment);
-            myProfileFragment.setUser(user);
-            myProfileFragment.setDelegate(this);
-
-        }*/
+        if(action.equals("book")){
+            getFragmentManager().popBackStack();
+            String bookId = getIntent().getExtras().getString("bookId");
+            onClickBookname(bookId);
+        }
     }
 
     @Override
@@ -273,40 +273,37 @@ public class MainActivity extends Activity implements
         stack.pop();
     }
 
-    public void onClickUsername(View v){
-        User user = (User) v.getTag();
+    public void onClickUsername(User user){
+        currFragment = stack.peek();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        myProfileFragment = new MyProfileFragment();
-        myProfileFragment.setUser(user);
-        myProfileFragment.setDelegate(this);
-        thisFrag = "" + (fm.getBackStackEntryCount()+1);
-        ft.add(R.id.container, myProfileFragment, thisFrag);
-        ft.addToBackStack(thisFrag);
+        otherProfile = new MyProfileFragment();
+        otherProfile.setDelegate(this);
+        otherProfile.setUser(user);
+        ft.add(R.id.container, otherProfile, otherProfile.toString());
+        //stack.push(currFragment);
+        stack.push(otherProfile);
+        ft.hide(currFragment);
+        ft.addToBackStack(otherProfile.toString());
         ft.commit();
         invalidateOptionsMenu();
     }
 
 
-    public void onClickBookname(View v){
-        Post post = (Post) v.getTag();
-        //final String userId = post.getUserID();
-        final String bookId = post.getBookID();
-
-        Model.getInstance().getBookByIdAsync(post.getBookID(), new Model.GetBookListener() {
+    public void onClickBookname(String bookId){
+        Model.getInstance().getBookByIdAsync(bookId, new Model.GetBookListener() {
             @Override
             public void onBookArrived(Book book) {
+                currFragment = stack.peek();
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 bookProgressFragment = new BookProgressFragment();
                 bookProgressFragment.setBook(book);
                 bookProgressFragment.setCurr(null);
-                //bookProgressFragment.setDelegate(this);
-
-                //othersReviewFragment.setDelegate(this)
-                thisFrag = "" + fm.getBackStackEntryCount();
-                ft.add(R.id.container, bookProgressFragment, thisFrag);
-                ft.addToBackStack(thisFrag);
+                ft.add(R.id.container, bookProgressFragment, bookProgressFragment.toString());
+                stack.push(bookProgressFragment);
+                ft.hide(currFragment);
+                ft.addToBackStack(bookProgressFragment.toString());
                 ft.commit();
                 invalidateOptionsMenu();
             }
