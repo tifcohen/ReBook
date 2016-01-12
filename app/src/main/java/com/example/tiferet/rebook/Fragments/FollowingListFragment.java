@@ -98,18 +98,11 @@ public class FollowingListFragment extends Fragment {
             if (user.getUserId().equals(currentId))
                 follow.setVisibility(View.GONE);
 
-            if (Model.getInstance().amIFollowing(user.getUserId()))
-            {
+            if (Model.getInstance().amIFollowing(user.getUserId())) {
                 boolean amIFollowing = Model.getInstance().amIFollowing(user.getUserId());
-                if (amIFollowing)
-                {
+                if (amIFollowing) {
                     follow.setVisibility(View.VISIBLE);
-                    follow.setText("Unfollow " + user.getfName());
-                }
-                else
-                {
-                    follow.setVisibility(View.VISIBLE);
-                    follow.setText("Follow " + user.getfName());
+                    follow.setText("Unfollow");
                 }
             }
 
@@ -124,17 +117,14 @@ public class FollowingListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     boolean amIFollowing = Model.getInstance().amIFollowing(user.getUserId());
-                    if (amIFollowing)
-                    {
-
+                    if (amIFollowing) {
                         Model.getInstance().stopFollowing(user.getUserId());
-                        follow.setText("Follow " + user.getfName());
+                        follow.setText("Follow");
 
                     }
-                    else
-                    {
+                    else {
                         Model.getInstance().startFollowing(user.getUserId());
-                        follow.setText("Unfollow " + user.getfName());
+                        follow.setText("Unfollow");
                     }
                 }
             });
