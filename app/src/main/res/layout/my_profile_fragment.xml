@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:showIn="@layout/activity_main"
-    tools:context=".MyProfileFragment" >
+    android:layout_height="match_parent">
+    <!--tools:showIn="@layout/activity_main"
+    tools:context=".MyProfileFragment" -->
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -64,43 +65,59 @@
                 android:id="@+id/myReadingList"
                 android:drawSelectorOnTop="false"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="5.0sp"
-                >
+                android:dividerHeight="5.0sp">
             </ListView>
         </LinearLayout>
-        <TextView
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Following:"/>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="75dp"
-            android:id="@+id/followingInfo"
-            android:layout_below="@id/booksInfo"
-            android:orientation="horizontal">
-            <ListView
+            android:orientation="horizontal"
+            android:layout_below="@id/booksInfo">
+            <LinearLayout
+                android:id="@+id/shelf"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/myFollowingList"
-                android:drawSelectorOnTop="false">
-            </ListView>
-        </LinearLayout>
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="My Book Shelf:"/>
-        <LinearLayout
-            android:layout_below="@id/followingInfo"
-            android:layout_width="fill_parent"
-            android:layout_height="75dp"
-            android:id="@+id/bookShelf"
-            android:orientation="horizontal">
-            <ListView
-                android:layout_width="fill_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Following:"/>
+                <LinearLayout
+                    android:layout_width="100dp"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/followingInfo"
+                    android:orientation="vertical">
+                    <ListView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/myFollowingList"
+                        android:drawSelectorOnTop="false">
+                    </ListView>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/myBookShelfList"
-                android:drawSelectorOnTop="false">
-            </ListView>
-        </LinearLayout>
+                android:orientation="vertical"
+                android:layout_alignParentRight="true">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="My Book Shelf:"
+                    />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/bookShelf"
+                    android:orientation="horizontal">
+                    <ListView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/myBookShelfList"
+                        android:drawSelectorOnTop="false">
+                    </ListView>
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>
