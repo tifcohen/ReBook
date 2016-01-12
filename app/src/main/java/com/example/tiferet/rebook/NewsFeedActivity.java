@@ -153,12 +153,12 @@ public class NewsFeedActivity extends Activity {
                         }
                         else
                         {
-                            userProfileImage.setImageResource(R.drawable.default_image);
+                            userProfileImage.setImageResource(R.drawable.default_user);
                         }
                     }
                     else
                     {
-                        userProfileImage.setImageResource(R.drawable.default_image);
+                        userProfileImage.setImageResource(R.drawable.default_user);
                     }
 
 

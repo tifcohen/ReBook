@@ -357,12 +357,12 @@ public class MyProfileFragment extends Fragment {
                 }
                 else
                 {
-                    followingImage.setImageResource(R.drawable.default_image);
+                    followingImage.setImageResource(R.drawable.default_user);
                 }
             }
             else
             {
-                followingImage.setImageResource(R.drawable.default_image);
+                followingImage.setImageResource(R.drawable.default_user);
             }
             return convertView;
         }

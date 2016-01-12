@@ -77,12 +77,12 @@ public class EditProfileFragment extends Fragment{
             }
             else
             {
-                imageView.setImageResource(R.drawable.default_image);
+                imageView.setImageResource(R.drawable.default_user);
             }
         }
         else
         {
-            imageView.setImageResource(R.drawable.default_image);
+            imageView.setImageResource(R.drawable.default_user);
         }
 
 
