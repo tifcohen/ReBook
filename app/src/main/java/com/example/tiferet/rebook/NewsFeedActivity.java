@@ -1,5 +1,7 @@
 package com.example.tiferet.rebook;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.tiferet.rebook.Fragments.MyProfileFragment;
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.Model;
 import com.example.tiferet.rebook.Model.Post;
@@ -67,7 +70,6 @@ public class NewsFeedActivity extends Activity {
 
     private void onLogout() {
         ParseUser.logOut();
-        Log.d("TAG", "on log out");
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
         finish();
@@ -77,9 +79,18 @@ public class NewsFeedActivity extends Activity {
         User user = new User(ParseUser.getCurrentUser());
         String userId = user.getUserId();
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra("userId",userId);
+        intent.putExtra("userId", userId);
         startActivity(intent);
     }
+
+    public void onClickUsername(View v){
+        User user = (User) v.getTag();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra("fragment", "user");
+        intent.putExtra("userId", user.getUserId());
+        startActivity(intent);
+    }
+
 
     class CustomAdapter extends BaseAdapter {
 

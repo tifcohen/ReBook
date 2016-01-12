@@ -56,7 +56,7 @@ public class MyProfileFragment extends Fragment {
     List<Book> myBookShelfData;
     ImageView myProfilePicture;
     ArrayList<Integer> myProgressData;
-
+    String userId;
     MyProfileFragmentDelegate delegate;
     public void setDelegate(MyProfileFragmentDelegate delegate){ this.delegate = delegate;}
 
@@ -78,17 +78,10 @@ public class MyProfileFragment extends Fragment {
         final TextView nameTextView = (TextView) view.findViewById(R.id.myProfileUsername);
         myProfilePicture = (ImageView) view.findViewById(R.id.myProfilePicture);
 
-        Intent intent = getActivity().getIntent();
-        String userId = intent.getStringExtra("userId");
-
-        if (userId.equals(ParseUser.getCurrentUser().getObjectId()))
-        {
+        if (userId.equals(ParseUser.getCurrentUser().getObjectId())) {
             this.user = new User(ParseUser.getCurrentUser());
-
-            if (user.getProfPicture() != null)
-            {
-                if (!user.getProfPicture().equals(""))
-                {
+            if (user.getProfPicture() != null) {
+                if (!user.getProfPicture().equals("")) {
                     Model.getInstance().loadImage(user.getProfPicture(), new Model.LoadImageListener() {
                         @Override
                         public void onResult(Bitmap imageBmp) {
@@ -98,28 +91,21 @@ public class MyProfileFragment extends Fragment {
                         }
                     });
                 }
-                else
-                {
+                else {
                     myProfilePicture.setImageResource(R.drawable.default_image);
                 }
             }
-            else
-            {
+            else {
                 myProfilePicture.setImageResource(R.drawable.default_image);
             }
         }
-        else
-        {
+        else {
             Model.getInstance().getUserByIdAsync(userId, new Model.GetUserListener() {
                 @Override
                 public void onUserArrived(User user) {
                     setUser(user);
-
-
-                    if (user.getProfPicture() != null)
-                    {
-                        if (!user.getProfPicture().equals(""))
-                        {
+                    if (user.getProfPicture() != null) {
+                        if (!user.getProfPicture().equals("")) {
                             Model.getInstance().loadImage(user.getProfPicture(), new Model.LoadImageListener() {
                                 @Override
                                 public void onResult(Bitmap imageBmp) {
@@ -129,13 +115,11 @@ public class MyProfileFragment extends Fragment {
                                 }
                             });
                         }
-                        else
-                        {
+                        else {
                             myProfilePicture.setImageResource(R.drawable.default_image);
                         }
                     }
-                    else
-                    {
+                    else {
                         myProfilePicture.setImageResource(R.drawable.default_image);
                     }
 
@@ -146,24 +130,19 @@ public class MyProfileFragment extends Fragment {
         Model.getInstance().getUserByIdAsync(user.getUserId(), new Model.GetUserListener() {
             @Override
             public void onUserArrived(User user) {
-                //currentUser = user;
                 nameTextView.setText(user.getfName() + " " + user.getlName());
                 if (user.getUserId().equals(ParseUser.getCurrentUser().getObjectId()))
                     edit.setText("Edit My Details");
-                else
-                {
+                else {
                     boolean amIFollowing = Model.getInstance().amIFollowing(user.getUserId());
                     Log.d("Debug","Following:"+amIFollowing);
-                    if (amIFollowing)
-                    {
+                    if (amIFollowing) {
 
                         edit.setText("Unfollow " + user.getfName());
                     }
-                    else
-                    {
+                    else {
                         edit.setText("Follow " + user.getfName());
                     }
-
                 }
             }
         });
@@ -179,29 +158,21 @@ public class MyProfileFragment extends Fragment {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (user.getUserId().equals(ParseUser.getCurrentUser().getObjectId()))
-                {
+                if (user.getUserId().equals(ParseUser.getCurrentUser().getObjectId())) {
                     delegate.OnEditProfile(user);
                 }
-                else
-                {
+                else {
                     boolean amIFollowing = Model.getInstance().amIFollowing(user.getUserId());
-
-                    if (amIFollowing)
-                    {
+                    if (amIFollowing) {
 
                         Model.getInstance().stopFollowing(user.getUserId());
                         edit.setText("Follow " + user.getfName());
 
                     }
-                    else
-                    {
+                    else {
                         Model.getInstance().startFollowing(user.getUserId());
                         edit.setText("Unfollow " + user.getfName());
                     }
-
-                    Log.d("Debug", "Right !!! ");
-                    //Follow button.
                 }
             }
         });
@@ -218,17 +189,14 @@ public class MyProfileFragment extends Fragment {
                 myReadingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        if (user.getUserId().equals(ParseUser.getCurrentUser().getObjectId()))
-                        {
+                        if (user.getUserId().equals(ParseUser.getCurrentUser().getObjectId())) {
                             Book book = myReadingData.get(position);
                             if (delegate != null) {
                                 String userId = user.getUserId();
                                 delegate.OnBookProgress(userId,book);
                             }
-
                         }
-                        else
-                        {
+                        else {
                             Book book = myReadingData.get(position);
                             if (delegate != null) {
                                 String userId = "GLOBAL";
@@ -240,7 +208,6 @@ public class MyProfileFragment extends Fragment {
                 });
             }
         });
-
 
         myFollowingList = (ListView) view.findViewById(R.id.myFollowingList);
         Model.getInstance().getFollowingListByIdAsync(user.getUserId(), new Model.GetFollowingListener() {
@@ -278,6 +245,11 @@ public class MyProfileFragment extends Fragment {
     }
 
     public void setUser(User user){
+        this.user = user;
+        Log.d("Debug", "User was set");
+    }
+
+    public void setUserId(String userId){
         this.user = user;
         Log.d("Debug", "User was set");
     }

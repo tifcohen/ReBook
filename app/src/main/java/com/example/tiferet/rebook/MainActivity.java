@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Switch;
 
 import com.example.tiferet.rebook.Fragments.AddNewBookFragment;
 import com.example.tiferet.rebook.Fragments.BookProgressFragment;
@@ -54,13 +55,25 @@ public class MainActivity extends Activity implements
         setContentView(R.layout.content_main);
 
         stack = new Stack<>();
-        ParseUser pu = ParseUser.getCurrentUser();
-        User user = new User(pu);
 
-        myProfileFragment = (MyProfileFragment) getFragmentManager().findFragmentById(R.id.profileFragment);
-        myProfileFragment.setUser(user);
-        myProfileFragment.setDelegate(this);
-        stack.push(myProfileFragment);
+        String action = getIntent().getExtras().getString("fragment");
+        String userId = getIntent().getExtras().getString("userId");
+
+        if(action.equals("user")){
+            myProfileFragment = (MyProfileFragment) getFragmentManager().findFragmentById(R.id.profileFragment);
+            myProfileFragment.setDelegate(this);
+            myProfileFragment.setUserId(userId);
+            stack.push(myProfileFragment);
+            Log.d("TAG", "moving to profile");
+        }
+       /* else{
+            ParseUser pu = ParseUser.getCurrentUser();
+            User user = new User(pu);
+            myProfileFragment = (MyProfileFragment) getFragmentManager().findFragmentById(R.id.profileFragment);
+            myProfileFragment.setUser(user);
+            myProfileFragment.setDelegate(this);
+
+        }*/
     }
 
     @Override
