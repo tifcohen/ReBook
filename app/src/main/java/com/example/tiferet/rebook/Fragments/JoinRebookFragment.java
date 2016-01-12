@@ -18,7 +18,7 @@ import com.example.tiferet.rebook.R;
 public class JoinRebookFragment extends Fragment {
     public interface JoinRebookFragmentDelegate{
         void onJoinRebook2(User user);
-        void onCancel();
+        void onCancelReg();
     }
 
     JoinRebookFragmentDelegate delegate;
@@ -50,7 +50,7 @@ public class JoinRebookFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(delegate!=null){
-                    delegate.onCancel();
+                    delegate.onCancelReg();
                 }
             }
         });
