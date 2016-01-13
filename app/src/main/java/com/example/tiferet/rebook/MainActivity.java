@@ -68,6 +68,7 @@ public class MainActivity extends Activity implements
             FragmentTransaction ft = fm.beginTransaction();
             ft.add(R.id.container, bookProgressFragment, bookProgressFragment.toString());
             ft.addToBackStack(bookProgressFragment.toString());
+            stack.push(bookProgressFragment);
             ft.commit();
             invalidateOptionsMenu();
         }
@@ -276,6 +277,9 @@ public class MainActivity extends Activity implements
     public void onBackPressed(){
         super.onBackPressed();
         stack.pop();
+        if(stack.size()==0){
+            finish();
+        }
     }
 
     public void onClickUsername(User user){

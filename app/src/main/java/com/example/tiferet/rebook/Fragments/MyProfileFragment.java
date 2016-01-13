@@ -236,7 +236,7 @@ public class MyProfileFragment extends Fragment {
             });
         }
         else {
-            myProfilePicture.setImageResource(R.drawable.default_image);
+            myProfilePicture.setImageResource(R.drawable.default_user);
         }
 
         nameTextView.setText(user.getfName() + " " + user.getlName());

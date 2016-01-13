@@ -72,51 +72,65 @@ public class BookProgressFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.book_progress_fragment, container, false);
-        if(book!=null){
-            final TextView bookName = (TextView) view.findViewById(R.id.bookProgressName);
-            bookImage = (ImageView) view.findViewById(R.id.bookProgressImage);
-            final TextView bookAuthor = (TextView) view.findViewById(R.id.bookProgressAuthor);
-            bookProgress = (ProgressBar) view.findViewById(R.id.progressBarBook);
-            bookProgressPages = (TextView) view.findViewById(R.id.bookProgressPages);
+        final TextView bookName = (TextView) view.findViewById(R.id.bookProgressName);
+        bookImage = (ImageView) view.findViewById(R.id.bookProgressImage);
+        final TextView bookAuthor = (TextView) view.findViewById(R.id.bookProgressAuthor);
+        bookProgress = (ProgressBar) view.findViewById(R.id.progressBarBook);
+        bookProgressPages = (TextView) view.findViewById(R.id.bookProgressPages);
 
-            if (book == null)
-            {
-                Model.getInstance().getBookByIdAsync(bookId, new Model.GetBookListener() {
-                    @Override
-                    public void onBookArrived(Book book) {
-                        setBook(book);
-                        if (book.getPicture() != null)
-                        {
-                            if (!book.getPicture().equals(""))
-                            {
-                                Model.getInstance().loadImage(book.getPicture(), new Model.LoadImageListener() {
-                                    @Override
-                                    public void onResult(Bitmap imageBmp) {
-                                        if (imageBmp != null) {
-                                            bookImage.setImageBitmap(imageBmp);
-                                        }
+        if (book == null) {
+            Model.getInstance().getBookByIdAsync(bookId, new Model.GetBookListener() {
+                @Override
+                public void onBookArrived(Book book) {
+                    setBook(book);
+                    bookName.setText(book.getBookName());
+                    bookAuthor.setText(" By " + book.getAuthor() + ". Pages: " + book.getPages());
+                    int pages = book.getPages();
+                    //bookPages.setText("Pages: " + pages);
+                    if (book.getPicture() != null) {
+                        if (!book.getPicture().equals("")) {
+                            Model.getInstance().loadImage(book.getPicture(), new Model.LoadImageListener() {
+                                @Override
+                                public void onResult(Bitmap imageBmp) {
+                                    if (imageBmp != null) {
+                                        bookImage.setImageBitmap(imageBmp);
                                     }
-                                });
-                            }
-                            else
-                            {
-                                bookImage.setImageResource(R.drawable.default_user);
-                            }
+                                }
+                            });
                         }
-                        else
-                        {
-                            bookImage.setImageResource(R.drawable.default_user);
+                        else {
+                            bookImage.setImageResource(R.drawable.default_book);
                         }
-
-                        bookName.setText(book.getBookName());
-                        bookAuthor.setText(" By " + book.getAuthor() + ". Pages: " + book.getPages());
-                        int pages = book.getPages();
-                        //bookPages.setText("Pages: " + pages);
-
                     }
-                });
+                    else {
+                        bookImage.setImageResource(R.drawable.default_book);
+                    }
+                }
+            });
+        }
+        else if(book != null){
+            bookName.setText(book.getBookName());
+            bookAuthor.setText(" By " + book.getAuthor() + ". Pages: " + book.getPages());
+            int pages = book.getPages();
+            //bookPages.setText("Pages: " + pages);
+            if (book.getPicture() != null) {
+                if (!book.getPicture().equals("")) {
+                    Model.getInstance().loadImage(book.getPicture(), new Model.LoadImageListener() {
+                        @Override
+                        public void onResult(Bitmap imageBmp) {
+                            if (imageBmp != null) {
+                                bookImage.setImageBitmap(imageBmp);
+                            }
+                        }
+                    });
+                }
+                else {
+                    bookImage.setImageResource(R.drawable.default_book);
+                }
             }
-
+            else {
+                bookImage.setImageResource(R.drawable.default_book);
+            }
         }
 
         list = (ListView) view.findViewById(R.id.bookReviewList);
