@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.tiferet.rebook.Model.Model;
@@ -29,6 +31,8 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
         Model.getInstance().setContext(getApplicationContext());
         Model.getInstance().init(getApplicationContext());
+        final ProgressBar spinner = (ProgressBar) findViewById(R.id.progressBar2);
+        spinner.setVisibility(View.GONE);
         setTitle(R.string.action_sign_in_short);
 
         if(currentUser!=null){
@@ -40,6 +44,7 @@ public class LoginActivity extends Activity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                spinner.setVisibility(View.VISIBLE);
                 username_input = (EditText) findViewById(R.id.usr);
                 password_input = (EditText) findViewById(R.id.psw);
                 String password = password_input.getText().toString();

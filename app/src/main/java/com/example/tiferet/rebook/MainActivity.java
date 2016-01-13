@@ -262,22 +262,14 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onSave() {
-        /*currFragment = stack.pop();
-        prevFragment = stack.peek();
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.attach(prevFragment);
-        if (prevFragment == myProfileFragment){
-            ft.add(R.id.container, myProfileFragment);
-            ft.hide(currFragment);
+        currFragment = stack.peek();
+        if (currFragment == editProfileFragment || currFragment == addNewBookFragment){
+            onMyProfile();
         }
-        prevFragment.getId();
-        //ft.addToBackStack(prevFragment.toString());
-        ft.commit();*/
-
-        invalidateOptionsMenu();
-        stack.pop();
-        getFragmentManager().popBackStack();
+        else if (currFragment == updateBookProgressFragment){
+            Book book = updateBookProgressFragment.getBook();
+            OnBookProgress(ParseUser.getCurrentUser().getObjectId(),book);
+        }
     }
 
     @Override
