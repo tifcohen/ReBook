@@ -83,7 +83,7 @@ public class MyProfileFragment extends Fragment {
         final TextView followersTextView = (TextView) view.findViewById(R.id.myProfileFollowers);
         nameTextView = (TextView) view.findViewById(R.id.myProfileUsername);
         myProfilePicture = (ImageView) view.findViewById(R.id.myProfilePicture);
-        Toast.makeText(getActivity().getApplicationContext(),Model.getInstance().getLocalBooksCount()+ " Books ", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity().getApplicationContext(),Model.getInstance().getLocalBooksCount()+ " Books ", Toast.LENGTH_LONG).show();
         Model.getInstance().getFollowersList(userId, new Model.GetFollowersListener() {
             @Override
             public void onFollowersArrived(ArrayList<User> followers) {
