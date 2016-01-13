@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.BookDB;
 import com.example.tiferet.rebook.Model.Model;
+import com.example.tiferet.rebook.Model.Post;
 import com.example.tiferet.rebook.Model.User;
 import com.example.tiferet.rebook.R;
 import com.parse.ParseException;
@@ -82,13 +83,7 @@ public class MyProfileFragment extends Fragment {
         final TextView followersTextView = (TextView) view.findViewById(R.id.myProfileFollowers);
         nameTextView = (TextView) view.findViewById(R.id.myProfileUsername);
         myProfilePicture = (ImageView) view.findViewById(R.id.myProfilePicture);
-
-
-
-
-
-
-
+        Toast.makeText(getActivity().getApplicationContext(),Model.getInstance().getLocalBooksCount()+ " Books ", Toast.LENGTH_LONG).show();
         Model.getInstance().getFollowersList(userId, new Model.GetFollowersListener() {
             @Override
             public void onFollowersArrived(ArrayList<User> followers) {
@@ -124,7 +119,6 @@ public class MyProfileFragment extends Fragment {
         Model.getInstance().getReadingStatusAsync(userId, false, new Model.GetReadingStatusListener() {
             @Override
             public void onReadingStatusArrived(ArrayList<Book> bookList, ArrayList<Integer> progressList) {
-                //myReadingData = (ArrayList) Model.getInstance().getAllBooks();
                 myReadingData = bookList;
                 myProgressData = progressList;
                 MyBooksAdapter booksAdapter = new MyBooksAdapter();

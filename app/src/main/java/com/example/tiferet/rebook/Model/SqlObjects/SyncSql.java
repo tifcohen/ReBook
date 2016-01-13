@@ -3,7 +3,6 @@ package com.example.tiferet.rebook.Model.SqlObjects;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.AvoidXfermode;
 
 import com.example.tiferet.rebook.Model.Book;
 import com.example.tiferet.rebook.Model.ModelSql;
@@ -12,48 +11,49 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by TIFERET on 10-Jan-16.
+ * Created by Alon Abadi on 1/13/2016.
  */
-public class BookSql {
-    private static final String TABLE = "Books";
-    private static final String ID = "id";
-    private static final String NAME = "name";
-    private static final String AUTHOR = "author";
-    private static final String PAGES = "pages";
-    private static final String IMAGE_NAME = "imageName";
+public class SyncSql {
+    private static final String TABLE = "Sync";
+    private static final String ID = "_id";
+    private static final String DATE = "date";
 
     public static void create(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE + " (" + ID + " TEXT PRIMARY KEY," + NAME + " TEXT," + AUTHOR + " TEXT, " +
-                PAGES + " INTEGER," + IMAGE_NAME + " TEXT);");
+        db.execSQL("CREATE TABLE " + TABLE + " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + DATE + " TEXT);");
     }
 
     public static void drop(SQLiteDatabase db) {
         db.execSQL("DROP TABLE " + TABLE);
     }
 
-    public static void addBook(ModelSql.MyOpenHelper dbHelper, Book bk) {
+    public static void add(ModelSql.MyOpenHelper dbHelper, String date) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(ID, bk.getBookID());
-        values.put(NAME, bk.getBookName());
-        values.put(AUTHOR, bk.getAuthor());
-        values.put(PAGES, bk.getPages());
-        values.put(IMAGE_NAME, bk.getPicture());
+        //values.put(ID, bk.getBookID());
+        values.put(DATE, date);
 
-        db.insert(TABLE, ID, values);
+        db.insertOrThrow(TABLE, null, values);
+        //db.insert(TABLE, ID, values);
     }
 
-    public static int getCount(ModelSql.MyOpenHelper dbHelper){
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor mCount= db.rawQuery("select count(*) from " + TABLE, null);
-        mCount.moveToFirst();
-        int count= mCount.getInt(0);
-        mCount.close();
-        return count;
+    public static String getLastUpdated(ModelSql.MyOpenHelper dbHelper)
+    {
+        String date = "not found";
 
 
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+
+        Cursor cursor = db.query(TABLE, null, null, null, null,null, ID + " DESC", "1");
+
+        if (cursor.moveToFirst()) {
+            int date_index = cursor.getColumnIndex(DATE);
+            date = cursor.getString(date_index);
+        }
+
+        return date;
     }
-    public static List<Book> getAllBooks(ModelSql.MyOpenHelper dbHelper) {
+    /* public static List<Book> getAllBooks(ModelSql.MyOpenHelper dbHelper) {
         List<Book> books = new LinkedList<Book>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -78,5 +78,6 @@ public class BookSql {
         }
 
         return books;
-    }
+    }*/
+
 }

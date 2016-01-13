@@ -4,6 +4,7 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.parse.FindCallback;
@@ -97,19 +98,16 @@ public class ModelParse {
                 Post temp = new Post("1", userID, bookID, text, date, currentPage, finished, grade);
                 allPosts.add(temp);
             }
-            return allPosts;
+
 
         } catch (com.parse.ParseException e) {
             e.printStackTrace();
         }
-
-
-
-        return null;
+        return allPosts;
     }
 
 
-    public void addBook(final Book book) {
+    public void addBook(final Book book, final Model.bookReturnedListener listener) {
         final ParseObject newBook = new ParseObject("Books");
         newBook.put("bookName", book.getBookName());
         newBook.put("author", book.getAuthor());
@@ -121,6 +119,7 @@ public class ModelParse {
                 if (e == null){
                     book.setBookID(newBook.getObjectId());
                     addBookToUser(book);
+                    listener.addBookToLocal(book);
                 }
                 else
                 {
@@ -535,4 +534,74 @@ public class ModelParse {
             e.printStackTrace();
         }
     }
+
+    public ArrayList<Post> getLocalPostsChanges(String lastUpdated, Model.getChangesListener listener) {
+        ArrayList<Post> allPosts = new ArrayList<>();
+        ParseQuery query = new ParseQuery("Post");
+        if (!TextUtils.equals(lastUpdated,"not found"))
+        {
+            query.whereGreaterThan("updatedAt",lastUpdated);
+        }
+        query.include("book");
+        query.include("user");
+        String last_update = null;
+        try {
+            List<ParseObject> data = query.find();
+            for (ParseObject po : data) {
+                String userID = po.getString("userID");
+                ParseObject book = po.getParseObject("book");
+                String bookID = po.getString("book");
+                String text = po.getString("text");
+                Date date = po.getDate("updatedAt");
+                last_update = po.getString("updatedAt");
+                int currentPage = po.getInt("currentPage");
+                boolean finished = po.getBoolean("finished");
+                int grade = po.getInt("grade");
+                Post temp = new Post("1", userID, bookID, text, date, currentPage, finished, grade);
+                allPosts.add(temp);
+            }
+
+            listener.updateLastUpdated(last_update);
+
+        } catch (com.parse.ParseException e) {
+            e.printStackTrace();
+
+        }
+        return allPosts;
+    }
+
+
+    public ArrayList<Book> getLocalBooksChanges(String id, final boolean finished, final String date, final Model.GetReadingStatusLocalListener listener) {
+        final ArrayList<Book> bookList = new ArrayList<>();
+        final ArrayList<Integer> progress = new ArrayList<>();
+        final ParseQuery<ParseObject> query1 = new ParseQuery("_User");
+        query1.getInBackground(id, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                if (e == null) {
+                    String last_update = null;
+                    ParseQuery query2 = new ParseQuery("ReadStatus");
+                    query2.whereEqualTo("finished", finished);
+                    query2.whereGreaterThan("updatedAt",date);
+                    query2.whereEqualTo("user", object);
+                    query2.include("book");
+                    try {
+                        List<ParseObject> data = query2.find();
+                        for (ParseObject po : data) {
+                            Book book = new Book(po.getParseObject("book"));
+                            bookList.add(book);
+                            last_update = po.getString("updatedAt");
+                            progress.add(po.getInt("currentPage"));
+                        }
+                        listener.updateLastUpdated(last_update);
+                        listener.onReadingStatusArrived(bookList,progress);
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
+        return bookList;
+    }
+
 }

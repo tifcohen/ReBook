@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,9 +38,9 @@ public class Model {
     ModelSql modelSql;
     ModelParse model;
 
-    private Model(){
+    /*private Model(){
         init(context);
-    }
+    }*/
 
     public static Model getInstance(){
         return instance;
@@ -47,8 +49,11 @@ public class Model {
     public void init(Context context){
         model = new ModelParse();
         model.init(context);
-        modelSql = new ModelSql(context);
+        modelSql = new ModelSql();
+        modelSql.init(context);
     }
+
+
 
 /*    private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
@@ -58,6 +63,11 @@ public class Model {
     }*/
 
     public void updateReadStatus(final Post post){ model.updateReadStatus(post);}
+
+    public String getLastUpdated() {
+
+        return modelSql.getLastUpdated();
+    }
 
     public interface GetBooksListener{
         void onBooksArrived(ArrayList<Book> books);
@@ -71,6 +81,10 @@ public class Model {
         return modelSql.getAllBooks();
     }
 
+    public void addBookSql(Book book){
+        modelSql.addBook(book);
+    }
+
     //Parse + SQL
     public void addPost(Post post){
        /* if(isNetworkAvailable()) {
@@ -80,11 +94,23 @@ public class Model {
         //modelSql.addPost(post);
     }
 
-    public void addBook(Book book){
-        model.addBook(book);
-        //modelSql.addBook(book);
+    public interface bookReturnedListener{
+        public void addBookToLocal(Book book);
     }
 
+    public void addBook(Book book){
+        model.addBook(book, new bookReturnedListener() {
+            @Override
+            public void addBookToLocal(Book book) {
+                modelSql.addBook(book);
+            }
+        });
+
+    }
+
+    public int getLocalBooksCount(){
+        return modelSql.getCountBooks();
+    }
     public void addBookToUser(Book book){ model.addBookToUser(book);}
 
     public Book getBookById(String id){
@@ -93,6 +119,15 @@ public class Model {
 
     public interface GetReadingStatusListener{
         public void onReadingStatusArrived(ArrayList<Book> bookList, ArrayList<Integer> progress);
+    }
+
+    public interface GetReadingStatusLocalListener{
+        public void onReadingStatusArrived(ArrayList<Book> bookList, ArrayList<Integer> progress);
+        public void updateLastUpdated(String date);
+    }
+
+    public ArrayList<Book> getLocalBooksChanges(String id, Boolean finished, String date, GetReadingStatusLocalListener listener){
+        return model.getLocalBooksChanges(id,finished,date,listener);
     }
 
     public void startFollowing(String userId){
@@ -142,6 +177,20 @@ public class Model {
 
     public List<Post> getAllPosts() {
         return model.getAllPosts2();
+    }
+
+    public interface getChangesListener{
+        public void updateLastUpdated(String date);
+        public void updateLocalDatabase(ArrayList<Post> posts);
+    }
+
+    public void updateLastUpdated(String date){
+        modelSql.updateLastUpdated(date);
+    }
+
+
+    public ArrayList<Post> getLocalPosts(String lastUpdated, getChangesListener listener) {
+        return  model.getLocalPostsChanges(lastUpdated, listener);
     }
 
     public void getBookByIdAsync(String id, GetBookListener listener){

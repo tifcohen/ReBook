@@ -3,9 +3,11 @@ package com.example.tiferet.rebook.Model;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.example.tiferet.rebook.Model.SqlObjects.BookSql;
 import com.example.tiferet.rebook.Model.SqlObjects.PostSql;
+import com.example.tiferet.rebook.Model.SqlObjects.SyncSql;
 import com.example.tiferet.rebook.Model.SqlObjects.UserSql;
 
 import java.util.List;
@@ -15,8 +17,7 @@ import java.util.List;
  */
 public class ModelSql{
     private MyOpenHelper dbHelper;
-    public ModelSql(Context context) {
-        dbHelper = new MyOpenHelper(context);
+    public ModelSql() {
     }
     //book table, readStatus table, post table, user table
 
@@ -27,21 +28,39 @@ public class ModelSql{
     //post table - shoes only current user posts
     //newsfeed gets posts from local post table
 
+    public void init(Context context){
+        if (dbHelper == null)
+        {
+            dbHelper = new MyOpenHelper(context);
+        }
+    }
     public void addBook(Book book) {
         BookSql.addBook(dbHelper, book);
+    }
+
+    public int getCountBooks(){
+        return BookSql.getCount(dbHelper);
     }
 
     public List<Book> getAllBooks() {
         return BookSql.getAllBooks(dbHelper);
     }
 
+    public void updateLastUpdated(String date){
+        if (!TextUtils.isEmpty(date))
+            SyncSql.add(dbHelper, date);
+    }
     public void addPost(Post post) {
         PostSql.addPost(dbHelper, post);
     }
 
+    public String getLastUpdated(){
+        return SyncSql.getLastUpdated(dbHelper);
+    }
+
     public class MyOpenHelper extends SQLiteOpenHelper {
         final static String dbName = "database.db";
-        final static int version = 1;
+        final static int version = 3;
 
         public MyOpenHelper(Context context) {
             super(context, dbName, null, version);
@@ -49,15 +68,17 @@ public class ModelSql{
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-         //   BookSql.create(db);
+            BookSql.create(db);
           //  UserSql.create(db);
             PostSql.create(db);
+            SyncSql.create(db);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-          //  BookSql.drop(db);
+            //BookSql.drop(db);
             PostSql.drop(db);
+            SyncSql.drop(db);
             onCreate(db);
         }
     }
