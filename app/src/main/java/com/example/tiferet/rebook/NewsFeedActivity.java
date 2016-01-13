@@ -1,7 +1,7 @@
 package com.example.tiferet.rebook;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
+import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -12,10 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.app.ProgressDialog;
 
 import com.example.tiferet.rebook.Fragments.MyProfileFragment;
 import com.example.tiferet.rebook.Model.Book;
@@ -30,18 +33,35 @@ import java.util.List;
 public class NewsFeedActivity extends Activity {
 
     ListView list;
-    List<Post> data;
+    List<Post> posts;
+    List<Book> books;
+    List<User> users;
+    ProgressBar spinner;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_feed);
 
-        list = (ListView) findViewById(R.id.newsFeedList);
-        data = Model.getInstance().getAllPosts();
-        CustomAdapter adapter = new CustomAdapter();
-        list.setAdapter(adapter);
 
+        spinner = (ProgressBar) findViewById(R.id.progressBar2);
+        //spinner.setVisibility(View.VISIBLE);
+        //spinner.setVisibility(View.GONE);
+        list = (ListView) findViewById(R.id.newsFeedList);
+
+        Model.getInstance().getPostsAsync(ParseUser.getCurrentUser().getObjectId(), new Model.GetPostsAsyncListener() {
+            @Override
+            public void onPostsArrived(ArrayList<Post> postArray, ArrayList<User> userArray, ArrayList<Book> bookArray) {
+                spinner.setVisibility(View.VISIBLE);
+                posts = postArray;
+                books = bookArray;
+                users = userArray;
+                CustomAdapter adapter = new CustomAdapter();
+                list.setAdapter(adapter);
+                spinner.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
@@ -107,12 +127,12 @@ public class NewsFeedActivity extends Activity {
 
         @Override
         public int getCount() { //returns the size of the list
-            return data.size();
+            return posts.size();
         }
 
         @Override
         public Object getItem(int position) { //returns the post
-            return data.get(position);
+            return posts.get(position);
         }
 
         @Override
@@ -135,85 +155,69 @@ public class NewsFeedActivity extends Activity {
             final TextView action2 = (TextView) convertView.findViewById(R.id.action2TextView);
             final ImageView userProfileImage = (ImageView) convertView.findViewById(R.id.userProfileImage);
 
-            Model.getInstance().getPostsAsync(ParseUser.getCurrentUser().getObjectId(), new Model.GetPostsAsyncListener() {
-                @Override
-                public void onPostsArrived(ArrayList<Post> postArray, ArrayList<User> userArray, ArrayList<Book> bookArray) {
-                    Book book = bookArray.get(position);
-                    User user = userArray.get(position);
-                    Post post = postArray.get(position);
-                    userName.setText(user.getfName() + " " + user.getlName());
-                    userName.setTag(user);
+            Book book = books.get(position);
+            User user = users.get(position);
+            Post post = posts.get(position);
+            userName.setText(user.getfName() + " " + user.getlName());
+            userName.setTag(user);
 
-
-
-                    if (user.getProfPicture() != null)
-                    {
-                        if (!user.getProfPicture().equals(""))
-                        {
-                            Model.getInstance().loadImage(user.getProfPicture(), new Model.LoadImageListener() {
-                                @Override
-                                public void onResult(Bitmap imageBmp) {
-                                    if (imageBmp != null) {
-                                        userProfileImage.setImageBitmap(imageBmp);
-                                    }
-                                }
-                            });
+            if (user.getProfPicture() != null) {
+                if (!user.getProfPicture().equals("")) {
+                    Model.getInstance().loadImage(user.getProfPicture(), new Model.LoadImageListener() {
+                        @Override
+                        public void onResult(Bitmap imageBmp) {
+                            if (imageBmp != null) {
+                                userProfileImage.setImageBitmap(imageBmp);
+                            }
                         }
-                        else
-                        {
-                            userProfileImage.setImageResource(R.drawable.default_user);
-                        }
-                    }
-                    else
-                    {
-                        userProfileImage.setImageResource(R.drawable.default_user);
-                    }
-
-
-                    if (book.getBookName().length() > 27) {
-                        bookName.setText(book.getBookName().substring(0, 27) + "...");
-                    }
-                    else {
-                        bookName.setText(book.getBookName());
-                    }
-                    bookName.setTag(post);
-
-
-                    if (post.getCurrentPage() == 0 && post.getGrade() == 0) {
-                        action.setText("Started ");
-                        bookReview.setVisibility(View.GONE);
-                        action2.setText("Not yet rated.");
-                        page.setVisibility(View.GONE);
-                        stars.setVisibility(View.GONE);
-                        action2.setVisibility(View.GONE);
-
-                    }
-                    else
-                    {
-                        page.setVisibility(View.VISIBLE);
-                        page.setText(" Page: " + post.getCurrentPage());
-                        stars.setImageResource(book.getStars(post.getGrade()));
-                        stars.setVisibility(View.VISIBLE);
-                        action2.setVisibility(View.VISIBLE);
-                        action2.setText("Rated ");
-                        if (post.isFinished())
-                            action.setText("finished ");
-                        else
-                            action.setText("is reading ");
-
-                        if (post.getText().isEmpty())
-                        {
-                            bookReview.setVisibility(View.GONE);
-                        }
-                        else
-                        {
-                            bookReview.setText(post.getText());
-                            bookReview.setVisibility(View.VISIBLE);
-                        }
-                    }
+                    });
                 }
-            });
+                else {
+                    userProfileImage.setImageResource(R.drawable.default_user);
+                }
+            }
+            else {
+                userProfileImage.setImageResource(R.drawable.default_user);
+            }
 
+            if (book.getBookName().length() > 27) {
+                bookName.setText(book.getBookName().substring(0, 27) + "...");
+            }
+            else {
+                bookName.setText(book.getBookName());
+            }
+            bookName.setTag(post);
+
+
+            if (post.getCurrentPage() == 0 && post.getGrade() == 0) {
+                action.setText("Started ");
+                bookReview.setVisibility(View.GONE);
+                action2.setText("Not yet rated.");
+                page.setVisibility(View.GONE);
+                stars.setVisibility(View.GONE);
+                action2.setVisibility(View.GONE);
+            }
+            else
+            {
+                page.setVisibility(View.VISIBLE);
+                page.setText(" Page: " + post.getCurrentPage());
+                stars.setImageResource(book.getStars(post.getGrade()));
+                stars.setVisibility(View.VISIBLE);
+                action2.setVisibility(View.VISIBLE);
+                action2.setText("Rated ");
+                if (post.isFinished())
+                    action.setText("finished ");
+                else
+                    action.setText("is reading ");
+
+                if (post.getText().isEmpty()) {
+                    bookReview.setVisibility(View.GONE);
+                }
+                else {
+                    bookReview.setText(post.getText());
+                    bookReview.setVisibility(View.VISIBLE);
+                }
+            }
             return convertView;
         }
     }

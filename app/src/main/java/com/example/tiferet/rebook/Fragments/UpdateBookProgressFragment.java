@@ -130,6 +130,7 @@ public class UpdateBookProgressFragment extends Fragment {
     }
 
     public void setBook(Book book) { this.book = book;}
+    public Book getBook() {return this.book;}
 
     public int setGrade(int star){
         int grade = star*2;
