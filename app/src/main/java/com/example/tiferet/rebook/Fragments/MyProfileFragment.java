@@ -54,6 +54,7 @@ public class MyProfileFragment extends Fragment {
     ArrayList<Integer> myProgressData;
     TextView nameTextView;
     Button edit;
+    ProgressBar spinner;
 
     public String getUserId() {
         return userId;
@@ -79,11 +80,41 @@ public class MyProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.my_profile_fragment, container, false);
+        spinner = (ProgressBar) view.findViewById(R.id.progressBar3);
+        spinner.setVisibility(View.VISIBLE);
         edit = (Button) view.findViewById(R.id.editProfile);
         final TextView followersTextView = (TextView) view.findViewById(R.id.myProfileFollowers);
         nameTextView = (TextView) view.findViewById(R.id.myProfileUsername);
         myProfilePicture = (ImageView) view.findViewById(R.id.myProfilePicture);
         //Toast.makeText(getActivity().getApplicationContext(),Model.getInstance().getLocalBooksCount()+ " Books ", Toast.LENGTH_LONG).show();
+
+        if (TextUtils.isEmpty(userId)) {
+            try {
+                ParseUser.getCurrentUser().fetch();
+                Toast.makeText(getActivity().getApplicationContext(), ParseUser.getCurrentUser().getString("fName"), Toast.LENGTH_LONG).show();
+                userId = ParseUser.getCurrentUser().getObjectId();
+                setUser(new User(ParseUser.getCurrentUser()));
+                refreshPage(user);
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                spinner.setVisibility(View.GONE);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            Model.getInstance().getUserByIdAsync(userId, new Model.GetUserListener() {
+                @Override
+                public void onUserArrived(User user) {
+                    setUser(user);
+                    refreshPage(user);
+                    spinner.setVisibility(View.GONE);
+                }
+            });
+        }
         Model.getInstance().getFollowersList(userId, new Model.GetFollowersListener() {
             @Override
             public void onFollowersArrived(ArrayList<User> followers) {
@@ -97,16 +128,14 @@ public class MyProfileFragment extends Fragment {
             public void onClick(View v) {
                 if (userId.equals(ParseUser.getCurrentUser().getObjectId())) {
                     delegate.OnEditProfile(user);
-                }
-                else {
+                } else {
                     boolean amIFollowing = Model.getInstance().amIFollowing(userId);
                     if (amIFollowing) {
 
                         Model.getInstance().stopFollowing(userId);
                         edit.setText("Follow " + user.getfName());
 
-                    }
-                    else {
+                    } else {
                         Model.getInstance().startFollowing(userId);
                         edit.setText("Unfollow " + user.getfName());
                     }
@@ -138,7 +167,6 @@ public class MyProfileFragment extends Fragment {
                                 delegate.OnBookProgress(userId, book);
                             }
                         }
-
                     }
                 });
             }
@@ -170,8 +198,26 @@ public class MyProfileFragment extends Fragment {
             @Override
             public void onReadingStatusArrived(ArrayList<Book> bookList, ArrayList<Integer> progressList) {
                 myBookShelfData = bookList;
-                MyShelfAdapter bookShelfAdapter = new MyShelfAdapter();
-                myBookShelfList.setAdapter(bookShelfAdapter);
+                MyShelfAdapter booksAdapter = new MyShelfAdapter();
+                myBookShelfList.setAdapter(booksAdapter);
+                myBookShelfList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        if (userId.equals(ParseUser.getCurrentUser().getObjectId())) {
+                            Book book = myBookShelfData.get(position);
+                            if (delegate != null) {
+                                String userId = user.getUserId();
+                                delegate.OnBookProgress(userId, book);
+                            }
+                        } else {
+                            Book book = myBookShelfData.get(position);
+                            if (delegate != null) {
+                                String userId = "GLOBAL";
+                                delegate.OnBookProgress(userId, book);
+                            }
+                        }
+                    }
+                });
             }
         });
         return view;
@@ -213,7 +259,7 @@ public class MyProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
         setHasOptionsMenu(true);
-
+/*
         if (TextUtils.isEmpty(userId)) {
             try {
                 ParseUser.getCurrentUser().fetch();
@@ -233,7 +279,7 @@ public class MyProfileFragment extends Fragment {
                     refreshPage(user);
                 }
             });
-        }
+        }*/
     }
 
     public void setUser(User user){
@@ -371,7 +417,6 @@ public class MyProfileFragment extends Fragment {
 
             Book book = myBookShelfData.get(position);
             bookName.setText(book.getBookName());
-
             return convertView;
         }
     }
