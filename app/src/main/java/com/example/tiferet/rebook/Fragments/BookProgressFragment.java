@@ -73,39 +73,50 @@ public class BookProgressFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.book_progress_fragment, container, false);
         if(book!=null){
-            TextView bookName = (TextView) view.findViewById(R.id.bookProgressName);
+            final TextView bookName = (TextView) view.findViewById(R.id.bookProgressName);
             bookImage = (ImageView) view.findViewById(R.id.bookProgressImage);
-            TextView bookAuthor = (TextView) view.findViewById(R.id.bookProgressAuthor);
+            final TextView bookAuthor = (TextView) view.findViewById(R.id.bookProgressAuthor);
             bookProgress = (ProgressBar) view.findViewById(R.id.progressBarBook);
             bookProgressPages = (TextView) view.findViewById(R.id.bookProgressPages);
 
-            if (book.getPicture() != null)
+            if (book == null)
             {
-                if (!book.getPicture().equals(""))
-                {
-                    Model.getInstance().loadImage(book.getPicture(), new Model.LoadImageListener() {
-                        @Override
-                        public void onResult(Bitmap imageBmp) {
-                            if (imageBmp != null) {
-                                bookImage.setImageBitmap(imageBmp);
+                Model.getInstance().getBookByIdAsync(bookId, new Model.GetBookListener() {
+                    @Override
+                    public void onBookArrived(Book book) {
+                        setBook(book);
+                        if (book.getPicture() != null)
+                        {
+                            if (!book.getPicture().equals(""))
+                            {
+                                Model.getInstance().loadImage(book.getPicture(), new Model.LoadImageListener() {
+                                    @Override
+                                    public void onResult(Bitmap imageBmp) {
+                                        if (imageBmp != null) {
+                                            bookImage.setImageBitmap(imageBmp);
+                                        }
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                bookImage.setImageResource(R.drawable.default_user);
                             }
                         }
-                    });
-                }
-                else
-                {
-                    bookImage.setImageResource(R.drawable.default_user);
-                }
-            }
-            else
-            {
-                bookImage.setImageResource(R.drawable.default_user);
+                        else
+                        {
+                            bookImage.setImageResource(R.drawable.default_user);
+                        }
+
+                        bookName.setText(book.getBookName());
+                        bookAuthor.setText(" By " + book.getAuthor() + ". Pages: " + book.getPages());
+                        int pages = book.getPages();
+                        //bookPages.setText("Pages: " + pages);
+
+                    }
+                });
             }
 
-            bookName.setText(this.book.getBookName());
-            bookAuthor.setText(" By " + this.book.getAuthor() + ". Pages: " + this.book.getPages());
-            int pages = this.book.getPages();
-            //bookPages.setText("Pages: " + pages);
         }
 
         list = (ListView) view.findViewById(R.id.bookReviewList);
@@ -146,23 +157,31 @@ public class BookProgressFragment extends Fragment {
             more2.setVisibility(View.GONE);
 
             update.setVisibility(View.GONE);
-            bookProgress.setVisibility(View.GONE);
+            bookProgress = (ProgressBar) view.findViewById(R.id.progressBarBook);
             bookProgressLayout = (RelativeLayout) view.findViewById(R.id.bookProgBar);
+            bookProgress.setVisibility(View.GONE);
             bookProgressLayout.setVisibility(View.GONE);
-            Model.getInstance().getBookReviewsAsync(book.getBookID(), new Model.GetBookReviewsAsyncListener() {
+            Model.getInstance().getBookByIdAsync(bookId, new Model.GetBookListener() {
                 @Override
-                public void onPostsArrived(ArrayList<Post> postArray, ArrayList<User> userArray) {
-                    data = postArray;
-                    users = userArray;
-                    BookWorldProgressAdapter adapter = new BookWorldProgressAdapter();
-                    list.setAdapter(adapter);
-                    if (postArray.size() == 0) {
-                        bookProfileTitle.setText("There are no current reviews.");
-                    } else {
-                        bookProfileTitle.setText(postArray.size() + " Reviews of this book:");
-                    }
+                public void onBookArrived(Book book) {
+                    Model.getInstance().getBookReviewsAsync(book.getBookID(), new Model.GetBookReviewsAsyncListener() {
+                        @Override
+                        public void onPostsArrived(ArrayList<Post> postArray, ArrayList<User> userArray) {
+                            data = postArray;
+                            users = userArray;
+                            BookWorldProgressAdapter adapter = new BookWorldProgressAdapter();
+                            list.setAdapter(adapter);
+                            if (postArray.size() == 0) {
+                                bookProfileTitle.setText("There are no current reviews.");
+                            } else {
+                                bookProfileTitle.setText(postArray.size() + " Reviews of this book:");
+                            }
+                        }
+                    });
                 }
             });
+
+
         }
 
 
