@@ -59,36 +59,30 @@ public class MainActivity extends Activity implements
 
         String action = getIntent().getExtras().getString("fragment");
 
-
-
-            if (action != null && action.equals("book")) {
-                bookProgressFragment = new BookProgressFragment();
-                String bookId = getIntent().getExtras().getString("bookId");
-                bookProgressFragment.setCurr(null);
-                bookProgressFragment.setBookId(bookId);
-
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.add(R.id.container, bookProgressFragment, bookProgressFragment.toString());
-                ft.addToBackStack(bookProgressFragment.toString());
-                ft.commit();
-                invalidateOptionsMenu();
-            }
-            else
-            {
-                String userId = getIntent().getExtras().getString("userId");
-                myProfileFragment = new MyProfileFragment(); //(MyProfileFragment) getFragmentManager().findFragmentById(R.id.profileFragment);
-                myProfileFragment.setDelegate(this);
-                stack.push(myProfileFragment);
-
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                myProfileFragment.setUserId(userId);
-                ft.add(R.id.container, myProfileFragment, myProfileFragment.toString());
-                ft.commit();
-                invalidateOptionsMenu();
-            }
-
+        if (action != null && action.equals("book")) {
+            String bookId = getIntent().getExtras().getString("bookId");
+            bookProgressFragment = new BookProgressFragment();
+            bookProgressFragment.setCurr(null);
+            bookProgressFragment.setBookId(bookId);
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.add(R.id.container, bookProgressFragment, bookProgressFragment.toString());
+            ft.addToBackStack(bookProgressFragment.toString());
+            ft.commit();
+            invalidateOptionsMenu();
+        }
+        else {
+            String userId = getIntent().getExtras().getString("userId");
+            myProfileFragment = new MyProfileFragment(); //(MyProfileFragment) getFragmentManager().findFragmentById(R.id.profileFragment);
+            myProfileFragment.setDelegate(this);
+            stack.push(myProfileFragment);
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            myProfileFragment.setUserId(userId);
+            ft.add(R.id.container, myProfileFragment, myProfileFragment.toString());
+            ft.commit();
+            invalidateOptionsMenu();
+        }
     }
 
     @Override
@@ -268,24 +262,22 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onSave() {
-
-        stack.pop();
-        invalidateOptionsMenu();
-        getFragmentManager().popBackStack();
-        /*
-        currFragment = stack.pop();
+        /*currFragment = stack.pop();
         prevFragment = stack.peek();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        //getFragmentManager().popBackStack();
-        //ft.add(R.id.container, prevFragment);
-        ft.show(prevFragment);
-        stack.push(prevFragment);
-        //stack.push(myProfileFragment);
-        ft.hide(currFragment);
+        ft.attach(prevFragment);
+        if (prevFragment == myProfileFragment){
+            ft.add(R.id.container, myProfileFragment);
+            ft.hide(currFragment);
+        }
+        prevFragment.getId();
         //ft.addToBackStack(prevFragment.toString());
-        ft.commit();
-        invalidateOptionsMenu();*/
+        ft.commit();*/
+
+        invalidateOptionsMenu();
+        stack.pop();
+        getFragmentManager().popBackStack();
     }
 
     @Override

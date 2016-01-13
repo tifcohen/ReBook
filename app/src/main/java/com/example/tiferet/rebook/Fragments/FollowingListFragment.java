@@ -120,7 +120,6 @@ public class FollowingListFragment extends Fragment {
                     if (amIFollowing) {
                         Model.getInstance().stopFollowing(user.getUserId());
                         follow.setText("Follow");
-
                     }
                     else {
                         Model.getInstance().startFollowing(user.getUserId());
